@@ -1,0 +1,54 @@
+const UsersModel = require("../models/users.model");
+const { ErrorHandler } = require("../helpers/errors");
+
+class UsersService {
+  async createUser(email, password, first_name, last_name) {
+    try {
+      const findUser = await UsersModel.getByEmailDb(email);
+
+      if (!email || !password || !first_name || !last_name) {
+        throw new ErrorHandler(406, "All fields are required.");
+      }
+
+      if (findUser) {
+        throw new ErrorHandler(409, "User with this email already exists.");
+      }
+
+      const newUser = await UsersModel.createUserDb(
+        email,
+        password,
+        first_name,
+        last_name
+      );
+
+      return newUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllUsers() {
+    try {
+      const allUsers = await UsersModel.getAllUsersDb();
+      return allUsers;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getById(id) {
+    try {
+      const findUser = await UsersModel.getByIdDb(id);
+
+      if (!findUser) {
+        throw new ErrorHandler(404, "User not found");
+      }
+
+      return findUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+
+module.exports = new UsersService();

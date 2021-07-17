@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
 
 //Error handler
 app.use((err, req, res, next) => {
+  console.error(err.message);
   handleError(err, res);
 });
 
