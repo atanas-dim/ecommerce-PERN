@@ -1,6 +1,7 @@
 const UsersService = require("../services/users.service");
-const jwt = require("jsonwebtoken");
+const { ErrorHandler } = require("../helpers/errors");
 
+// Create users should be moved to authController inside login
 const createUser = async (req, res, next) => {
   try {
     const { email, password, first_name, last_name } = req.body;
@@ -18,8 +19,12 @@ const createUser = async (req, res, next) => {
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const data = await UsersService.getAllUsers();
-    res.status(200).json(data);
+    if (req.authData.user.roles.includes("admin")) {
+      const data = await UsersService.getAllUsers();
+      res.status(200).json(data);
+    } else {
+      throw new ErrorHandler(403, "Not authorized.");
+    }
   } catch (error) {
     next(error);
   }
@@ -27,11 +32,16 @@ const getAllUsers = async (req, res, next) => {
 
 const getUserById = async (req, res, next) => {
   try {
-    console.log(req);
-    const authData = req.user;
-    const { id } = req.params;
-    const data = await UsersService.getUserById(id);
-    res.status(200).json({ data });
+    if (
+      req.authData.user.roles.includes("admin") ||
+      Number(req.params.id) === req.authData.user.id
+    ) {
+      const { id } = req.params;
+      const data = await UsersService.getUserById(id);
+      res.status(200).json(data);
+    } else {
+      throw new ErrorHandler(403, "Not authorized.");
+    }
   } catch (error) {
     next(error);
   }
@@ -39,18 +49,25 @@ const getUserById = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { email, password, first_name, last_name } = req.body;
+    if (
+      req.authData.user.roles.includes("admin") ||
+      Number(req.params.id) === req.authData.user.id
+    ) {
+      const { id } = req.params;
+      const { email, password, first_name, last_name } = req.body;
 
-    const data = await UsersService.updateUser(
-      id,
-      email,
-      password,
-      first_name,
-      last_name
-    );
+      const data = await UsersService.updateUser(
+        id,
+        email,
+        password,
+        first_name,
+        last_name
+      );
 
-    res.status(200).json(data);
+      res.status(200).json(data);
+    } else {
+      throw new ErrorHandler(403, "Not authorized.");
+    }
   } catch (error) {
     next(error);
   }
@@ -58,10 +75,17 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const data = await UsersService.deleteUser(id);
+    if (
+      req.authData.user.roles.includes("admin") ||
+      Number(req.params.id) === req.authData.user.id
+    ) {
+      const { id } = req.params;
+      const data = await UsersService.deleteUser(id);
 
-    res.status(200).json(data);
+      res.status(200).json("User was deleted!");
+    } else {
+      throw new ErrorHandler(403, "Not authorized.");
+    }
   } catch (error) {
     next(error);
   }

@@ -58,6 +58,11 @@ class UsersService {
         throw new ErrorHandler(404, "User with this ID doesn't exist.");
       }
 
+      const findUserByEmail = await UsersModel.getByEmailDb(email);
+      if (findUserByEmail) {
+        throw new ErrorHandler(400, "Email is already taken.");
+      }
+
       const updatedUser = await UsersModel.updateUserDb(
         id,
         email,

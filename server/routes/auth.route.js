@@ -7,7 +7,7 @@ authRouter.post("/login", (req, res) => {
   const verifiedUser = {
     id: 1,
     email: "myemail@domain.com",
-    role: "admin",
+    roles: ["admin"],
   };
 
   jwt.sign(
@@ -21,19 +21,5 @@ authRouter.post("/login", (req, res) => {
     }
   );
 });
-
-// // Test route from tutorial
-// authRouter.post("/posts", verifyToken, (req, res) => {
-//   jwt.verify(req.token, process.env.SESSION_SECRET, (err, authData) => {
-//     if (err) {
-//       res.sendStatus(403);
-//     } else {
-//       res.json({
-//         message: "Post created",
-//         authData,
-//       });
-//     }
-//   });
-// });
 
 module.exports = authRouter;

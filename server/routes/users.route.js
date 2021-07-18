@@ -1,5 +1,6 @@
 const express = require("express");
 const usersRouter = express.Router();
+const { verifyToken } = require("../middleware/verification");
 const {
   createUser,
   getAllUsers,
@@ -7,6 +8,9 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/users.controller");
+
+// Verify for all requests on this router
+usersRouter.use(verifyToken);
 
 // Create user
 usersRouter.post("/", createUser);
