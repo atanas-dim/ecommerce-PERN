@@ -36,7 +36,7 @@ class UsersService {
     }
   }
 
-  async getById(id) {
+  async getUserById(id) {
     try {
       const findUser = await UsersModel.getByIdDb(id);
 
@@ -45,6 +45,43 @@ class UsersService {
       }
 
       return findUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUser(id, email, password, first_name, last_name) {
+    try {
+      const findUser = await UsersModel.getByIdDb(id);
+
+      if (!findUser) {
+        throw new ErrorHandler(404, "User with this ID doesn't exist.");
+      }
+
+      const updatedUser = await UsersModel.updateUserDb(
+        id,
+        email,
+        password,
+        first_name,
+        last_name
+      );
+      return updatedUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteUser(id) {
+    try {
+      const findUser = await UsersModel.getByIdDb(id);
+
+      if (!findUser) {
+        throw new ErrorHandler(404, "User with this ID doesn't exist.");
+      }
+
+      const deleteUser = await UsersModel.deleteUserDb(id);
+
+      return deleteUser;
     } catch (error) {
       throw error;
     }
