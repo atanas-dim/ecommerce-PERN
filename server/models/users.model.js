@@ -1,4 +1,3 @@
-// import queries from DB here
 const pool = require("../db");
 
 class UsersModel {

@@ -1,5 +1,7 @@
 const UsersService = require("../services/users.service");
 const { ErrorHandler } = require("../helpers/errors");
+const { validateEmail } = require("../helpers/validateEmail");
+const { validatePassword } = require("../helpers/validatePassword");
 const { hashPassword } = require("../helpers/hashPassword");
 
 // Create users should be moved to authController
@@ -15,13 +17,13 @@ const createUser = async (req, res, next) => {
     );
     res.status(201).json(data);
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
 const getAllUsers = async (req, res, next) => {
   try {
-    if (req.authData.user.roles.includes("admin")) {
+    if (req.user.roles.includes("admin")) {
       const data = await UsersService.getAllUsers();
       res.status(200).json(data);
     } else {
@@ -35,8 +37,8 @@ const getAllUsers = async (req, res, next) => {
 const getUserById = async (req, res, next) => {
   try {
     if (
-      req.authData.user.roles.includes("admin") ||
-      Number(req.params.id) === req.authData.user.id
+      req.user.roles.includes("admin") ||
+      Number(req.params.id) === req.user.id
     ) {
       const { id } = req.params;
       const data = await UsersService.getUserById(id);
@@ -52,8 +54,8 @@ const getUserById = async (req, res, next) => {
 const getUserByEmail = async (req, res, next) => {
   try {
     if (
-      req.authData.user.roles.includes("admin") ||
-      Number(req.params.id) === req.authData.user.id
+      req.user.roles.includes("admin") ||
+      Number(req.params.id) === req.user.id
     ) {
       const { email } = req.body;
       const data = await UsersService.getUserByEmail(email);
@@ -69,13 +71,27 @@ const getUserByEmail = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     if (
-      req.authData.user.roles.includes("admin") ||
-      Number(req.params.id) === req.authData.user.id
+      req.user.roles.includes("admin") ||
+      Number(req.params.id) === req.user.id
     ) {
       const { id } = req.params;
-      const newDetails = req.body;
+      const { email, password, ...newDetails } = req.body;
 
-      const data = await UsersService.updateUser({ id, ...newDetails });
+      let updatedDetails = { ...newDetails };
+      if (email && validateEmail(email)) {
+        // If valid add to updatedDetails
+        updatedDetails.email = email;
+      }
+
+      if (password && validatePassword(password)) {
+        // If valid then hash password and add to updatedDetails
+        const hashedPassword = await hashPassword(password);
+        updatedDetails.password = hashedPassword;
+      }
+
+      console.log(updatedDetails);
+
+      const data = await UsersService.updateUser({ id, ...updatedDetails });
 
       res.status(200).json(data);
     } else {
@@ -89,8 +105,8 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     if (
-      req.authData.user.roles.includes("admin") ||
-      Number(req.params.id) === req.authData.user.id
+      req.user.roles.includes("admin") ||
+      Number(req.params.id) === req.user.id
     ) {
       const { id } = req.params;
       const data = await UsersService.deleteUser(id);

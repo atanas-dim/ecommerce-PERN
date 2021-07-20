@@ -18,8 +18,15 @@ const verifyToken = (req, res, next) => {
   }
 
   try {
-    var decoded = jwt.verify(req.token, process.env.SESSION_SECRET);
-    req.authData = decoded;
+    var decoded = jwt.verify(req.token, process.env.TOKEN_SECRET);
+
+    const userData = {
+      id: decoded.user.user.id,
+      email: decoded.user.user.email,
+      roles: decoded.user.user.roles,
+    };
+    req.user = userData;
+
     next();
   } catch (err) {
     throw new ErrorHandler(403, "Not authorized for this operation.");

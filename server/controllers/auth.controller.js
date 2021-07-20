@@ -1,9 +1,9 @@
-const jwt = require("jsonwebtoken");
 const { validateEmail } = require("../helpers/validateEmail");
 const { validatePassword } = require("../helpers/validatePassword");
 const { ErrorHandler } = require("../helpers/errors");
 const { hashPassword } = require("../helpers/hashPassword");
 const UsersService = require("../services/users.service");
+const AuthService = require("../services/auth.service");
 
 const registerUser = async (req, res, next) => {
   const { email, password, first_name, last_name, roles } = req.body;
@@ -22,7 +22,6 @@ const registerUser = async (req, res, next) => {
 
     // If valid then hash password
     const hashedPassword = await hashPassword(password);
-    console.log(hashedPassword);
 
     // then create user
     const newUser = await UsersService.createUser(
@@ -38,19 +37,28 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-const loginUser = (req, res, next) => {
+const loginUser = async (req, res, next) => {
   const verifiedUser = req.user;
+
   try {
-    jwt.sign(
-      { user: verifiedUser },
-      process.env.SESSION_SECRET,
-      { expiresIn: "1h" },
-      (err, token) => {
-        res.json({
-          token: token,
-        });
-      }
-    );
+    const data = AuthService.loginUser(verifiedUser);
+
+    res.cookie("refreshToken", data.refreshToken, {
+      httpOnly: true,
+    });
+
+    res.status(200).send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const refreshToken = (req, res, next) => {
+  try {
+    const data = AuthService.refreshToken(req.cookies.refreshToken);
+    //add new refresh token to cookie
+
+    res.status(200).send(data);
   } catch (error) {
     next(error);
   }
@@ -59,4 +67,5 @@ const loginUser = (req, res, next) => {
 module.exports = {
   registerUser,
   loginUser,
+  refreshToken,
 };

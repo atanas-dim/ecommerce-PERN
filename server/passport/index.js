@@ -19,6 +19,7 @@ passport.use(
       passwordField: "password",
     },
     async function (username, password, done) {
+      console.log("here inside passport");
       try {
         // find user in DB
         const data = await UsersModel.getByEmailDb(username);
