@@ -2,11 +2,11 @@ const UsersModel = require("../models/users.model");
 const { ErrorHandler } = require("../helpers/errors");
 
 class UsersService {
-  async createUser(email, password, first_name, last_name) {
+  async createUser(email, hashedPassword, first_name, last_name, roles) {
     try {
       const findUser = await UsersModel.getByEmailDb(email);
 
-      if (!email || !password || !first_name || !last_name) {
+      if (!email || !hashedPassword || !first_name || !last_name) {
         throw new ErrorHandler(406, "All fields are required.");
       }
 
@@ -16,9 +16,10 @@ class UsersService {
 
       const newUser = await UsersModel.createUserDb(
         email,
-        password,
+        hashedPassword,
         first_name,
-        last_name
+        last_name,
+        roles
       );
 
       return newUser;
@@ -50,7 +51,22 @@ class UsersService {
     }
   }
 
-  async updateUser(id, email, password, first_name, last_name) {
+  async getUserByEmail(email) {
+    try {
+      const findUser = await UsersModel.getByEmailDb(email);
+
+      if (!findUser) {
+        throw new ErrorHandler(404, "User not found");
+      }
+
+      return findUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUser(data) {
+    const { id, email } = data;
     try {
       const findUser = await UsersModel.getByIdDb(id);
 
@@ -58,18 +74,14 @@ class UsersService {
         throw new ErrorHandler(404, "User with this ID doesn't exist.");
       }
 
-      const findUserByEmail = await UsersModel.getByEmailDb(email);
-      if (findUserByEmail) {
-        throw new ErrorHandler(400, "Email is already taken.");
+      if (email) {
+        const findUserByEmail = await UsersModel.getByEmailDb(email);
+        if (findUserByEmail) {
+          throw new ErrorHandler(400, "Email is already taken.");
+        }
       }
 
-      const updatedUser = await UsersModel.updateUserDb(
-        id,
-        email,
-        password,
-        first_name,
-        last_name
-      );
+      const updatedUser = await UsersModel.updateUserDb(data);
       return updatedUser;
     } catch (error) {
       throw error;

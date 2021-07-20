@@ -2,11 +2,14 @@
 const pool = require("../db");
 
 class UsersModel {
-  async createUserDb(email, password, first_name, last_name) {
+  async createUserDb(email, hashedPassword, first_name, last_name, roles) {
+    // If no specific role was added then make it a user
+    if (!roles) roles = "user";
+
     const newUserInDb = await pool.query(
-      `INSERT INTO users(email, password, first_name, last_name)
-      VALUES($1, $2, $3, $4) RETURNING *`,
-      [email, password, first_name, last_name]
+      `INSERT INTO users(email, password, first_name, last_name, roles)
+      VALUES($1, $2, $3, $4, $5) RETURNING *`,
+      [email, hashedPassword, first_name, last_name, roles]
     );
 
     return newUserInDb.rows[0];
@@ -47,12 +50,25 @@ class UsersModel {
     return null;
   }
 
-  async updateUserDb(id, email, password, first_name, last_name) {
+  async updateUserDb(data) {
+    // Receving data as object
+    const { id, ...newDetails } = data;
+    //Getting the key names of the object as array
+    const keyNames = Object.keys(newDetails);
+    // Getting all property values from the data object
+    const properties = Object.values(newDetails);
+    // Adding $ and number for each key name
+    let queryParams = [];
+    // index(let i) has to start at 2 beause id is already taking $1
+    for (let i = 0; i <= keyNames.length - 1; i++) {
+      queryParams.push(keyNames[i] + "=$" + (i + 2));
+    }
+
     const updatedUser = await pool.query(
       `UPDATE users
-      SET email=$2, password=$3, first_name=$4, last_name=$5, modified=NOW()
+      SET ${queryParams.join(",")}, modified=NOW()
       WHERE id=$1 RETURNING *`,
-      [id, email, password, first_name, last_name]
+      [id, ...properties]
     );
 
     if (updatedUser.rows?.length) {
