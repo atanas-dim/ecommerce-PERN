@@ -2,7 +2,7 @@ const UsersService = require("../services/users.service");
 const { ErrorHandler } = require("../helpers/errors");
 const { hashPassword } = require("../helpers/hashPassword");
 
-// Create users should be moved to authController inside login
+// Create users should be moved to authController
 const createUser = async (req, res, next) => {
   try {
     const { email, hashedPassword, first_name, last_name, roles } = req.body;

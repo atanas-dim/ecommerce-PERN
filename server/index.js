@@ -16,6 +16,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
+// next two middleware used for flash messages
 app.use(cookieParser("test cookie parser"));
 app.use(
   session({
@@ -30,12 +31,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // ROUTES
-// Mounting the apiRouter below at the '/api' path.
+// Mounting the apiRouter at the '/api' path.
 const apiRouter = require("./routes");
 app.use("/api", apiRouter);
 
 app.get("/", (req, res) => {
-  console.log(req.flash("error"));
   res.send("Hello World!");
 });
 

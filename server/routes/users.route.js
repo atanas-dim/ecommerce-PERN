@@ -2,7 +2,6 @@ const express = require("express");
 const usersRouter = express.Router();
 const { verifyToken } = require("../middleware/verifyToken");
 const {
-  createUser,
   getAllUsers,
   getUserById,
   updateUser,
@@ -12,8 +11,8 @@ const {
 // Verify for all requests on this router
 usersRouter.use(verifyToken);
 
-// Create user
-usersRouter.post("/", createUser);
+// Create user is not needed here. It's done in authRouter > register
+// usersRouter.post("/", createUser);
 
 // Get all users
 usersRouter.get("/", getAllUsers);

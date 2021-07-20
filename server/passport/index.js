@@ -1,8 +1,8 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const UsersService = require("../services/users.service");
+const UsersModel = require("../models/users.model");
 const { comparePassword } = require("../helpers/hashPassword");
-const { ErrorHandler } = require("../helpers/errors");
+const { validatePassword } = require("../helpers/validatePassword");
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -20,16 +20,17 @@ passport.use(
     },
     async function (username, password, done) {
       try {
-        // get this from DB
-        const data = await UsersService.getUserByEmail(username);
+        // find user in DB
+        const data = await UsersModel.getByEmailDb(username);
 
         if (!data) {
           return done(null, false, { message: "Incorrect email." });
         }
         // use validation helper here
-        if (password.length < 5) {
+        if (!validatePassword(password)) {
           return done(null, false, { message: "Invalid password." });
         }
+        // use helper from hashPassword
         const comparedPassword = await comparePassword(password, data.password);
 
         if (!comparedPassword) {
