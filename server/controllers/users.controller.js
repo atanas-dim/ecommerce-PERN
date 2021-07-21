@@ -23,7 +23,7 @@ const createUser = async (req, res, next) => {
 
 const getAllUsers = async (req, res, next) => {
   try {
-    if (req.user.roles.includes("admin")) {
+    if (req.authData.user.roles.includes("admin")) {
       const data = await UsersService.getAllUsers();
       res.status(200).json(data);
     } else {
@@ -37,8 +37,8 @@ const getAllUsers = async (req, res, next) => {
 const getUserById = async (req, res, next) => {
   try {
     if (
-      req.user.roles.includes("admin") ||
-      Number(req.params.id) === req.user.id
+      req.authData.user.roles.includes("admin") ||
+      Number(req.params.id) === req.authData.user.id
     ) {
       const { id } = req.params;
       const data = await UsersService.getUserById(id);
@@ -54,8 +54,8 @@ const getUserById = async (req, res, next) => {
 const getUserByEmail = async (req, res, next) => {
   try {
     if (
-      req.user.roles.includes("admin") ||
-      Number(req.params.id) === req.user.id
+      req.authData.user.roles.includes("admin") ||
+      Number(req.params.id) === req.authData.user.id
     ) {
       const { email } = req.body;
       const data = await UsersService.getUserByEmail(email);
@@ -71,8 +71,8 @@ const getUserByEmail = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     if (
-      req.user.roles.includes("admin") ||
-      Number(req.params.id) === req.user.id
+      req.authData.user.roles.includes("admin") ||
+      Number(req.params.id) === req.authData.user.id
     ) {
       const { id } = req.params;
       const { email, password, ...newDetails } = req.body;
@@ -105,8 +105,8 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     if (
-      req.user.roles.includes("admin") ||
-      Number(req.params.id) === req.user.id
+      req.authData.user.roles.includes("admin") ||
+      Number(req.params.id) === req.authData.user.id
     ) {
       const { id } = req.params;
       const data = await UsersService.deleteUser(id);

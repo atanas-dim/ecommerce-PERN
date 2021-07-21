@@ -1,6 +1,11 @@
 const express = require("express");
 const ordersRouter = express.Router();
-const { createOrder } = require("../controllers/orders.controller");
+const {
+  createOrder,
+  getAllOrders,
+  getOrdersByUser,
+  getOrderById,
+} = require("../controllers/orders.controller");
 const { verifyToken } = require("../middleware/verifyToken");
 
 // Verify for all requests on this router
@@ -10,10 +15,13 @@ ordersRouter.use(verifyToken);
 ordersRouter.post("/", createOrder);
 
 // Get all orders
-// ordersRouter.get("/", getAllOrders);
+ordersRouter.get("/", getAllOrders);
+
+// Get orders by userId
+ordersRouter.get("/user/:user_id", getOrdersByUser);
 
 // Get single order by ID
-// ordersRouter.get("/:id", getOrderById);
+ordersRouter.get("/:user_id/:order_id", getOrderById);
 
 // Update order
 // ordersRouter.put("/:id", updateOrder);

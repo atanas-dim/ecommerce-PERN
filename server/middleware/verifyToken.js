@@ -5,31 +5,17 @@ const jwt = require("jsonwebtoken");
 // Authorization: Bearer <access_token>
 
 const verifyToken = (req, res, next) => {
-  //Get auth header value
-  const bearerHeader = req.headers["authorization"];
-  //Check if bearer is undefined
-  if (typeof bearerHeader !== "undefined") {
-    // Split at the space
-    const bearer = bearerHeader.split(" ");
-    // Get token from array
-    const bearerToken = bearer[1];
-    //Set the token
-    req.token = bearerToken;
-  }
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(" ")[1];
 
   try {
-    var decoded = jwt.verify(req.token, process.env.TOKEN_SECRET);
+    var decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
-    const userData = {
-      id: decoded.user.user.id,
-      email: decoded.user.user.email,
-      roles: decoded.user.user.roles,
-    };
-    req.user = userData;
+    req.authData = decoded;
 
     next();
   } catch (err) {
-    throw new ErrorHandler(403, "Not authorized for this operation.");
+    throw new ErrorHandler(401, err.message);
   }
 };
 

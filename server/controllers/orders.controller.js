@@ -9,9 +9,9 @@ const createOrder = async (req, res, next) => {
       user_id !== req.authData.user.id &&
       !req.authData.user.roles.includes("admin")
     ) {
-      console.log("Can't place orders for another user.");
+      throw new ErrorHandler(403, "Can't place orders for another user.");
     }
-    //This check if id was not provided or the user is not admin, then takes the id of the logged in user
+    //This checks if id was not provided or the user is not admin, then takes the id of the logged in user
     if (!user_id || !req.authData.user.roles.includes("admin")) {
       user_id = req.authData.user.id;
     }
@@ -23,6 +23,58 @@ const createOrder = async (req, res, next) => {
   }
 };
 
+const getAllOrders = async (req, res, next) => {
+  const user_id = req.authData.user.id;
+  try {
+    if (req.authData.user.roles.includes("admin")) {
+      const data = await OrdersService.getAllOrders(user_id);
+      res.status(200).json(data);
+    } else {
+      throw new ErrorHandler(403, "Not authorized.");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getOrdersByUser = async (req, res, next) => {
+  const user_id = req.params.user_id;
+  try {
+    if (
+      req.authData.user.roles.includes("admin") ||
+      Number(user_id) === req.authData.user.id
+    ) {
+      const data = await OrdersService.getOrdersByUser(user_id);
+      res.status(200).json(data);
+    } else {
+      throw new ErrorHandler(403, "Not authorized.");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getOrderById = async (req, res, next) => {
+  const order_id = req.params.order_id;
+  const user_id = req.params.user_id;
+  try {
+    if (
+      req.authData.user.roles.includes("admin") ||
+      user_id === req.authData.user.id
+    ) {
+      const data = await OrdersService.getOrderById(user_id, order_id);
+      res.status(200).json(data);
+    } else {
+      throw new ErrorHandler(403, "Not authorized.");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createOrder,
+  getAllOrders,
+  getOrdersByUser,
+  getOrderById,
 };

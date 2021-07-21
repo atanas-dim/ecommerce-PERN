@@ -56,7 +56,11 @@ const loginUser = async (req, res, next) => {
 const refreshToken = (req, res, next) => {
   try {
     const data = AuthService.refreshToken(req.cookies.refreshToken);
+
     //add new refresh token to cookie
+    res.cookie("refreshToken", data.refreshToken, {
+      httpOnly: true,
+    });
 
     res.status(200).send(data);
   } catch (error) {
