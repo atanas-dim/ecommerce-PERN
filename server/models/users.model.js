@@ -2,51 +2,67 @@ const pool = require("../db");
 
 class UsersModel {
   async createUserDb(email, hashedPassword, first_name, last_name, roles) {
-    // If no specific role was added then make it a user
-    if (!roles) roles = "user";
+    try {
+      // If no specific role was added then make it a user
+      if (!roles) roles = "user";
 
-    const newUserInDb = await pool.query(
-      `INSERT INTO users(email, password, first_name, last_name, roles)
-      VALUES($1, $2, $3, $4, $5) RETURNING *`,
-      [email, hashedPassword, first_name, last_name, roles]
-    );
+      const newUserInDb = await pool.query(
+        `INSERT INTO users(email, password, first_name, last_name, roles)
+        VALUES($1, $2, $3, $4, $5) RETURNING *`,
+        [email, hashedPassword, first_name, last_name, roles]
+      );
 
-    return newUserInDb.rows[0];
+      if (newUserInDb.rows?.length) {
+        return newUserInDb.rows[0];
+      }
+      return null;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getAllUsersDb() {
-    const allUsersFromDb = await pool.query(`SELECT * FROM users`);
+    try {
+      const allUsersFromDb = await pool.query(`SELECT * FROM users`);
 
-    if (allUsersFromDb.rows?.length) {
-      return allUsersFromDb.rows;
+      if (allUsersFromDb.rows?.length) {
+        return allUsersFromDb.rows;
+      }
+      return null;
+    } catch (error) {
+      throw error;
     }
-
-    return null;
   }
 
   async getByIdDb(id) {
-    const userFromDb = await pool.query(`SELECT * FROM users WHERE id = $1`, [
-      id,
-    ]);
+    try {
+      const userFromDb = await pool.query(`SELECT * FROM users WHERE id = $1`, [
+        id,
+      ]);
 
-    if (userFromDb.rows?.length) {
-      return userFromDb.rows[0];
+      if (userFromDb.rows?.length) {
+        return userFromDb.rows[0];
+      }
+      return null;
+    } catch (error) {
+      throw error;
     }
-
-    return null;
   }
 
   async getByEmailDb(email) {
-    const userFromDb = await pool.query(
-      `SELECT * FROM users WHERE email = $1`,
-      [email]
-    );
+    try {
+      const userFromDb = await pool.query(
+        `SELECT * FROM users WHERE email = $1`,
+        [email]
+      );
 
-    if (userFromDb.rows?.length) {
-      return userFromDb.rows[0];
+      if (userFromDb.rows?.length) {
+        return userFromDb.rows[0];
+      }
+      return null;
+    } catch (error) {
+      throw error;
     }
-
-    return null;
   }
 
   async updateUserDb(data) {
@@ -58,31 +74,39 @@ class UsersModel {
     const properties = Object.values(newDetails);
     // Adding $ and number for each key name
     let queryParams = [];
-    // index(let i) has to start at 2 beause id is already taking $1
+    // Params have to start from $2, because id is already taking $1
     for (let i = 0; i <= keyNames.length - 1; i++) {
       queryParams.push(keyNames[i] + "=$" + (i + 2));
     }
 
-    const updatedUser = await pool.query(
-      `UPDATE users
-      SET ${queryParams.join(",")}, modified=NOW()
-      WHERE id=$1 RETURNING *`,
-      [id, ...properties]
-    );
+    try {
+      const updatedUser = await pool.query(
+        `UPDATE users
+        SET ${queryParams.join(",")}, modified=NOW()
+        WHERE id=$1 RETURNING *`,
+        [id, ...properties]
+      );
 
-    if (updatedUser.rows?.length) {
-      return updatedUser.rows[0];
+      if (updatedUser.rows?.length) {
+        return updatedUser.rows[0];
+      }
+      return null;
+    } catch (error) {
+      throw error;
     }
-
-    return null;
   }
 
   async deleteUserDb(id) {
-    const deleteUserFromDb = await pool.query(`DELETE FROM users WHERE id=$1`, [
-      id,
-    ]);
+    try {
+      const deleteUserFromDb = await pool.query(
+        `DELETE FROM users WHERE id=$1`,
+        [id]
+      );
 
-    return deleteUserFromDb;
+      return deleteUserFromDb;
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

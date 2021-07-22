@@ -4,10 +4,10 @@ const { validateEmail } = require("../helpers/validateEmail");
 const { validatePassword } = require("../helpers/validatePassword");
 const { hashPassword } = require("../helpers/hashPassword");
 
-// Create users should be moved to authController
+// Create users is used in authController
 const createUser = async (req, res, next) => {
+  const { email, hashedPassword, first_name, last_name, roles } = req.body;
   try {
-    const { email, hashedPassword, first_name, last_name, roles } = req.body;
     const data = await UsersService.createUser(
       email,
       hashedPassword,
@@ -35,12 +35,12 @@ const getAllUsers = async (req, res, next) => {
 };
 
 const getUserById = async (req, res, next) => {
+  const { id } = req.params;
   try {
     if (
       req.authData.user.roles.includes("admin") ||
-      Number(req.params.id) === req.authData.user.id
+      Number(id) === req.authData.user.id
     ) {
-      const { id } = req.params;
       const data = await UsersService.getUserById(id);
       res.status(200).json(data);
     } else {
@@ -52,12 +52,13 @@ const getUserById = async (req, res, next) => {
 };
 
 const getUserByEmail = async (req, res, next) => {
+  const { id } = req.params;
+  const { email } = req.body;
   try {
     if (
       req.authData.user.roles.includes("admin") ||
-      Number(req.params.id) === req.authData.user.id
+      Number(id) === req.authData.user.id
     ) {
-      const { email } = req.body;
       const data = await UsersService.getUserByEmail(email);
       res.status(200).json(data);
     } else {
@@ -69,14 +70,13 @@ const getUserByEmail = async (req, res, next) => {
 };
 
 const updateUser = async (req, res, next) => {
+  const { id } = req.params;
+  const { email, password, ...newDetails } = req.body;
   try {
     if (
       req.authData.user.roles.includes("admin") ||
-      Number(req.params.id) === req.authData.user.id
+      Number(id) === req.authData.user.id
     ) {
-      const { id } = req.params;
-      const { email, password, ...newDetails } = req.body;
-
       let updatedDetails = { ...newDetails };
       if (email && validateEmail(email)) {
         // If valid add to updatedDetails
@@ -88,8 +88,6 @@ const updateUser = async (req, res, next) => {
         const hashedPassword = await hashPassword(password);
         updatedDetails.password = hashedPassword;
       }
-
-      console.log(updatedDetails);
 
       const data = await UsersService.updateUser({ id, ...updatedDetails });
 
@@ -103,12 +101,12 @@ const updateUser = async (req, res, next) => {
 };
 
 const deleteUser = async (req, res, next) => {
+  const { id } = req.params;
   try {
     if (
       req.authData.user.roles.includes("admin") ||
-      Number(req.params.id) === req.authData.user.id
+      Number(id) === req.authData.user.id
     ) {
-      const { id } = req.params;
       const data = await UsersService.deleteUser(id);
 
       res.status(200).json("User was deleted!");

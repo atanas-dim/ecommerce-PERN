@@ -8,7 +8,11 @@ class OrdersModel {
       [total, status, user_id]
     );
 
-    return newOrderInDb.rows[0];
+    if (newOrderInDb.rows?.length) {
+      return newOrderInDb.rows[0];
+    }
+
+    return null;
   }
 
   async getAllOrdersDb() {
@@ -36,20 +40,68 @@ class OrdersModel {
     return null;
   }
 
-  async getOrderByIdDb(user_id, order_id) {
+  async getOrderByIdDb(order_id) {
     const orderByIdFromDb = await pool.query(
-      `SELECT orders.id, orders.status, products.name, quantity
-       FROM products
-       JOIN orders_products 
-       ON orders_products.product_id = products.id
-       JOIN orders
-       ON orders_products.order_id = orders.id
-       WHERE orders.user_id = $1 AND orders.id = $2`,
-      [user_id, order_id]
+      `SELECT * FROM orders WHERE id = $1 ORDER BY id DESC`,
+      [order_id]
     );
 
     if (orderByIdFromDb.rows?.length) {
-      return orderByIdFromDb.rows;
+      return orderByIdFromDb.rows[0];
+    }
+
+    return null;
+  }
+
+  async updateOrderByIdDb(order_id, total, status) {
+    const updatedOrderInDb = await pool.query(
+      `UPDATE orders
+      SET total=$2, status=$3, modified=NOW()
+      WHERE id=$1 RETURNING *`,
+      [order_id, total, status]
+    );
+
+    if (updatedOrderInDb.rows?.length) {
+      return updatedOrderInDb.rows[0];
+    }
+
+    return null;
+  }
+
+  async createOrdersProductsDb(order_id, product_id, quantity) {
+    const newOrdersProductsDb = await pool.query(
+      `INSERT INTO orders_products (order_id, product_id, quantity)
+      VALUES( $1, $2, $3) RETURNING *`,
+      [order_id, product_id, quantity]
+    );
+
+    if (newOrdersProductsDb.rows?.length) {
+      return newOrdersProductsDb.rows[0];
+    }
+
+    return null;
+  }
+
+  async getOrdersProductsDb(order_id) {
+    const ordersProductsFromDb = await pool.query(
+      `SELECT 
+          MIN(orders.id) AS order_id, 
+          products.id AS product_id, 
+          products.name AS product_name, 
+          SUM(orders_products.quantity)::integer AS quantity,
+          products.price AS price
+      FROM products
+      JOIN orders_products 
+          ON orders_products.product_id = products.id
+      JOIN orders
+          ON orders_products.order_id = orders.id
+      WHERE orders.id = $1
+      GROUP BY products.id;`,
+      [order_id]
+    );
+
+    if (ordersProductsFromDb.rows?.length) {
+      return ordersProductsFromDb.rows;
     }
 
     return null;

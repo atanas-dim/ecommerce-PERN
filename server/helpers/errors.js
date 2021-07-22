@@ -7,7 +7,9 @@ class ErrorHandler extends Error {
 }
 
 const handleError = (err, res) => {
-  const { statusCode, message } = err;
+  // 422 status is for error from invalid input syntax from Postgres. This may be temporary solution
+  const statusCode = err.statusCode || 500;
+  const message = err.message;
   res.status(statusCode).json({
     status: "error",
     statusCode,

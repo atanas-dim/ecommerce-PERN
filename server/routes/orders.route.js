@@ -5,6 +5,9 @@ const {
   getAllOrders,
   getOrdersByUser,
   getOrderById,
+  updateOrderById,
+  createOrdersProducts,
+  getOrdersProducts,
 } = require("../controllers/orders.controller");
 const { verifyToken } = require("../middleware/verifyToken");
 
@@ -17,13 +20,22 @@ ordersRouter.post("/", createOrder);
 // Get all orders
 ordersRouter.get("/", getAllOrders);
 
-// Get orders by userId
+// Get all orders for userId
 ordersRouter.get("/user/:user_id", getOrdersByUser);
 
-// Get single order by ID
-ordersRouter.get("/:user_id/:order_id", getOrderById);
+// Get single order by orderId
+ordersRouter.get("/order/:order_id", getOrderById);
 
-// Update order
-// ordersRouter.put("/:id", updateOrder);
+// Update single order by orderId
+ordersRouter.put("/order/:order_id", updateOrderById);
+
+// Create order products
+ordersRouter.post("/products/:order_id", createOrdersProducts);
+
+// Get order products
+ordersRouter.get("/products/:order_id", getOrdersProducts);
+
+// Update orders products
+// ordersRouter.put("/products/:order_id/", createOrdersProducts);
 
 module.exports = ordersRouter;

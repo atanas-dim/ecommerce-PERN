@@ -40,15 +40,61 @@ class OrdersService {
     }
   }
 
-  async getOrderById(user_id, order_id) {
+  async getOrderById(order_id) {
     try {
-      const orderById = await OrdersModel.getOrderByIdDb(user_id, order_id);
-
+      const orderById = await OrdersModel.getOrderByIdDb(order_id);
       if (!orderById) {
         throw new ErrorHandler(404, "Order not found.");
       }
-
       return orderById;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateOrderById(order_id, total, status) {
+    try {
+      const updateOrderById = await OrdersModel.updateOrderByIdDb(
+        order_id,
+        total,
+        status
+      );
+      if (!updateOrderById) {
+        throw new ErrorHandler(404, "Order not found.");
+      }
+      return updateOrderById;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createOrdersProducts(order_id, product_id, quantity) {
+    try {
+      const newOrdersProducts = await OrdersModel.createOrdersProductsDb(
+        order_id,
+        product_id,
+        quantity
+      );
+
+      if (!newOrdersProducts) {
+        throw new ErrorHandler(404, "Product not added to order.");
+      }
+
+      return newOrdersProducts;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getOrdersProducts(order_id) {
+    try {
+      const orderProducts = await OrdersModel.getOrdersProductsDb(order_id);
+
+      if (!orderProducts) {
+        throw new ErrorHandler(404, "Order doesn't exist or has no products.");
+      }
+
+      return orderProducts;
     } catch (error) {
       throw error;
     }
