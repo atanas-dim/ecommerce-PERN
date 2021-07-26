@@ -21,24 +21,37 @@ const getAllProducts = async (req, res, next) => {
 };
 
 const getProductById = async (req, res, next) => {
+  const { id } = req.params;
   try {
-    //
+    const data = await ProductsService.getProductById(id);
+    res.status(200).json(data);
   } catch (error) {
     next(error);
   }
 };
 
 const updateProduct = async (req, res, next) => {
+  const { id } = req.params;
+  const { ...newDetails } = req.body;
   try {
-    //
+    const data = await ProductsService.updateProduct({
+      id,
+      ...newDetails,
+    });
+
+    res.status(200).json(data);
   } catch (error) {
     next(error);
   }
 };
 
 const deleteProduct = async (req, res, next) => {
+  const { id } = req.params;
+  console.log(req.authData);
   try {
-    //
+    const data = await ProductsService.deleteProduct(id);
+
+    res.status(200).json("Product was deleted!");
   } catch (error) {
     next(error);
   }

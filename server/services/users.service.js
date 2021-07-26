@@ -39,13 +39,13 @@ class UsersService {
 
   async getUserById(id) {
     try {
-      const findUser = await UsersModel.getByIdDb(id);
+      const findProduct = await UsersModel.getByIdDb(id);
 
-      if (!findUser) {
+      if (!findProduct) {
         throw new ErrorHandler(404, "User not found");
       }
 
-      return findUser;
+      return findProduct;
     } catch (error) {
       throw error;
     }

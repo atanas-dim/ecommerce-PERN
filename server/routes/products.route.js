@@ -7,9 +7,11 @@ const {
   updateProduct,
   deleteProduct,
 } = require("../controllers/products.controller");
+const { verifyToken } = require("../middleware/verifyToken");
+const { verifyAdmin } = require("../middleware/verifyAdmin");
 
 // Create product
-productsRouter.post("/", createProduct);
+productsRouter.post("/", verifyToken, verifyAdmin, createProduct);
 
 // Get all products
 productsRouter.get("/", getAllProducts);
@@ -18,9 +20,9 @@ productsRouter.get("/", getAllProducts);
 productsRouter.get("/:id", getProductById);
 
 // Update product
-productsRouter.put("/:id", updateProduct);
+productsRouter.put("/:id", verifyToken, verifyAdmin, updateProduct);
 
 // Delete product
-productsRouter.delete("/:id", deleteProduct);
+productsRouter.delete("/:id", verifyToken, verifyAdmin, deleteProduct);
 
 module.exports = productsRouter;

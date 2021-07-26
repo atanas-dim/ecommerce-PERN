@@ -15,7 +15,7 @@ const verifyToken = (req, res, next) => {
 
     next();
   } catch (err) {
-    throw new ErrorHandler(401, err.message);
+    throw new ErrorHandler(401, err.message || "Not authorized");
   }
 };
 

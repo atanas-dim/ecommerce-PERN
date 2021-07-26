@@ -16,32 +16,54 @@ class ProductsService {
 
   async getAllProducts() {
     try {
-      const AllProducts = await ProductsModel.getAllProductsDb();
-      return AllProducts;
+      const allProducts = await ProductsModel.getAllProductsDb();
+      return allProducts;
     } catch (error) {
       throw error;
     }
   }
 
-  async getProductById() {
+  async getProductById(id) {
     try {
-      //
+      const findProduct = await ProductsModel.getProductByIdDb(id);
+
+      if (!findProduct) {
+        throw new ErrorHandler(404, "Product not found");
+      }
+
+      return findProduct;
     } catch (error) {
       throw error;
     }
   }
 
-  async updateProduct() {
+  async updateProduct(data) {
+    const { id } = data;
     try {
-      //
+      const findProduct = await ProductsModel.getProductByIdDb(id);
+
+      if (!findProduct) {
+        throw new ErrorHandler(404, "Products with this ID doesn't exist.");
+      }
+
+      const updatedProduct = await ProductsModel.updateProductDb(data);
+      return updatedProduct;
     } catch (error) {
       throw error;
     }
   }
 
-  async deleteProduct() {
+  async deleteProduct(id) {
     try {
-      //
+      const findProduct = await ProductsModel.getProductByIdDb(id);
+
+      if (!findProduct) {
+        throw new ErrorHandler(404, "Product with this ID doesn't exist.");
+      }
+
+      const deleteProduct = await ProductsModel.deleteProductDb(id);
+
+      return deleteProduct;
     } catch (error) {
       throw error;
     }

@@ -32,25 +32,57 @@ class ProductsModel {
     }
   }
 
-  async getProductByIdDb(product_id) {
+  async getProductByIdDb(id) {
     try {
+      const productFromDb = await pool.query(
+        `SELECT * FROM products WHERE id = $1`,
+        [id]
+      );
+
+      if (productFromDb.rows?.length) {
+        return productFromDb.rows[0];
+      }
       return null;
     } catch (error) {
       throw error;
     }
   }
 
-  async updateProductDb(product_id) {
+  async updateProductDb(data) {
+    const { id, ...newDetails } = data;
+    const keyNames = Object.keys(newDetails);
+    const properties = Object.values(newDetails);
+    let queryParams = [];
+    // Params have to start from $2, because id is already taking $1
+    for (let i = 0; i <= keyNames.length - 1; i++) {
+      queryParams.push(keyNames[i] + "=$" + (i + 2));
+    }
+
     try {
+      const updatedProduct = await pool.query(
+        `UPDATE products
+        SET ${queryParams.join(",")}, modified=NOW()
+        WHERE id=$1 RETURNING *`,
+        [id, ...properties]
+      );
+
+      if (updatedProduct.rows?.length) {
+        return updatedProduct.rows[0];
+      }
       return null;
     } catch (error) {
       throw error;
     }
   }
 
-  async deleteProductDb(product_id) {
+  async deleteProductDb(id) {
     try {
-      return null;
+      const deleteProductFromDb = await pool.query(
+        `DELETE FROM products WHERE id=$1`,
+        [id]
+      );
+
+      return deleteProductFromDb;
     } catch (error) {
       throw error;
     }
