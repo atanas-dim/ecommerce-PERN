@@ -1,6 +1,6 @@
 # Ecommerce PERN App
 
-> This is a portfolio project, part of the Codecademy Full-stack Engineer Course.
+> Portfolio project, part of the Codecademy Full-stack Engineer Course.
 
 ## Table of contents
 
@@ -16,9 +16,8 @@
 
 ## To-do list server
 
+- Add checkout
 - Add orders route.
-- Add products route.
-- Add carts route.
 - Swagger documentation
 
 ## To-do list client
