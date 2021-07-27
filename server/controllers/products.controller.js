@@ -21,9 +21,9 @@ const getAllProducts = async (req, res, next) => {
 };
 
 const getProductById = async (req, res, next) => {
-  const { id } = req.params;
+  const { product_id } = req.params;
   try {
-    const data = await ProductsService.getProductById(id);
+    const data = await ProductsService.getProductById(product_id);
     res.status(200).json(data);
   } catch (error) {
     next(error);
@@ -31,11 +31,11 @@ const getProductById = async (req, res, next) => {
 };
 
 const updateProduct = async (req, res, next) => {
-  const { id } = req.params;
+  const { product_id } = req.params;
   const { ...newDetails } = req.body;
   try {
     const data = await ProductsService.updateProduct({
-      id,
+      product_id,
       ...newDetails,
     });
 
@@ -46,10 +46,9 @@ const updateProduct = async (req, res, next) => {
 };
 
 const deleteProduct = async (req, res, next) => {
-  const { id } = req.params;
-  console.log(req.authData);
+  const { product_id } = req.params;
   try {
-    const data = await ProductsService.deleteProduct(id);
+    const data = await ProductsService.deleteProduct(product_id);
 
     res.status(200).json("Product was deleted!");
   } catch (error) {

@@ -3,6 +3,7 @@ const { validatePassword } = require("../helpers/validatePassword");
 const { ErrorHandler } = require("../helpers/errors");
 const { hashPassword } = require("../helpers/hashPassword");
 const UsersService = require("../services/users.service");
+const CartsService = require("../services/carts.service");
 const AuthService = require("../services/auth.service");
 
 const registerUser = async (req, res, next) => {
@@ -31,7 +32,16 @@ const registerUser = async (req, res, next) => {
       last_name,
       roles
     );
-    res.status(201).json(newUser);
+
+    const newCart = await CartsService.createCartByUserId(newUser.id);
+    res
+      .status(201)
+      .json({
+        id: newUser.id,
+        email: newUser.email,
+        roles: newUser.roles,
+        cart_id: newCart.id,
+      });
   } catch (error) {
     next(error);
   }

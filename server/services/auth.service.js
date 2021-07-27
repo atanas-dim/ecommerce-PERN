@@ -40,12 +40,14 @@ class AuthService {
 
   signAccessToken(user) {
     return jwt.sign({ user }, process.env.TOKEN_SECRET, {
-      expiresIn: "10m",
+      expiresIn: "15m",
     });
   }
 
   signRefreshToken(user) {
-    return jwt.sign({ user }, process.env.REFRESH_TOKEN_SECRET);
+    return jwt.sign({ user }, process.env.REFRESH_TOKEN_SECRET, {
+      expiresIn: "1h",
+    });
   }
 }
 

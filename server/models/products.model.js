@@ -32,11 +32,11 @@ class ProductsModel {
     }
   }
 
-  async getProductByIdDb(id) {
+  async getProductByIdDb(product_id) {
     try {
       const productFromDb = await pool.query(
         `SELECT * FROM products WHERE id = $1`,
-        [id]
+        [product_id]
       );
 
       if (productFromDb.rows?.length) {
@@ -49,7 +49,7 @@ class ProductsModel {
   }
 
   async updateProductDb(data) {
-    const { id, ...newDetails } = data;
+    const { product_id, ...newDetails } = data;
     const keyNames = Object.keys(newDetails);
     const properties = Object.values(newDetails);
     let queryParams = [];
@@ -63,7 +63,7 @@ class ProductsModel {
         `UPDATE products
         SET ${queryParams.join(",")}, modified=NOW()
         WHERE id=$1 RETURNING *`,
-        [id, ...properties]
+        [product_id, ...properties]
       );
 
       if (updatedProduct.rows?.length) {
@@ -75,11 +75,11 @@ class ProductsModel {
     }
   }
 
-  async deleteProductDb(id) {
+  async deleteProductDb(product_id) {
     try {
       const deleteProductFromDb = await pool.query(
         `DELETE FROM products WHERE id=$1`,
-        [id]
+        [product_id]
       );
 
       return deleteProductFromDb;

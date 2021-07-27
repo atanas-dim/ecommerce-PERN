@@ -17,12 +17,12 @@ productsRouter.post("/", verifyToken, verifyAdmin, createProduct);
 productsRouter.get("/", getAllProducts);
 
 // Get single product by ID
-productsRouter.get("/:id", getProductById);
+productsRouter.get("/:product_id", getProductById);
 
 // Update product
-productsRouter.put("/:id", verifyToken, verifyAdmin, updateProduct);
+productsRouter.put("/:product_id", verifyToken, verifyAdmin, updateProduct);
 
 // Delete product
-productsRouter.delete("/:id", verifyToken, verifyAdmin, deleteProduct);
+productsRouter.delete("/:product_id", verifyToken, verifyAdmin, deleteProduct);
 
 module.exports = productsRouter;

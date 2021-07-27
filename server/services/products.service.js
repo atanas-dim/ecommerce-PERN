@@ -4,9 +4,8 @@ const { ErrorHandler } = require("../helpers/errors");
 class ProductsService {
   async createProduct(name, price, description) {
     try {
-      if (!name || !price || !description) {
+      if (!name || !price || !description)
         throw new ErrorHandler(406, "All fields are required.");
-      }
 
       return await ProductsModel.createProductDb(name, price, description);
     } catch (error) {
@@ -23,13 +22,11 @@ class ProductsService {
     }
   }
 
-  async getProductById(id) {
+  async getProductById(product_id) {
     try {
-      const findProduct = await ProductsModel.getProductByIdDb(id);
+      const findProduct = await ProductsModel.getProductByIdDb(product_id);
 
-      if (!findProduct) {
-        throw new ErrorHandler(404, "Product not found");
-      }
+      if (!findProduct) throw new ErrorHandler(404, "Product not found");
 
       return findProduct;
     } catch (error) {
@@ -38,13 +35,12 @@ class ProductsService {
   }
 
   async updateProduct(data) {
-    const { id } = data;
+    const { product_id } = data;
     try {
-      const findProduct = await ProductsModel.getProductByIdDb(id);
+      const findProduct = await ProductsModel.getProductByIdDb(product_id);
 
-      if (!findProduct) {
+      if (!findProduct)
         throw new ErrorHandler(404, "Products with this ID doesn't exist.");
-      }
 
       const updatedProduct = await ProductsModel.updateProductDb(data);
       return updatedProduct;
@@ -53,15 +49,14 @@ class ProductsService {
     }
   }
 
-  async deleteProduct(id) {
+  async deleteProduct(product_id) {
     try {
-      const findProduct = await ProductsModel.getProductByIdDb(id);
+      const findProduct = await ProductsModel.getProductByIdDb(product_id);
 
-      if (!findProduct) {
+      if (!findProduct)
         throw new ErrorHandler(404, "Product with this ID doesn't exist.");
-      }
 
-      const deleteProduct = await ProductsModel.deleteProductDb(id);
+      const deleteProduct = await ProductsModel.deleteProductDb(product_id);
 
       return deleteProduct;
     } catch (error) {

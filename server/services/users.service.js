@@ -1,4 +1,5 @@
 const UsersModel = require("../models/users.model");
+const CartsModel = require("../models/carts.model");
 const { ErrorHandler } = require("../helpers/errors");
 
 class UsersService {
@@ -6,13 +7,11 @@ class UsersService {
     try {
       const findUser = await UsersModel.getByEmailDb(email);
 
-      if (!email || !hashedPassword || !first_name || !last_name) {
+      if (!email || !hashedPassword || !first_name || !last_name)
         throw new ErrorHandler(406, "All fields are required.");
-      }
 
-      if (findUser) {
+      if (findUser)
         throw new ErrorHandler(409, "User with this email already exists.");
-      }
 
       const newUser = await UsersModel.createUserDb(
         email,
@@ -37,13 +36,11 @@ class UsersService {
     }
   }
 
-  async getUserById(id) {
+  async getUserById(user_id) {
     try {
-      const findProduct = await UsersModel.getByIdDb(id);
+      const findProduct = await UsersModel.getByIdDb(user_id);
 
-      if (!findProduct) {
-        throw new ErrorHandler(404, "User not found");
-      }
+      if (!findProduct) throw new ErrorHandler(404, "User not found");
 
       return findProduct;
     } catch (error) {
@@ -55,9 +52,7 @@ class UsersService {
     try {
       const findUser = await UsersModel.getByEmailDb(email);
 
-      if (!findUser) {
-        throw new ErrorHandler(404, "User not found");
-      }
+      if (!findUser) throw new ErrorHandler(404, "User not found");
 
       return findUser;
     } catch (error) {
@@ -66,19 +61,17 @@ class UsersService {
   }
 
   async updateUser(data) {
-    const { id, email } = data;
+    const { user_id, email } = data;
     try {
-      const findUser = await UsersModel.getByIdDb(id);
+      const findUser = await UsersModel.getByIdDb(user_id);
 
-      if (!findUser) {
+      if (!findUser)
         throw new ErrorHandler(404, "User with this ID doesn't exist.");
-      }
 
       if (email) {
         const findUserByEmail = await UsersModel.getByEmailDb(email);
-        if (findUserByEmail) {
+        if (findUserByEmail)
           throw new ErrorHandler(400, "Email is already taken.");
-        }
       }
 
       const updatedUser = await UsersModel.updateUserDb(data);
@@ -88,17 +81,18 @@ class UsersService {
     }
   }
 
-  async deleteUser(id) {
+  async deleteUser(user_id) {
     try {
-      const findUser = await UsersModel.getByIdDb(id);
+      const findUser = await UsersModel.getByIdDb(user_id);
 
-      if (!findUser) {
+      if (!findUser)
         throw new ErrorHandler(404, "User with this ID doesn't exist.");
-      }
 
-      const deleteUser = await UsersModel.deleteUserDb(id);
+      //Delete cart first because of foreign keys in carts table in DB
+      const deleteCart = await CartsModel.deleteCartByUserIdDb(user_id);
+      const deleteUser = await UsersModel.deleteUserDb(user_id);
 
-      return deleteUser;
+      return { deleteUser, deleteCart };
     } catch (error) {
       throw error;
     }

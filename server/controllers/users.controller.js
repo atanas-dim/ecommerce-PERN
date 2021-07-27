@@ -30,9 +30,9 @@ const getAllUsers = async (req, res, next) => {
 };
 
 const getUserById = async (req, res, next) => {
-  const { id } = req.params;
+  const { user_id } = req.params;
   try {
-    const data = await UsersService.getUserById(id);
+    const data = await UsersService.getUserById(user_id);
     res.status(200).json(data);
   } catch (error) {
     next(error);
@@ -40,7 +40,6 @@ const getUserById = async (req, res, next) => {
 };
 
 const getUserByEmail = async (req, res, next) => {
-  const { id } = req.params;
   const { email } = req.body;
   try {
     const data = await UsersService.getUserByEmail(email);
@@ -51,7 +50,7 @@ const getUserByEmail = async (req, res, next) => {
 };
 
 const updateUser = async (req, res, next) => {
-  const { id } = req.params;
+  const { user_id } = req.params;
   const { email, password, ...newDetails } = req.body;
   try {
     let updatedDetails = { ...newDetails };
@@ -66,7 +65,7 @@ const updateUser = async (req, res, next) => {
       updatedDetails.password = hashedPassword;
     }
 
-    const data = await UsersService.updateUser({ id, ...updatedDetails });
+    const data = await UsersService.updateUser({ user_id, ...updatedDetails });
 
     res.status(200).json(data);
   } catch (error) {
@@ -75,11 +74,11 @@ const updateUser = async (req, res, next) => {
 };
 
 const deleteUser = async (req, res, next) => {
-  const { id } = req.params;
+  const { user_id } = req.params;
   try {
-    const data = await UsersService.deleteUser(id);
+    const data = await UsersService.deleteUser(user_id);
 
-    res.status(200).json("User was deleted!");
+    res.status(200).json("User and cart deleted!");
   } catch (error) {
     next(error);
   }

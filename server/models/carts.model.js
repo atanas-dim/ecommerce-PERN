@@ -1,12 +1,12 @@
 const pool = require("../db");
 
 class CartsModel {
-  async createCartDb(user_id) {
+  async createCartByUserIdDb(id) {
     try {
       const newCartInDb = await pool.query(
         `INSERT INTO carts(user_id)
       VALUES($1) RETURNING *`,
-        [user_id]
+        [id]
       );
 
       if (newCartInDb.rows?.length) {
@@ -31,34 +31,125 @@ class CartsModel {
     }
   }
 
-  async getCartByIdDb(id) {
+  async getCartByIdDb(cart_id) {
     try {
+      const cartFromDb = await pool.query(`SELECT * FROM carts WHERE id = $1`, [
+        cart_id,
+      ]);
+
+      if (cartFromDb.rows?.length) {
+        return cartFromDb.rows[0];
+      }
       return null;
     } catch (error) {
       throw error;
     }
   }
 
-  async updateCartDb(data) {
-    const { id, ...newDetails } = data;
-    const keyNames = Object.keys(newDetails);
-    const properties = Object.values(newDetails);
-    let queryParams = [];
-    // Params have to start from $2, because id is already taking $1
-    for (let i = 0; i <= keyNames.length - 1; i++) {
-      queryParams.push(keyNames[i] + "=$" + (i + 2));
-    }
-
+  async getCartsProductsDb(cart_id, product_id) {
     try {
+      const cartProductFromDb = await pool.query(
+        `SELECT * 
+        FROM carts_products
+        WHERE cart_id = $1 AND product_id=$2`,
+        [cart_id, product_id]
+      );
+
+      if (cartProductFromDb.rows?.length) {
+        return cartProductFromDb.rows[0];
+      }
       return null;
     } catch (error) {
       throw error;
     }
   }
 
-  async deleteCartDb(id) {
+  async getCartWithProductsDb(cart_id) {
     try {
+      const cartWithProductsFromDb = await pool.query(
+        `SELECT MIN(carts.id) AS cart_id, 
+                products.id AS product_id, 
+                products.name AS product_name, 
+                SUM(carts_products.quantity)::integer AS quantity,
+                products.price AS price 
+        FROM carts 
+        JOIN carts_products 
+                ON carts_products.cart_id = carts.id
+        JOIN products
+                ON carts_products.product_id = products.id
+        WHERE cart_id = $1
+        GROUP BY products.id`,
+        [cart_id]
+      );
+
+      if (cartWithProductsFromDb.rows?.length) {
+        return cartWithProductsFromDb.rows;
+      }
       return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteCartByUserIdDb(user_id) {
+    try {
+      const deleteProductFromDb = await pool.query(
+        `DELETE FROM carts WHERE user_id=$1`,
+        [user_id]
+      );
+
+      return deleteProductFromDb;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async addCartProductDb(cart_id, product_id, quantity) {
+    try {
+      const newCartProductInDb = await pool.query(
+        `INSERT INTO carts_products(cart_id, product_id, quantity)
+        VALUES($1, $2, $3) RETURNING *`,
+        //Quantity has a contraint to be a positive value in DB (quantity > 0)
+        [cart_id, product_id, quantity || 1]
+      );
+
+      if (newCartProductInDb.rows?.length) {
+        return newCartProductInDb.rows[0];
+      }
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateCartProductDb(cart_id, product_id, quantity) {
+    try {
+      const updatedProduct = await pool.query(
+        `UPDATE carts_products
+        SET quantity=$3
+        WHERE cart_id=$1 AND product_id=$2 RETURNING *`,
+        [cart_id, product_id, quantity]
+      );
+
+      if (updatedProduct.rows?.length) {
+        return updatedProduct.rows[0];
+      }
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteCartProductDb(cart_id, product_id) {
+    try {
+      const deletedProduct = await pool.query(
+        `DELETE FROM carts_products
+        WHERE cart_id=$1 AND product_id=$2`,
+        [cart_id, product_id]
+      );
+
+      return deletedProduct;
     } catch (error) {
       throw error;
     }

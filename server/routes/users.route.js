@@ -17,12 +17,12 @@ usersRouter.use(verifyToken);
 usersRouter.get("/", verifyAdmin, getAllUsers);
 
 // Get single user by ID
-usersRouter.get("/:id", verifyAdminOrOwner, getUserById);
+usersRouter.get("/:user_id", verifyAdminOrOwner, getUserById);
 
 // Update user
-usersRouter.put("/:id", verifyAdminOrOwner, updateUser);
+usersRouter.put("/:user_id", verifyAdminOrOwner, updateUser);
 
 // Delete user
-usersRouter.delete("/:id", verifyAdminOrOwner, deleteUser);
+usersRouter.delete("/:user_id", verifyAdminOrOwner, deleteUser);
 
 module.exports = usersRouter;

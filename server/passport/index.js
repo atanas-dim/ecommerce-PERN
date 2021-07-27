@@ -22,6 +22,7 @@ passport.use(
       try {
         // find user in DB
         const data = await UsersModel.getByEmailDb(username);
+        const { password: hashedPassword, ...userWithoutPassword } = data;
 
         if (!data) {
           return done(null, false, { message: "Incorrect email." });
@@ -31,12 +32,15 @@ passport.use(
           return done(null, false, { message: "Invalid password." });
         }
         // use helper from hashPassword
-        const comparedPassword = await comparePassword(password, data.password);
+        const comparedPassword = await comparePassword(
+          password,
+          hashedPassword
+        );
 
         if (!comparedPassword) {
           return done(null, false, { message: "Incorrect password." });
         }
-        return done(null, data);
+        return done(null, userWithoutPassword);
       } catch (error) {
         done(error);
       }

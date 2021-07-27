@@ -34,10 +34,10 @@ class UsersModel {
     }
   }
 
-  async getByIdDb(id) {
+  async getByIdDb(user_id) {
     try {
       const userFromDb = await pool.query(`SELECT * FROM users WHERE id = $1`, [
-        id,
+        user_id,
       ]);
 
       if (userFromDb.rows?.length) {
@@ -52,7 +52,9 @@ class UsersModel {
   async getByEmailDb(email) {
     try {
       const userFromDb = await pool.query(
-        `SELECT * FROM users WHERE email = $1`,
+        `SELECT users.id, users.email, users.password, users.first_name, users.last_name, users.roles, carts.id AS cart_id FROM users
+        JOIN carts ON carts.user_id = users.id
+        WHERE email = $1`,
         [email]
       );
 
@@ -67,7 +69,7 @@ class UsersModel {
 
   async updateUserDb(data) {
     // Receving data as object
-    const { id, ...newDetails } = data;
+    const { user_id, ...newDetails } = data;
     //Getting the key names of the object as array
     const keyNames = Object.keys(newDetails);
     // Getting all property values from the data object
@@ -84,7 +86,7 @@ class UsersModel {
         `UPDATE users
         SET ${queryParams.join(",")}, modified=NOW()
         WHERE id=$1 RETURNING *`,
-        [id, ...properties]
+        [user_id, ...properties]
       );
 
       if (updatedUser.rows?.length) {
@@ -96,11 +98,11 @@ class UsersModel {
     }
   }
 
-  async deleteUserDb(id) {
+  async deleteUserDb(user_id) {
     try {
       const deleteUserFromDb = await pool.query(
         `DELETE FROM users WHERE id=$1`,
-        [id]
+        [user_id]
       );
 
       return deleteUserFromDb;
