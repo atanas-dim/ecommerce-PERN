@@ -1,41 +1,28 @@
 const express = require("express");
 const ordersRouter = express.Router();
 const {
-  createOrder,
   getAllOrders,
   getOrdersByUser,
   getOrderById,
-  updateOrderById,
-  createOrdersProducts,
-  getOrdersProducts,
+  updateOrderStatusById,
 } = require("../controllers/orders.controller");
 const { verifyToken } = require("../middleware/verifyToken");
+const { verifyAdmin } = require("../middleware/verifyAdmin");
+const { verifyAdminOrOwner } = require("../middleware/verifyAdminOrOwner");
 
 // Verify for all requests on this router
 ordersRouter.use(verifyToken);
 
-// Create order
-ordersRouter.post("/", createOrder);
-
 // Get all orders
-ordersRouter.get("/", getAllOrders);
-
-// Get all orders for userId
-ordersRouter.get("/user/:user_id", getOrdersByUser);
+ordersRouter.get("/", verifyAdmin, getAllOrders);
 
 // Get single order by orderId
-ordersRouter.get("/order/:order_id", getOrderById);
+ordersRouter.get("/:order_id", verifyAdmin, getOrderById);
 
-// Update single order by orderId
-ordersRouter.put("/order/:order_id", updateOrderById);
+// Update single order status by orderId (this is for customer service for example)
+ordersRouter.put("/status/:order_id", verifyAdmin, updateOrderStatusById);
 
-// Create order products
-ordersRouter.post("/products/:order_id", createOrdersProducts);
-
-// Get order products
-ordersRouter.get("/products/:order_id", getOrdersProducts);
-
-// Update orders products
-// ordersRouter.put("/products/:order_id/", createOrdersProducts);
+// Get all orders for userId
+ordersRouter.get("/user/:user_id", verifyAdminOrOwner, getOrdersByUser);
 
 module.exports = ordersRouter;

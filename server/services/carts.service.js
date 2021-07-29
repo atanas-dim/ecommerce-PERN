@@ -1,5 +1,5 @@
 const CartsModel = require("../models/carts.model");
-const ProductsModel = require("../models/products.model");
+const CartsProductsModel = require("../models/cartsProducts.model");
 const { ErrorHandler } = require("../helpers/errors");
 
 class CartsService {
@@ -22,15 +22,22 @@ class CartsService {
     }
   }
 
-  async getCartWithProducts(cart_id) {
+  async checkCartExists(cart_id) {
     try {
-      const findCart = await CartsModel.getCartByIdDb(cart_id);
+      const findCart = await CartsModel.checkCartExistsDb(cart_id);
 
       if (!findCart) throw new ErrorHandler(404, "Cart not found");
 
-      const findCartWithProducts = await CartsModel.getCartWithProductsDb(
-        cart_id
-      );
+      return findCart;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getCartWithProducts(cart_id) {
+    try {
+      const findCartWithProducts =
+        await CartsProductsModel.getCartWithProductsDb(cart_id);
 
       if (!findCartWithProducts) return "Cart is empty";
 
@@ -47,19 +54,14 @@ class CartsService {
       if (quantity <= 0)
         throw new ErrorHandler(406, "Quantity has to be a positive value.");
 
-      const findProduct = await ProductsModel.getProductByIdDb(product_id);
-
-      if (!findProduct)
-        throw new ErrorHandler(404, "Product with this ID doesn't exist.");
-
-      const findCartsProducts = await CartsModel.getCartsProductsDb(
+      const findCartProduct = await CartsProductsModel.getCartProductDb(
         cart_id,
         product_id
       );
 
-      if (findCartsProducts) return "Product already exists in this cart.";
+      if (findCartProduct) return "Product already exists in this cart.";
 
-      const newCartProduct = await CartsModel.addCartProductDb(
+      const newCartProduct = await CartsProductsModel.addCartProductDb(
         cart_id,
         product_id,
         quantity
@@ -79,11 +81,14 @@ class CartsService {
       if (!product_id || !quantity)
         throw new ErrorHandler(406, "Product ID and quantity required.");
 
-      const findCart = await CartsModel.getCartByIdDb(cart_id);
+      const findCartProduct = await CartsProductsModel.getCartProductDb(
+        cart_id,
+        product_id
+      );
 
-      if (!findCart) throw new ErrorHandler(404, "Cart not found.");
+      if (!findCartProduct) return "Product is still not added to this cart.";
 
-      const updatedProduct = await CartsModel.updateCartProductDb(
+      const updatedProduct = await CartsProductsModel.updateCartProductDb(
         cart_id,
         product_id,
         quantity
@@ -101,17 +106,9 @@ class CartsService {
 
   async deleteCartProduct(cart_id, product_id) {
     try {
-      const findCart = await CartsModel.getCartByIdDb(cart_id);
+      if (!product_id) throw new ErrorHandler(406, "Product ID required.");
 
-      if (!findCart) {
-        throw new ErrorHandler(404, "Cart not found.");
-      }
-
-      if (!product_id) {
-        throw new ErrorHandler(406, "Product ID required.");
-      }
-
-      const deletedProduct = await CartsModel.deleteCartProductDb(
+      const deletedProduct = await CartsProductsModel.deleteCartProductDb(
         cart_id,
         product_id
       );

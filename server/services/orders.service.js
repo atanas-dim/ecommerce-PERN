@@ -1,4 +1,5 @@
 const OrdersModel = require("../models/orders.model");
+const OrdersProductsModel = require("../models/ordersProducts.model");
 const { ErrorHandler } = require("../helpers/errors");
 
 class OrdersService {
@@ -52,11 +53,10 @@ class OrdersService {
     }
   }
 
-  async updateOrderById(order_id, total, status) {
+  async updateOrderStatusById(order_id, status) {
     try {
-      const updateOrderById = await OrdersModel.updateOrderByIdDb(
+      const updateOrderById = await OrdersModel.updateOrderStatusByIdDb(
         order_id,
-        total,
         status
       );
       if (!updateOrderById) {
@@ -68,33 +68,19 @@ class OrdersService {
     }
   }
 
-  async createOrdersProducts(order_id, product_id, quantity) {
+  async createOrderProduct(order_id, product_id, quantity) {
     try {
-      const newOrdersProducts = await OrdersModel.createOrdersProductsDb(
+      const newOrderProduct = await OrdersProductsModel.createOrderProductDb(
         order_id,
         product_id,
         quantity
       );
 
-      if (!newOrdersProducts) {
+      if (!newOrderProduct) {
         throw new ErrorHandler(404, "Product not added to order.");
       }
 
-      return newOrdersProducts;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getOrdersProducts(order_id) {
-    try {
-      const orderProducts = await OrdersModel.getOrdersProductsDb(order_id);
-
-      if (!orderProducts) {
-        throw new ErrorHandler(404, "Order doesn't exist or has no products.");
-      }
-
-      return orderProducts;
+      return newOrderProduct;
     } catch (error) {
       throw error;
     }

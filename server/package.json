@@ -22,6 +22,8 @@
     "nodemon": "^2.0.12",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "pg": "^8.6.0"
+    "pg": "^8.6.0",
+    "stripe": "^8.165.0",
+    "swagger-ui-express": "^4.1.6"
   }
 }

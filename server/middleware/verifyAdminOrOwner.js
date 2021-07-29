@@ -1,12 +1,12 @@
 const { ErrorHandler } = require("../helpers/errors");
 
 const verifyAdminOrOwner = (req, res, next) => {
-  const { id } = req.params;
+  const { user_id } = req.params;
   const authData = req.authData;
 
   if (
     authData?.user?.roles.includes("admin") ||
-    authData?.user?.id === Number(id)
+    authData?.user?.id === Number(user_id)
   ) {
     next();
   } else {
