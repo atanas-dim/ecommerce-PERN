@@ -23,7 +23,9 @@ class UsersModel {
 
   async getAllUsersDb() {
     try {
-      const allUsersFromDb = await pool.query(`SELECT * FROM users`);
+      const allUsersFromDb = await pool.query(
+        `SELECT id, first_name, last_name, email, roles, created, modified FROM users`
+      );
 
       if (allUsersFromDb.rows?.length) {
         return allUsersFromDb.rows;
@@ -36,9 +38,10 @@ class UsersModel {
 
   async getByIdDb(user_id) {
     try {
-      const userFromDb = await pool.query(`SELECT * FROM users WHERE id = $1`, [
-        user_id,
-      ]);
+      const userFromDb = await pool.query(
+        `SELECT id, first_name, last_name, email, roles, created, modified FROM users WHERE id = $1`,
+        [user_id]
+      );
 
       if (userFromDb.rows?.length) {
         return userFromDb.rows[0];

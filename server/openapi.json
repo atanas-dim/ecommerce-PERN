@@ -39,7 +39,7 @@
     }
   ],
   "paths": {
-    "/auth/register": {
+    "/api/auth/register": {
       "post": {
         "tags": [
           "auth"
@@ -70,7 +70,7 @@
         }
       }
     },
-    "/auth/login": {
+    "/api/auth/login": {
       "post": {
         "tags": [
           "auth"
@@ -95,7 +95,7 @@
         }
       }
     },
-    "/users": {
+    "/api/users": {
       "get": {
         "tags": [
           "users"
@@ -105,6 +105,9 @@
         "responses": {
           "200": {
             "description": "Successful operation"
+          },
+          "403": {
+            "description": "Admin role required"
           }
         },
         "security": [
@@ -114,7 +117,7 @@
         ]
       }
     },
-    "/users/{user_id}": {
+    "/api/users/{user_id}": {
       "get": {
         "tags": [
           "users"
@@ -135,6 +138,9 @@
         "responses": {
           "200": {
             "description": "Returns user details as single object"
+          },
+          "403": {
+            "description": "You're not admin or owner of this account."
           }
         },
         "security": [
@@ -177,6 +183,9 @@
           },
           "400": {
             "description": "Email is already taken"
+          },
+          "403": {
+            "description": "You're not admin or owner of this account."
           }
         },
         "security": [
@@ -205,6 +214,9 @@
         "responses": {
           "200": {
             "description": "User was deleted"
+          },
+          "403": {
+            "description": "You're not admin or owner of this account."
           }
         },
         "security": [
@@ -214,7 +226,7 @@
         ]
       }
     },
-    "/products": {
+    "/api/products": {
       "post": {
         "tags": [
           "products"
@@ -235,6 +247,9 @@
         "responses": {
           "201": {
             "description": "Returns new product details as single object"
+          },
+          "403": {
+            "description": "Admin role required"
           },
           "406": {
             "description": "All field required (name, price, description)"
@@ -259,7 +274,7 @@
         }
       }
     },
-    "/products/{product_id}": {
+    "/api/products/{product_id}": {
       "get": {
         "tags": [
           "products"
@@ -314,6 +329,9 @@
         "responses": {
           "200": {
             "description": "Returns updated product details as single object"
+          },
+          "403": {
+            "description": "Admin role required"
           }
         },
         "security": [
@@ -342,6 +360,9 @@
         "responses": {
           "200": {
             "description": "Successfully deleted the product"
+          },
+          "403": {
+            "description": "Admin role required"
           }
         },
         "security": [
@@ -351,7 +372,7 @@
         ]
       }
     },
-    "/carts": {
+    "/api/carts": {
       "get": {
         "tags": [
           "carts"
@@ -361,6 +382,9 @@
         "responses": {
           "200": {
             "description": "Returns array of cart id and user id it belongs to as objects"
+          },
+          "403": {
+            "description": "Admin role required"
           }
         },
         "security": [
@@ -370,7 +394,7 @@
         ]
       }
     },
-    "/carts/{cart_id}": {
+    "/api/carts/{cart_id}": {
       "get": {
         "tags": [
           "carts"
@@ -390,7 +414,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns cart with products"
+            "description": "Returns cart with products."
+          },
+          "403": {
+            "description": "You're not the owner of this cart."
           }
         },
         "security": [
@@ -442,6 +469,9 @@
         "responses": {
           "201": {
             "description": "Product successfully added to cart. OR Product already exists in this cart."
+          },
+          "403": {
+            "description": "You're not the owner of this cart."
           },
           "406": {
             "description": "Product ID required. OR Quantity has to be a positive value."
@@ -498,6 +528,9 @@
           "200": {
             "description": "Product successfully updated."
           },
+          "403": {
+            "description": "You're not the owner of this cart."
+          },
           "404": {
             "description": "Product is still not added to this cart."
           },
@@ -512,7 +545,7 @@
         ]
       }
     },
-    "/carts/{cart_id}/product/{product_id}": {
+    "/api/carts/{cart_id}/product/{product_id}": {
       "delete": {
         "tags": [
           "carts"
@@ -542,6 +575,9 @@
         "responses": {
           "200": {
             "description": "Product successfully deleted."
+          },
+          "403": {
+            "description": "You're not the owner of this cart."
           }
         },
         "security": [
@@ -551,7 +587,7 @@
         ]
       }
     },
-    "/carts/{cart_id}/checkout": {
+    "/api/carts/{cart_id}/checkout": {
       "post": {
         "tags": [
           "carts"
@@ -572,6 +608,9 @@
         "responses": {
           "201": {
             "description": "Returns object with checkout details (order_id, status, total)"
+          },
+          "403": {
+            "description": "You're not the owner of this cart."
           }
         },
         "security": [
@@ -581,7 +620,7 @@
         ]
       }
     },
-    "/orders": {
+    "/api/orders": {
       "get": {
         "tags": [
           "orders"
@@ -591,6 +630,9 @@
         "responses": {
           "200": {
             "description": "Returns array of orders details as objects (id, status, total, user_id)"
+          },
+          "403": {
+            "description": "Admin role required"
           }
         },
         "security": [
@@ -600,7 +642,7 @@
         ]
       }
     },
-    "/orders/{order_id}": {
+    "/api/orders/{order_id}": {
       "get": {
         "tags": [
           "orders"
@@ -621,6 +663,9 @@
         "responses": {
           "200": {
             "description": "Returns single order details (id, status, total, user_id)"
+          },
+          "403": {
+            "description": "Admin role required"
           }
         },
         "security": [
@@ -630,7 +675,7 @@
         ]
       }
     },
-    "/orders/status/{order_id}": {
+    "/api/orders/status/{order_id}": {
       "put": {
         "tags": [
           "orders"
@@ -651,6 +696,9 @@
         "responses": {
           "200": {
             "description": "Returns single order details (id, status, total, user_id)"
+          },
+          "403": {
+            "description": "Admin role required"
           }
         },
         "security": [
@@ -660,7 +708,7 @@
         ]
       }
     },
-    "/orders/user/{user_id}": {
+    "/api/orders/user/{user_id}": {
       "get": {
         "tags": [
           "orders"
@@ -681,6 +729,9 @@
         "responses": {
           "200": {
             "description": "Returns array of order details as objects (id, status, total, user_id)"
+          },
+          "403": {
+            "description": "You're not admin or owner of this account."
           }
         },
         "security": [
@@ -690,7 +741,7 @@
         ]
       }
     },
-    "/payments": {
+    "/api/payments": {
       "post": {
         "tags": [
           "payments"
