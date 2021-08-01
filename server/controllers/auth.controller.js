@@ -34,14 +34,12 @@ const registerUser = async (req, res, next) => {
     );
 
     const newCart = await CartsService.createCartByUserId(newUser.id);
-    res
-      .status(201)
-      .json({
-        id: newUser.id,
-        email: newUser.email,
-        roles: newUser.roles,
-        cart_id: newCart.id,
-      });
+    res.status(201).json({
+      id: newUser.id,
+      email: newUser.email,
+      roles: newUser.roles,
+      cart_id: newCart.id,
+    });
   } catch (error) {
     next(error);
   }

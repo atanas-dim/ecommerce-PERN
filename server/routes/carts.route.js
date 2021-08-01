@@ -28,7 +28,11 @@ cartsRouter.post("/:cart_id", verifyCartOwner, addCartProduct);
 cartsRouter.put("/:cart_id", verifyCartOwner, updateCartProduct);
 
 // Delete Cart Product
-cartsRouter.delete("/:cart_id", verifyCartOwner, deleteCartProduct);
+cartsRouter.delete(
+  "/:cart_id/product/:product_id",
+  verifyCartOwner,
+  deleteCartProduct
+);
 
 // Checkout
 cartsRouter.post("/:cart_id/checkout", verifyCartOwner, checkoutCart);

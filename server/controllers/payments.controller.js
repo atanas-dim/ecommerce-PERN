@@ -8,7 +8,7 @@ const makePayment = async (req, res, next) => {
     // make payment intent
     const paymentIntent = await PaymentsService.makePaymentIntent(email, total);
 
-    res.status(200).json("Payment successful!");
+    res.status(201).json("Payment successful!");
   } catch (error) {
     next(error);
   }

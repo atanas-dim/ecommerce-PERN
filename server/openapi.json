@@ -1,0 +1,806 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "description": "A server for PERN e-commerce app.  You can find out more about it at [https://github.com/atanas-dim/ecommerce-PERN](https://github.com/atanas-dim/ecommerce-PERN).",
+    "version": "1.0.0",
+    "title": "PERN Store",
+    "contact": {
+      "email": "hi.atanasdim@gmail.com"
+    },
+    "license": {
+      "name": "MIT License",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "tags": [
+    {
+      "name": "auth",
+      "description": "User Authentication and Authorization"
+    },
+    {
+      "name": "users",
+      "description": "Users API"
+    },
+    {
+      "name": "products",
+      "description": "Products API"
+    },
+    {
+      "name": "carts",
+      "description": "Carts API"
+    },
+    {
+      "name": "orders",
+      "description": "Orders API"
+    },
+    {
+      "name": "payments",
+      "description": "Payments API"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Create a new user account",
+        "description": "",
+        "requestBody": {
+          "description": "User details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns object with new user details (id, email, roles, cart_id)."
+          },
+          "406": {
+            "description": "Missing input. All fields required."
+          },
+          "409": {
+            "description": "User with this email already exists."
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login with email and password",
+        "description": "",
+        "requestBody": {
+          "description": "User login details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged in/authenticated successfully. Returns user details, JWT token and refreshToken"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get all users (admin only)",
+        "description": "Array of all users as objects",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Find User by ID (admin or owner of account)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the user to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns user details as single object"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update User by ID (admin or owner of account)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the user to update"
+          }
+        ],
+        "requestBody": {
+          "description": "User details to update (single or many)",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns updated user details as single object"
+          },
+          "400": {
+            "description": "Email is already taken"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Delete User by ID (admin or owner of account)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the user to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User was deleted"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/products": {
+      "post": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Create new product (admin only)",
+        "description": "",
+        "requestBody": {
+          "description": "New product details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewProduct"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns new product details as single object"
+          },
+          "406": {
+            "description": "All field required (name, price, description)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Get all products",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Returns array of products as objects"
+          }
+        }
+      }
+    },
+    "/products/{product_id}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Find single product",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "product_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the product to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns product details as single object"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Update single product (admin only)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "product_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the product to update"
+          }
+        ],
+        "requestBody": {
+          "description": "Product details to update (single or many)",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewProduct"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns updated product details as single object"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Delete single product (admin only)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "product_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the product to update"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted the product"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/carts": {
+      "get": {
+        "tags": [
+          "carts"
+        ],
+        "summary": "Get all carts (admin only)",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Returns array of cart id and user id it belongs to as objects"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/carts/{cart_id}": {
+      "get": {
+        "tags": [
+          "carts"
+        ],
+        "summary": "Get single cart by id (owner only)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the cart to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns cart with products"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "carts"
+        ],
+        "summary": "Add product to cart (owner only)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the cart"
+          }
+        ],
+        "requestBody": {
+          "description": "Numeric ID of the product to add (quantity set to 1 if not provided)",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "product_id"
+                ],
+                "properties": {
+                  "product_id": {
+                    "type": "integer",
+                    "example": 9
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product successfully added to cart. OR Product already exists in this cart."
+          },
+          "406": {
+            "description": "Product ID required. OR Quantity has to be a positive value."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "carts"
+        ],
+        "summary": "Update product in cart (owner only)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the cart"
+          }
+        ],
+        "requestBody": {
+          "description": "Numeric ID of the product to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "product_id",
+                  "quantity"
+                ],
+                "properties": {
+                  "product_id": {
+                    "type": "integer",
+                    "example": 9
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Product successfully updated."
+          },
+          "404": {
+            "description": "Product is still not added to this cart."
+          },
+          "406": {
+            "description": "Product ID and quantity required."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/carts/{cart_id}/product/{product_id}": {
+      "delete": {
+        "tags": [
+          "carts"
+        ],
+        "summary": "Remove product from cart (owner only)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the cart"
+          },
+          {
+            "in": "path",
+            "name": "product_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the product to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product successfully deleted."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/carts/{cart_id}/checkout": {
+      "post": {
+        "tags": [
+          "carts"
+        ],
+        "summary": "Checkout cart with products, make payment and create order (owner only)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the cart to find"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Returns object with checkout details (order_id, status, total)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Get all orders (admin only)",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Returns array of orders details as objects (id, status, total, user_id)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/orders/{order_id}": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Get single order by id (admin only)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "order_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the order to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns single order details (id, status, total, user_id)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/orders/status/{order_id}": {
+      "put": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Update single order status by id (admin only)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "order_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the order to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns single order details (id, status, total, user_id)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/orders/user/{user_id}": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Find single order status by user id (admin or owner)",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the user who owns the order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns array of order details as objects (id, status, total, user_id)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/payments": {
+      "post": {
+        "tags": [
+          "payments"
+        ],
+        "summary": "Make direct payment without going through checkout",
+        "description": "",
+        "requestBody": {
+          "description": "Total sum to pay and user email",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "total",
+                  "email"
+                ],
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "example": 29.98
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Payment successful!"
+          },
+          "406": {
+            "description": "Email and total price are required."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "NewUser": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "s0m3sEcr3tP@ssW0rd"
+          }
+        }
+      },
+      "NewProduct": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "T-shirt"
+          },
+          "price": {
+            "type": "number",
+            "example": 25
+          },
+          "description": {
+            "type": "string",
+            "example": "Cotton t-shirt with printed illustration."
+          }
+        }
+      },
+      "LoginUser": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "s0m3sEcr3tP@ssW0rd"
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

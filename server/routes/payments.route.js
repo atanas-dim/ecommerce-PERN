@@ -9,7 +9,7 @@ const { verifyToken } = require("../middleware/verifyToken");
 // Verify for all requests on this router
 paymentsRouter.use(verifyToken);
 
-// Get all payment
+// Make a payment
 paymentsRouter.post("/", makePayment);
 
 module.exports = paymentsRouter;

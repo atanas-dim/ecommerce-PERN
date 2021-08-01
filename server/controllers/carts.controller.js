@@ -59,8 +59,7 @@ const updateCartProduct = async (req, res, next) => {
 };
 
 const deleteCartProduct = async (req, res, next) => {
-  const { cart_id } = req.params;
-  const { product_id } = req.body;
+  const { cart_id, product_id } = req.params;
 
   try {
     const data = await CartsService.deleteCartProduct(cart_id, product_id);
@@ -111,7 +110,7 @@ const checkoutCart = async (req, res, next) => {
       "Payment accepted"
     );
 
-    res.status(200).json({
+    res.status(201).json({
       order_id: updatedOrder.id,
       status: updatedOrder.status,
       total: updatedOrder.total,

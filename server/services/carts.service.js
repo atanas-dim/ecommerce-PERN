@@ -86,7 +86,8 @@ class CartsService {
         product_id
       );
 
-      if (!findCartProduct) return "Product is still not added to this cart.";
+      if (!findCartProduct)
+        throw new ErrorHandler(404, "Product is still not added to this cart.");
 
       const updatedProduct = await CartsProductsModel.updateCartProductDb(
         cart_id,
@@ -106,8 +107,6 @@ class CartsService {
 
   async deleteCartProduct(cart_id, product_id) {
     try {
-      if (!product_id) throw new ErrorHandler(406, "Product ID required.");
-
       const deletedProduct = await CartsProductsModel.deleteCartProductDb(
         cart_id,
         product_id
