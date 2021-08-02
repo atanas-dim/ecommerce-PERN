@@ -13,7 +13,7 @@ const { handleError } = require("./helpers/errors");
 const port = process.env.PORT || 4000;
 
 //middleware
-app.use(cors());
+app.use(cors({ credentials: true, origin: true }));
 app.use(morgan("dev"));
 app.use(express.json());
 // next two middleware used for flash messages
