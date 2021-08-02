@@ -15,9 +15,6 @@
   "servers": [
     {
       "url": "https://pernstore.herokuapp.com"
-    },
-    {
-      "url": "http://pernstore.herokuapp.com"
     }
   ],
   "tags": [
@@ -756,11 +753,11 @@
       "NewUser": {
         "type": "object",
         "properties": {
-          "firstName": {
+          "first_name": {
             "type": "string",
             "example": "John"
           },
-          "lastName": {
+          "last_name": {
             "type": "string",
             "example": "Doe"
           },
