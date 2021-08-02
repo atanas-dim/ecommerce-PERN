@@ -10,9 +10,9 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const { handleError } = require("./helpers/errors");
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
-//middleware
+//middlewaree
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
