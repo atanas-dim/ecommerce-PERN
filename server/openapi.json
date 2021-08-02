@@ -77,7 +77,7 @@
       "post": {
         "tags": ["auth"],
         "summary": "Login with email and password",
-        "description": "",
+        "description": "Test user: email - john@email.com password - JohnsPassword",
         "requestBody": {
           "description": "User login details",
           "required": true,
