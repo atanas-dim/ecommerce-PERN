@@ -797,7 +797,7 @@
           },
           "password": {
             "type": "string",
-            "example": "s0m3sEcr3tP@ssW0rd"
+            "example": "JohnsPassword"
           }
         }
       }
