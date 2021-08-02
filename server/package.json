@@ -7,6 +7,10 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": ">= 6.9.4",
+    "npm": ">= 4.4.0"
+  },
   "author": "Atanas Dimitrov",
   "license": "ISC",
   "dependencies": {
