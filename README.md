@@ -5,7 +5,8 @@
 ## Table of contents
 
 - [Technologies](#technologies)
-- [To-do list](#to-do-list)
+- [API Docs - Swagger](#api-docs---swagger)
+- [To-do list client](#to-do-list-client)
 
 ## Technologies
 
@@ -14,11 +15,9 @@
 - jsonwebtoken for authorization
 - Passport for authentication
 
-## To-do list server
+## API Docs - Swagger
 
-- Add checkout
-- Add orders route.
-- Swagger documentation
+- Visit [this link](https://pernstore.herokuapp.com/api/docs), login and try the endpoints
 
 ## To-do list client
 
