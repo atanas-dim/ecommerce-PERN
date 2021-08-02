@@ -12,6 +12,11 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
+  "servers": [
+    {
+      "url": "https://pernstore.herokuapp.com"
+    }
+  ],
   "tags": [
     {
       "name": "auth",
