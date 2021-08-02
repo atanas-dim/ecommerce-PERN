@@ -15,6 +15,9 @@
   "servers": [
     {
       "url": "https://pernstore.herokuapp.com"
+    },
+    {
+      "url": "http://pernstore.herokuapp.com"
     }
   ],
   "tags": [
