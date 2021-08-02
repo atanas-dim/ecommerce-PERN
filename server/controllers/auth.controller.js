@@ -7,9 +7,9 @@ const CartsService = require("../services/carts.service");
 const AuthService = require("../services/auth.service");
 
 const registerUser = async (req, res, next) => {
-  const { email, password, first_name, last_name, roles } = req.body;
+  const { email, password, first_name, last_name } = req.body;
   try {
-    // Check if email and passwork are valid
+    // Check if email and password are valid
     const validEmail = validateEmail(email);
     const validPassword = validatePassword(password);
 
@@ -29,8 +29,7 @@ const registerUser = async (req, res, next) => {
       email,
       hashedPassword,
       first_name,
-      last_name,
-      roles
+      last_name
     );
 
     const newCart = await CartsService.createCartByUserId(newUser.id);

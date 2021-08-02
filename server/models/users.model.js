@@ -1,10 +1,9 @@
 const pool = require("../db");
 
 class UsersModel {
-  async createUserDb(email, hashedPassword, first_name, last_name, roles) {
+  async createUserDb(email, hashedPassword, first_name, last_name) {
     try {
-      // If no specific role was added then make it a user
-      if (!roles) roles = "user";
+      const roles = "user";
 
       const newUserInDb = await pool.query(
         `INSERT INTO users(email, password, first_name, last_name, roles)

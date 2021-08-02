@@ -22,11 +22,12 @@ passport.use(
       try {
         // find user in DB
         const data = await UsersModel.getByEmailDb(username);
-        const { password: hashedPassword, ...userWithoutPassword } = data;
 
         if (!data) {
           return done(null, false, { message: "Incorrect email." });
         }
+
+        const { password: hashedPassword, ...userWithoutPassword } = data;
         // use validation helper here
         if (!validatePassword(password)) {
           return done(null, false, { message: "Invalid password." });

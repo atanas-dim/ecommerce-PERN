@@ -3,7 +3,7 @@ const CartsModel = require("../models/carts.model");
 const { ErrorHandler } = require("../helpers/errors");
 
 class UsersService {
-  async createUser(email, hashedPassword, first_name, last_name, roles) {
+  async createUser(email, hashedPassword, first_name, last_name) {
     try {
       const findUser = await UsersModel.getByEmailDb(email);
 
@@ -17,8 +17,7 @@ class UsersService {
         email,
         hashedPassword,
         first_name,
-        last_name,
-        roles
+        last_name
       );
 
       return newUser;

@@ -5,14 +5,13 @@ const { hashPassword } = require("../helpers/hashPassword");
 
 // Create users is used in authController
 const createUser = async (req, res, next) => {
-  const { email, hashedPassword, first_name, last_name, roles } = req.body;
+  const { email, hashedPassword, first_name, last_name } = req.body;
   try {
     const data = await UsersService.createUser(
       email,
       hashedPassword,
       first_name,
-      last_name,
-      roles
+      last_name
     );
     res.status(201).json(data);
   } catch (error) {
@@ -51,9 +50,9 @@ const getUserByEmail = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   const { user_id } = req.params;
-  const { email, password, ...newDetails } = req.body;
+  const { email, password, first_name, last_name } = req.body;
   try {
-    let updatedDetails = { ...newDetails };
+    let updatedDetails = { first_name, last_name };
     if (email && validateEmail(email)) {
       // If valid add to updatedDetails
       updatedDetails.email = email;
@@ -67,7 +66,13 @@ const updateUser = async (req, res, next) => {
 
     const data = await UsersService.updateUser({ user_id, ...updatedDetails });
 
-    res.status(200).json(data);
+    res.status(200).json({
+      id: data.id,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      roles: data.roles,
+    });
   } catch (error) {
     next(error);
   }
