@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
+const helmet = require("helmet");
 const passport = require("./passport");
 const flash = require("connect-flash");
 const session = require("express-session");
@@ -16,6 +17,7 @@ const port = process.env.PORT || 4000;
 app.use(cors({ credentials: true, origin: true }));
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(helmet());
 // next two middleware used for flash messages
 app.use(cookieParser("test cookie parser"));
 app.use(
