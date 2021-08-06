@@ -58,13 +58,13 @@ class AuthService {
 
   async signAccessToken(user) {
     return jwt.sign({ user }, process.env.TOKEN_SECRET, {
-      expiresIn: "15s",
+      expiresIn: "15m",
     });
   }
 
   async signRefreshToken(user) {
     return jwt.sign({ user }, process.env.REFRESH_TOKEN_SECRET, {
-      expiresIn: "1min",
+      expiresIn: "1h",
     });
   }
 }

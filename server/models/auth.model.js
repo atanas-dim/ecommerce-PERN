@@ -5,7 +5,7 @@ class AuthModel {
     try {
       const addRefreshTokenToDb = await pool.query(
         `INSERT INTO refresh_tokens(email, token, expiry)
-      VALUES($1, $2, NOW() + interval '1 minute') RETURNING *`,
+      VALUES($1, $2, NOW() + interval '1 hour') RETURNING *`,
         [email, token]
       );
 
