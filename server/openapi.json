@@ -46,7 +46,9 @@
   "paths": {
     "/api/auth/register": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "summary": "Create a new user account",
         "description": "",
         "requestBody": {
@@ -75,7 +77,9 @@
     },
     "/api/auth/login": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "summary": "Login with email and password",
         "description": "Test user: email - john@email.com password - JohnsPassword",
         "requestBody": {
@@ -98,7 +102,9 @@
     },
     "/api/users": {
       "get": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "Get all users (admin only)",
         "description": "Array of all users as objects",
         "responses": {
@@ -118,7 +124,9 @@
     },
     "/api/users/{user_id}": {
       "get": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "Find User by ID (admin or owner of account)",
         "description": "",
         "parameters": [
@@ -147,7 +155,9 @@
         ]
       },
       "put": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "Update User by ID (admin or owner of account)",
         "description": "",
         "parameters": [
@@ -190,7 +200,9 @@
         ]
       },
       "delete": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "Delete User by ID (admin or owner of account)",
         "description": "",
         "parameters": [
@@ -221,7 +233,9 @@
     },
     "/api/products": {
       "post": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "Create new product (admin only)",
         "description": "",
         "requestBody": {
@@ -253,7 +267,9 @@
         ]
       },
       "get": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "Get all products",
         "description": "",
         "responses": {
@@ -265,7 +281,9 @@
     },
     "/api/products/{product_id}": {
       "get": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "Find single product",
         "description": "",
         "parameters": [
@@ -286,7 +304,9 @@
         }
       },
       "put": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "Update single product (admin only)",
         "description": "",
         "parameters": [
@@ -326,7 +346,9 @@
         ]
       },
       "delete": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "Delete single product (admin only)",
         "description": "",
         "parameters": [
@@ -357,7 +379,9 @@
     },
     "/api/carts": {
       "get": {
-        "tags": ["carts"],
+        "tags": [
+          "carts"
+        ],
         "summary": "Get all carts (admin only)",
         "description": "",
         "responses": {
@@ -377,7 +401,9 @@
     },
     "/api/carts/{cart_id}": {
       "get": {
-        "tags": ["carts"],
+        "tags": [
+          "carts"
+        ],
         "summary": "Get single cart by id (owner only)",
         "description": "",
         "parameters": [
@@ -406,7 +432,9 @@
         ]
       },
       "post": {
-        "tags": ["carts"],
+        "tags": [
+          "carts"
+        ],
         "summary": "Add product to cart (owner only)",
         "description": "",
         "parameters": [
@@ -426,7 +454,9 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["product_id"],
+                "required": [
+                  "product_id"
+                ],
                 "properties": {
                   "product_id": {
                     "type": "integer",
@@ -459,7 +489,9 @@
         ]
       },
       "put": {
-        "tags": ["carts"],
+        "tags": [
+          "carts"
+        ],
         "summary": "Update product in cart (owner only)",
         "description": "",
         "parameters": [
@@ -479,7 +511,10 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["product_id", "quantity"],
+                "required": [
+                  "product_id",
+                  "quantity"
+                ],
                 "properties": {
                   "product_id": {
                     "type": "integer",
@@ -517,7 +552,9 @@
     },
     "/api/carts/{cart_id}/product/{product_id}": {
       "delete": {
-        "tags": ["carts"],
+        "tags": [
+          "carts"
+        ],
         "summary": "Remove product from cart (owner only)",
         "description": "",
         "parameters": [
@@ -557,7 +594,9 @@
     },
     "/api/carts/{cart_id}/checkout": {
       "post": {
-        "tags": ["carts"],
+        "tags": [
+          "carts"
+        ],
         "summary": "Checkout cart with products, make payment and create order (owner only)",
         "description": "",
         "parameters": [
@@ -588,7 +627,9 @@
     },
     "/api/orders": {
       "get": {
-        "tags": ["orders"],
+        "tags": [
+          "orders"
+        ],
         "summary": "Get all orders (admin only)",
         "description": "",
         "responses": {
@@ -608,7 +649,9 @@
     },
     "/api/orders/{order_id}": {
       "get": {
-        "tags": ["orders"],
+        "tags": [
+          "orders"
+        ],
         "summary": "Get single order by id (admin only)",
         "description": "",
         "parameters": [
@@ -639,7 +682,9 @@
     },
     "/api/orders/status/{order_id}": {
       "put": {
-        "tags": ["orders"],
+        "tags": [
+          "orders"
+        ],
         "summary": "Update single order status by id (admin only)",
         "description": "",
         "parameters": [
@@ -670,7 +715,9 @@
     },
     "/api/orders/user/{user_id}": {
       "get": {
-        "tags": ["orders"],
+        "tags": [
+          "orders"
+        ],
         "summary": "Find single order by user id (admin or owner)",
         "description": "",
         "parameters": [
@@ -701,7 +748,9 @@
     },
     "/api/payments": {
       "post": {
-        "tags": ["payments"],
+        "tags": [
+          "payments"
+        ],
         "summary": "Make direct payment without going through checkout",
         "description": "",
         "requestBody": {
@@ -710,7 +759,10 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["total", "email"],
+                "required": [
+                  "total",
+                  "email"
+                ],
                 "properties": {
                   "total": {
                     "type": "number",
@@ -785,6 +837,14 @@
           "description": {
             "type": "string",
             "example": "Cotton t-shirt with printed illustration."
+          },
+          "category": {
+            "type": "string",
+            "example": "Tops"
+          },
+          "img_url": {
+            "type": "string",
+            "example": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80"
           }
         }
       },

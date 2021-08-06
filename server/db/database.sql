@@ -10,6 +10,7 @@ CREATE TABLE public.carts (
 
 
 
+
 CREATE SEQUENCE public.carts_id_seq
     AS integer
     START WITH 1
@@ -35,7 +36,6 @@ CREATE TABLE public.carts_products (
 
 
 
-
 CREATE SEQUENCE public.carts_products_id_seq
     AS integer
     START WITH 1
@@ -48,6 +48,7 @@ CREATE SEQUENCE public.carts_products_id_seq
 
 
 ALTER SEQUENCE public.carts_products_id_seq OWNED BY public.carts_products.id;
+
 
 
 
@@ -111,7 +112,9 @@ CREATE TABLE public.products (
     price double precision NOT NULL,
     description character varying(500) NOT NULL,
     created timestamp with time zone DEFAULT now() NOT NULL,
-    modified timestamp with time zone DEFAULT now() NOT NULL
+    modified timestamp with time zone DEFAULT now() NOT NULL,
+    img_url character varying,
+    category character varying
 );
 
 
@@ -162,7 +165,9 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 
+
 ALTER TABLE ONLY public.carts ALTER COLUMN id SET DEFAULT nextval('public.carts_id_seq'::regclass);
+
 
 
 
@@ -180,7 +185,9 @@ ALTER TABLE ONLY public.orders_products ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 
+
 ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
+
 
 
 
@@ -188,8 +195,10 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 
+
 ALTER TABLE ONLY public.carts
     ADD CONSTRAINT carts_pkey PRIMARY KEY (id);
+
 
 
 
@@ -204,6 +213,7 @@ ALTER TABLE ONLY public.orders
 
 
 
+
 ALTER TABLE ONLY public.orders_products
     ADD CONSTRAINT orders_products_pkey PRIMARY KEY (id);
 
@@ -215,8 +225,10 @@ ALTER TABLE public.carts_products
 
 
 
+
 ALTER TABLE ONLY public.products
     ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
 
 
 
@@ -225,8 +237,10 @@ ALTER TABLE public.users
 
 
 
+
 ALTER TABLE public.users
     ADD CONSTRAINT text_only_last_name CHECK (((last_name)::text !~ similar_to_escape('%[0-9]%'::text))) NOT VALID;
+
 
 
 
@@ -235,8 +249,10 @@ ALTER TABLE ONLY public.users
 
 
 
+
 ALTER TABLE ONLY public.carts
     ADD CONSTRAINT unique_user_id UNIQUE (user_id);
+
 
 
 
@@ -245,8 +261,10 @@ ALTER TABLE ONLY public.users
 
 
 
+
 ALTER TABLE ONLY public.carts_products
     ADD CONSTRAINT cart_id_fkey FOREIGN KEY (cart_id) REFERENCES public.carts(id);
+
 
 
 
@@ -260,6 +278,7 @@ ALTER TABLE ONLY public.orders_products
 
 
 
+
 ALTER TABLE ONLY public.carts_products
     ADD CONSTRAINT product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id);
 
@@ -270,9 +289,8 @@ ALTER TABLE ONLY public.orders
 
 
 
+
 ALTER TABLE ONLY public.carts
     ADD CONSTRAINT user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
-
-
 
 
