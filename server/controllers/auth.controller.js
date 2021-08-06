@@ -48,7 +48,7 @@ const loginUser = async (req, res, next) => {
   const verifiedUser = req.user;
 
   try {
-    const data = AuthService.loginUser(verifiedUser);
+    const data = await AuthService.loginUser(verifiedUser);
 
     res.cookie("refreshToken", data.refreshToken, {
       httpOnly: true,
@@ -60,9 +60,9 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-const refreshToken = (req, res, next) => {
+const refreshToken = async (req, res, next) => {
   try {
-    const data = AuthService.refreshToken(req.cookies.refreshToken);
+    const data = await AuthService.refreshToken(req.cookies.refreshToken);
 
     //add new refresh token to cookie
     res.cookie("refreshToken", data.refreshToken, {

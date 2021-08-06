@@ -25,6 +25,6 @@ authRouter.post(
   loginUser
 );
 
-authRouter.post("/token", refreshToken);
+authRouter.post("/refresh-token", refreshToken);
 
 module.exports = authRouter;

@@ -1,15 +1,17 @@
 const jwt = require("jsonwebtoken");
 const { ErrorHandler } = require("../helpers/errors");
-// This has to be stored in DB for production
-const refreshTokens = [];
+const AuthModel = require("../models/auth.model");
 
 class AuthService {
-  loginUser(user) {
+  async loginUser(user) {
     try {
-      const token = this.signAccessToken(user);
-      const refreshToken = this.signRefreshToken(user);
+      const token = await this.signAccessToken(user);
+      const refreshToken = await this.signRefreshToken(user);
       // This has to be stored in DB for production
-      refreshTokens.push(refreshToken);
+      const addRefreshToken = await AuthModel.addRefreshTokenDb(
+        user.email,
+        refreshToken
+      );
 
       return { token: token, refreshToken: refreshToken, user: user };
     } catch (error) {
@@ -17,20 +19,36 @@ class AuthService {
     }
   }
 
-  refreshToken(refreshToken) {
+  async refreshToken(refreshToken) {
     try {
       if (refreshToken == null) throw new ErrorHandler(401, "Token missing.");
 
-      if (!refreshTokens.includes(refreshToken))
-        throw new ErrorHandler(403, "No access. Please login.");
-
       const data = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
+      // Delete expired refresh tokens
+      const deleteOldRefreshTokens = await AuthModel.deleteOldRefreshTokensDb(
+        data.user.email
+      );
+
+      // get all from DB
+      const findRefreshToken = await AuthModel.getRefreshTokenDb(
+        data.user.email,
+        refreshToken
+      );
+
+      if (!findRefreshToken)
+        throw new ErrorHandler(403, "No access. Please login.");
+
       //Important to sign data.user to not break verifyToken middleware
-      const newToken = this.signAccessToken(data.user);
-      const newRefreshToken = this.signRefreshToken(data.user);
+      const newToken = await this.signAccessToken(data.user);
+
+      const newRefreshToken = await this.signRefreshToken(data.user);
+
       // This has to be stored in DB for production
-      refreshTokens.push(newRefreshToken);
+      const addRefreshToken = await AuthModel.addRefreshTokenDb(
+        data.user.email,
+        newRefreshToken
+      );
 
       return { token: newToken, refreshToken: newRefreshToken };
     } catch (error) {
@@ -38,13 +56,13 @@ class AuthService {
     }
   }
 
-  signAccessToken(user) {
+  async signAccessToken(user) {
     return jwt.sign({ user }, process.env.TOKEN_SECRET, {
       expiresIn: "15m",
     });
   }
 
-  signRefreshToken(user) {
+  async signRefreshToken(user) {
     return jwt.sign({ user }, process.env.REFRESH_TOKEN_SECRET, {
       expiresIn: "1h",
     });
