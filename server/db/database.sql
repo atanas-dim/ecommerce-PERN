@@ -1,9 +1,13 @@
+
+
 CREATE TABLE public.carts (
     id integer NOT NULL,
     user_id integer NOT NULL,
     created timestamp with time zone DEFAULT now() NOT NULL,
     modified timestamp with time zone DEFAULT now() NOT NULL
 );
+
+
 
 
 CREATE SEQUENCE public.carts_id_seq
@@ -15,8 +19,8 @@ CREATE SEQUENCE public.carts_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.carts_id_seq OWNED BY public.carts.id;
 
+ALTER SEQUENCE public.carts_id_seq OWNED BY public.carts.id;
 
 
 
@@ -24,8 +28,10 @@ CREATE TABLE public.carts_products (
     id integer NOT NULL,
     quantity integer NOT NULL,
     product_id integer NOT NULL,
-    cart_id integer NOT NULL
+    cart_id integer NOT NULL,
+    size character varying(15)
 );
+
 
 
 
@@ -39,7 +45,9 @@ CREATE SEQUENCE public.carts_products_id_seq
 
 
 
+
 ALTER SEQUENCE public.carts_products_id_seq OWNED BY public.carts_products.id;
+
 
 
 
@@ -51,6 +59,7 @@ CREATE TABLE public.orders (
     modified timestamp with time zone DEFAULT now() NOT NULL,
     user_id integer NOT NULL
 );
+
 
 
 
@@ -74,7 +83,8 @@ CREATE TABLE public.orders_products (
     id integer NOT NULL,
     quantity integer NOT NULL,
     order_id integer NOT NULL,
-    product_id integer NOT NULL
+    product_id integer NOT NULL,
+    size character varying(15)
 );
 
 
@@ -103,8 +113,9 @@ CREATE TABLE public.products (
     description character varying(500) NOT NULL,
     created timestamp with time zone DEFAULT now() NOT NULL,
     modified timestamp with time zone DEFAULT now() NOT NULL,
-    img_url character varying,
-    category character varying
+    images character varying[],
+    categories character varying[],
+    sizes character varying[]
 );
 
 
@@ -125,12 +136,14 @@ ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
 
 
 
+
 CREATE SEQUENCE public.refresh_tokens_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     MAXVALUE 2147483647
     CACHE 1;
+
 
 
 
@@ -143,6 +156,7 @@ CREATE TABLE public.refresh_tokens (
 
 
 
+
 CREATE TABLE public.users (
     id integer NOT NULL,
     password character varying(100) NOT NULL,
@@ -151,8 +165,14 @@ CREATE TABLE public.users (
     last_name character varying(50) NOT NULL,
     created timestamp with time zone DEFAULT now() NOT NULL,
     modified timestamp with time zone DEFAULT now() NOT NULL,
-    roles character varying(100) DEFAULT USER NOT NULL
+    roles character varying(100) DEFAULT USER NOT NULL,
+    address1 character varying(100),
+    address2 character varying(100),
+    city character varying(100),
+    postcode character varying(10),
+    country character varying(100)
 );
+
 
 
 
@@ -166,7 +186,9 @@ CREATE SEQUENCE public.users_id_seq
 
 
 
+
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
 
 
 
@@ -174,7 +196,9 @@ ALTER TABLE ONLY public.carts ALTER COLUMN id SET DEFAULT nextval('public.carts_
 
 
 
+
 ALTER TABLE ONLY public.carts_products ALTER COLUMN id SET DEFAULT nextval('public.carts_products_id_seq'::regclass);
+
 
 
 
@@ -182,7 +206,9 @@ ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.order
 
 
 
+
 ALTER TABLE ONLY public.orders_products ALTER COLUMN id SET DEFAULT nextval('public.orders_products_id_seq'::regclass);
+
 
 
 
@@ -190,7 +216,9 @@ ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.pro
 
 
 
+
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
 
 
 
@@ -199,8 +227,10 @@ ALTER TABLE ONLY public.carts
 
 
 
+
 ALTER TABLE ONLY public.carts_products
     ADD CONSTRAINT carts_products_pkey PRIMARY KEY (id);
+
 
 
 
@@ -209,8 +239,10 @@ ALTER TABLE ONLY public.orders
 
 
 
+
 ALTER TABLE ONLY public.orders_products
     ADD CONSTRAINT orders_products_pkey PRIMARY KEY (id);
+
 
 
 
@@ -219,8 +251,10 @@ ALTER TABLE public.carts_products
 
 
 
+
 ALTER TABLE ONLY public.products
     ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
 
 
 
@@ -229,8 +263,10 @@ ALTER TABLE ONLY public.refresh_tokens
 
 
 
+
 ALTER TABLE public.users
     ADD CONSTRAINT text_only_first_name CHECK (((first_name)::text !~ similar_to_escape('%[0-9]%'::text))) NOT VALID;
+
 
 
 
@@ -239,8 +275,10 @@ ALTER TABLE public.users
 
 
 
+
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT unique_email UNIQUE (email);
+
 
 
 
@@ -249,8 +287,10 @@ ALTER TABLE ONLY public.carts
 
 
 
+
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
 
 
 
@@ -259,13 +299,16 @@ ALTER TABLE ONLY public.carts_products
 
 
 
+
 ALTER TABLE ONLY public.orders_products
     ADD CONSTRAINT order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id);
 
 
 
+
 ALTER TABLE ONLY public.orders_products
     ADD CONSTRAINT product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id);
+
 
 
 
@@ -274,12 +317,15 @@ ALTER TABLE ONLY public.carts_products
 
 
 
+
 ALTER TABLE ONLY public.orders
     ADD CONSTRAINT user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 
+
 ALTER TABLE ONLY public.carts
     ADD CONSTRAINT user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
 
 

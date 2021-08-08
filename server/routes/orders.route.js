@@ -4,6 +4,7 @@ const {
   getAllOrders,
   getOrdersByUser,
   getOrderById,
+  getOrderProductsById,
   updateOrderStatusById,
 } = require("../controllers/orders.controller");
 const { verifyToken } = require("../middleware/verifyToken");
@@ -18,6 +19,9 @@ ordersRouter.get("/", verifyAdmin, getAllOrders);
 
 // Get single order by orderId
 ordersRouter.get("/:order_id", verifyAdmin, getOrderById);
+
+// Get products for order
+ordersRouter.get("/:order_id/products", verifyAdmin, getOrderProductsById);
 
 // Update single order status by orderId (this is for customer service for example)
 ordersRouter.put("/status/:order_id", verifyAdmin, updateOrderStatusById);

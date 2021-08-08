@@ -60,9 +60,13 @@ class UsersService {
   }
 
   async updateUser(data) {
-    const { user_id, email } = data;
+    const { user_id, email, roles } = data;
     try {
       const findUser = await UsersModel.getByIdDb(user_id);
+
+      if (roles) {
+        throw new ErrorHandler(403, "Roles update not allowed.");
+      }
 
       if (!findUser)
         throw new ErrorHandler(404, "User with this ID doesn't exist.");

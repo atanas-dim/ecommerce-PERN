@@ -1,11 +1,11 @@
 const pool = require("../db");
 
 class OrdersProductsModel {
-  async createOrderProductDb(order_id, product_id, quantity) {
+  async createOrderProductDb(order_id, product_id, quantity, size) {
     const newOrdersProductsDb = await pool.query(
-      `INSERT INTO orders_products (order_id, product_id, quantity)
-      VALUES( $1, $2, $3) RETURNING *`,
-      [order_id, product_id, quantity]
+      `INSERT INTO orders_products (order_id, product_id, quantity, size)
+      VALUES( $1, $2, $3, $4) RETURNING *`,
+      [order_id, product_id, quantity, size]
     );
 
     if (newOrdersProductsDb.rows?.length) {
@@ -15,13 +15,14 @@ class OrdersProductsModel {
     return null;
   }
 
-  async getOrdersProductsDb(order_id) {
+  async getOrderProductsDb(order_id) {
     const ordersProductsFromDb = await pool.query(
       `SELECT 
-          MIN(orders.id) AS order_id, 
+          MIN(orders.id) AS order_id,
           products.id AS product_id, 
           products.name AS product_name, 
           SUM(orders_products.quantity)::integer AS quantity,
+          orders_products.size AS size,
           products.price AS price
       FROM products
       JOIN orders_products 
@@ -29,7 +30,7 @@ class OrdersProductsModel {
       JOIN orders
           ON orders_products.order_id = orders.id
       WHERE orders.id = $1
-      GROUP BY products.id;`,
+      GROUP BY products.id, orders_products.size`,
       [order_id]
     );
 

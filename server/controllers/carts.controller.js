@@ -27,12 +27,13 @@ const getCartWithProducts = async (req, res, next) => {
 
 const addCartProduct = async (req, res, next) => {
   const { cart_id } = req.params;
-  const { product_id, quantity } = req.body;
+  const { product_id, quantity, size } = req.body;
   try {
     const addedProduct = await CartsService.addCartProduct(
       cart_id,
       product_id,
-      quantity
+      quantity,
+      size
     );
 
     res.status(201).json(addedProduct);
@@ -43,12 +44,13 @@ const addCartProduct = async (req, res, next) => {
 
 const updateCartProduct = async (req, res, next) => {
   const { cart_id } = req.params;
-  const { product_id, quantity } = req.body;
+  const { product_id, size, quantity } = req.body;
 
   try {
     const data = await CartsService.updateCartProduct(
       cart_id,
       product_id,
+      size,
       quantity
     );
 
@@ -99,9 +101,14 @@ const checkoutCart = async (req, res, next) => {
       await OrdersService.createOrderProduct(
         newOrder.id,
         product.product_id,
-        product.quantity
+        product.quantity,
+        product.size
       );
-      await CartsService.deleteCartProduct(cart_id, product.product_id);
+      await CartsService.deleteCartProduct(
+        cart_id,
+        product.product_id,
+        product.size
+      );
     });
 
     //update order status

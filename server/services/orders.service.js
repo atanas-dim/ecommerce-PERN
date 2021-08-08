@@ -53,6 +53,18 @@ class OrdersService {
     }
   }
 
+  async getOrderProductsById(order_id) {
+    try {
+      const orderById = await OrdersProductsModel.getOrderProductsDb(order_id);
+      if (!orderById) {
+        throw new ErrorHandler(404, "Order not found.");
+      }
+      return orderById;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async updateOrderStatusById(order_id, status) {
     try {
       const updateOrderById = await OrdersModel.updateOrderStatusByIdDb(
@@ -68,12 +80,13 @@ class OrdersService {
     }
   }
 
-  async createOrderProduct(order_id, product_id, quantity) {
+  async createOrderProduct(order_id, product_id, quantity, size) {
     try {
       const newOrderProduct = await OrdersProductsModel.createOrderProductDb(
         order_id,
         product_id,
-        quantity
+        quantity,
+        size
       );
 
       if (!newOrderProduct) {

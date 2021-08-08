@@ -38,7 +38,20 @@ class UsersModel {
   async getByIdDb(user_id) {
     try {
       const userFromDb = await pool.query(
-        `SELECT id, first_name, last_name, email, roles, created, modified FROM users WHERE id = $1`,
+        `SELECT 
+          id, 
+          first_name, 
+          last_name, 
+          email, 
+          roles, 
+          address1,
+          address2,
+          postcode,
+          city,
+          country, 
+          created, 
+          modified 
+        FROM users WHERE id = $1`,
         [user_id]
       );
 

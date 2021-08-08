@@ -47,7 +47,7 @@ class CartsService {
     }
   }
 
-  async addCartProduct(cart_id, product_id, quantity) {
+  async addCartProduct(cart_id, product_id, quantity, size) {
     try {
       if (!product_id) throw new ErrorHandler(406, "Product ID required.");
 
@@ -56,7 +56,8 @@ class CartsService {
 
       const findCartProduct = await CartsProductsModel.getCartProductDb(
         cart_id,
-        product_id
+        product_id,
+        size
       );
 
       if (findCartProduct) return "Product already exists in this cart.";
@@ -64,11 +65,13 @@ class CartsService {
       const newCartProduct = await CartsProductsModel.addCartProductDb(
         cart_id,
         product_id,
-        quantity
+        quantity,
+        size
       );
       return {
         product_id: newCartProduct.product_id,
         quantity: newCartProduct.quantity,
+        size: newCartProduct.size,
         cart_id: newCartProduct.cart_id,
       };
     } catch (error) {
@@ -76,14 +79,15 @@ class CartsService {
     }
   }
 
-  async updateCartProduct(cart_id, product_id, quantity) {
+  async updateCartProduct(cart_id, product_id, size, quantity) {
     try {
-      if (!product_id || !quantity)
-        throw new ErrorHandler(406, "Product ID and quantity required.");
+      if (!product_id || !quantity || !size)
+        throw new ErrorHandler(406, "Product ID, quantity and size required.");
 
       const findCartProduct = await CartsProductsModel.getCartProductDb(
         cart_id,
-        product_id
+        product_id,
+        size
       );
 
       if (!findCartProduct)
@@ -92,12 +96,14 @@ class CartsService {
       const updatedProduct = await CartsProductsModel.updateCartProductDb(
         cart_id,
         product_id,
+        size,
         quantity
       );
 
       return {
         product_id: updatedProduct.product_id,
         quantity: updatedProduct.quantity,
+        size: updatedProduct.size,
         cart_id: updatedProduct.cart_id,
       };
     } catch (error) {
@@ -105,11 +111,12 @@ class CartsService {
     }
   }
 
-  async deleteCartProduct(cart_id, product_id) {
+  async deleteCartProduct(cart_id, product_id, size) {
     try {
       const deletedProduct = await CartsProductsModel.deleteCartProductDb(
         cart_id,
-        product_id
+        product_id,
+        size
       );
       return deletedProduct;
     } catch (error) {
