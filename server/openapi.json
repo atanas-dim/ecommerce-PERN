@@ -177,7 +177,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewUser"
+                "$ref": "#/components/schemas/UpdatedUser"
               }
             }
           }
@@ -465,6 +465,10 @@
                   "quantity": {
                     "type": "integer",
                     "example": 2
+                  },
+                  "size": {
+                    "type": "integer",
+                    "example": "M"
                   }
                 }
               }
@@ -523,6 +527,10 @@
                   "quantity": {
                     "type": "integer",
                     "example": 2
+                  },
+                  "size": {
+                    "type": "integer",
+                    "example": "M"
                   }
                 }
               }
@@ -823,6 +831,47 @@
           }
         }
       },
+      "UpdatedUser": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "s0m3sEcr3tP@ssW0rd"
+          },
+          "address1": {
+            "type": "string",
+            "example": "15 Pavement St"
+          },
+          "address2": {
+            "type": "string",
+            "example": "Green Gardens Court"
+          },
+          "postcode": {
+            "type": "string",
+            "example": "W99 7LL"
+          },
+          "city": {
+            "type": "string",
+            "example": "London"
+          },
+          "country": {
+            "type": "string",
+            "example": "United Kingdom"
+          }
+        }
+      },
       "NewProduct": {
         "type": "object",
         "properties": {
@@ -838,13 +887,29 @@
             "type": "string",
             "example": "Cotton t-shirt with printed illustration."
           },
-          "category": {
-            "type": "string",
-            "example": "Tops"
+          "images": {
+            "type": "array",
+            "example": [
+              "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80",
+              "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=81",
+              "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=82"
+            ]
           },
-          "img_url": {
-            "type": "string",
-            "example": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80"
+          "categories": {
+            "type": "array",
+            "example": [
+              "men",
+              "tops"
+            ]
+          },
+          "sizes": {
+            "type": "array",
+            "example": [
+              "XS",
+              "S",
+              "M",
+              "L"
+            ]
           }
         }
       },
