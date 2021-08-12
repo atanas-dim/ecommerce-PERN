@@ -29,6 +29,17 @@ class ProductsService {
     }
   }
 
+  async getAllProductsByCategory(category) {
+    try {
+      const allProducts = await ProductsModel.getAllProductsByCategoryDb(
+        category
+      );
+      return allProducts;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getProductById(product_id) {
     try {
       const findProduct = await ProductsModel.getProductByIdDb(product_id);

@@ -92,6 +92,11 @@ export default function Footer() {
             <Facebook />
           </IconButton>
         </Grid>
+        <Grid item xs={12} className={classes.socialLinks}>
+          <Typography variant="body2" component="span">
+            Original products from H&M
+          </Typography>
+        </Grid>
       </Grid>
     </Container>
   );

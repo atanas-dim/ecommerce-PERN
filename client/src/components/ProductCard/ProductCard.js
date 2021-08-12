@@ -11,15 +11,15 @@ import {
 import { useStyles } from "./ProductCard.styles";
 import clsx from "clsx";
 
-export default function ProductCard() {
+export default function ProductCard({ id, name, price, images }) {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
       <ButtonBase
         component={CardMedia}
         className={clsx(classes.buttonBase, classes.productImg)}
-        image="/assets/shorts1.jpeg"
-        title="Swimming shorts"
+        image={images[0]}
+        title={name}
       ></ButtonBase>
       <ButtonBase className={classes.buttonBase}>
         <CardContent className={classes.content}>
@@ -28,14 +28,14 @@ export default function ProductCard() {
             component="h2"
             style={{ fontWeight: 500 }}
           >
-            Swimming shorts
+            #{id} {name}
           </Typography>
           <Typography
             variant="body1"
             component="h2"
             style={{ fontWeight: 900 }}
           >
-            £ 45
+            £ {price}
           </Typography>
         </CardContent>
       </ButtonBase>

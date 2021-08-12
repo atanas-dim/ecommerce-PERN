@@ -32,6 +32,22 @@ class ProductsModel {
     }
   }
 
+  async getAllProductsByCategoryDb(category) {
+    try {
+      const allProductsFromDb = await pool.query(
+        `SELECT * FROM products WHERE $1=ANY(categories)`,
+        [category]
+      );
+
+      if (allProductsFromDb.rows?.length) {
+        return allProductsFromDb.rows;
+      }
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getProductByIdDb(product_id) {
     try {
       const productFromDb = await pool.query(

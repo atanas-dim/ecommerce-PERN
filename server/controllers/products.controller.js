@@ -27,6 +27,16 @@ const getAllProducts = async (req, res, next) => {
   }
 };
 
+const getAllProductsByCategory = async (req, res, next) => {
+  const category = req.params.category_name;
+  try {
+    const data = await ProductsService.getAllProductsByCategory(category);
+    res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getProductById = async (req, res, next) => {
   const { product_id } = req.params;
   try {
@@ -66,6 +76,7 @@ const deleteProduct = async (req, res, next) => {
 module.exports = {
   createProduct,
   getAllProducts,
+  getAllProductsByCategory,
   getProductById,
   updateProduct,
   deleteProduct,

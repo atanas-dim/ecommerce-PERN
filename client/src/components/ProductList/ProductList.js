@@ -3,23 +3,23 @@ import { Grid } from "@material-ui/core";
 import { useStyles } from "./ProductList.styles";
 import ProductCard from "../ProductCard/ProductCard";
 
-export default function ProductList() {
+export default function ProductList({ products }) {
   const classes = useStyles();
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} sm={6} md={3}>
-        <ProductCard />
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
-        <ProductCard />
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
-        <ProductCard />
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
-        <ProductCard />
-      </Grid>
+      {products.map((product) => {
+        return (
+          <Grid item xs={12} sm={6} md={3} key={product.name}>
+            <ProductCard
+              id={product.id}
+              name={product.name}
+              price={product.price}
+              images={product.images}
+            />
+          </Grid>
+        );
+      })}
     </Grid>
   );
 }

@@ -3,6 +3,7 @@ const productsRouter = express.Router();
 const {
   createProduct,
   getAllProducts,
+  getAllProductsByCategory,
   getProductById,
   updateProduct,
   deleteProduct,
@@ -15,6 +16,9 @@ productsRouter.post("/", verifyToken, verifyAdmin, createProduct);
 
 // Get all products
 productsRouter.get("/", getAllProducts);
+
+// Get all products for category
+productsRouter.get("/category/:category_name", getAllProductsByCategory);
 
 // Get single product by ID
 productsRouter.get("/:product_id", getProductById);

@@ -45,11 +45,11 @@ function Home() {
 }
 
 function Swimwear() {
-  return <CategoryPage title="Swimwear" />;
+  return <CategoryPage title="Swimwear" category="swimwear" />;
 }
 
 function Accessories() {
-  return <CategoryPage title="Accessories" />;
+  return <CategoryPage title="Accessories" category="accessories" />;
 }
 
 function Cart() {
