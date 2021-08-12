@@ -1,10 +1,17 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { useStyles } from "./ProductList.styles";
 import ProductCard from "../ProductCard/ProductCard";
 
 export default function ProductList({ products }) {
   const classes = useStyles();
+
+  if (!products)
+    return (
+      <Typography variant="body1" component="h2">
+        No products available
+      </Typography>
+    );
 
   return (
     <Grid container spacing={3}>

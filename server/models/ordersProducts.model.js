@@ -40,6 +40,31 @@ class OrdersProductsModel {
 
     return null;
   }
+
+  async getBestSellersDb() {
+    try {
+      const allProductsFromDb = await pool.query(`
+      SELECT 
+      products.id, 
+      products.name, 
+      products.images, 
+      products.price,
+      SUM(orders_products.quantity)::integer AS quantity
+      FROM products
+      JOIN orders_products
+      ON orders_products.product_id = products.id
+      GROUP BY products.id
+      ORDER BY quantity DESC
+      LIMIT 4;`);
+
+      if (allProductsFromDb.rows?.length) {
+        return allProductsFromDb.rows;
+      }
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new OrdersProductsModel();

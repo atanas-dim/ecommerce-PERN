@@ -41,7 +41,7 @@ export default function App() {
 }
 
 function Home() {
-  return <CategoryPage title="Our Best Sellers" />;
+  return <CategoryPage title="Our Best Sellers" category="swimwear" />;
 }
 
 function Swimwear() {

@@ -1,4 +1,5 @@
 const ProductsModel = require("../models/products.model");
+const OrdersProductsModel = require("../models/ordersProducts.model");
 const { ErrorHandler } = require("../helpers/errors");
 
 class ProductsService {
@@ -24,6 +25,15 @@ class ProductsService {
     try {
       const allProducts = await ProductsModel.getAllProductsDb();
       return allProducts;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getBestSellers() {
+    try {
+      const bestSellers = await OrdersProductsModel.getBestSellersDb();
+      return bestSellers;
     } catch (error) {
       throw error;
     }

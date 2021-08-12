@@ -27,6 +27,15 @@ const getAllProducts = async (req, res, next) => {
   }
 };
 
+const getBestSellers = async (req, res, next) => {
+  try {
+    const data = await ProductsService.getBestSellers();
+    res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getAllProductsByCategory = async (req, res, next) => {
   const category = req.params.category_name;
   try {
@@ -76,6 +85,7 @@ const deleteProduct = async (req, res, next) => {
 module.exports = {
   createProduct,
   getAllProducts,
+  getBestSellers,
   getAllProductsByCategory,
   getProductById,
   updateProduct,

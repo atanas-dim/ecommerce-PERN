@@ -3,6 +3,7 @@ const productsRouter = express.Router();
 const {
   createProduct,
   getAllProducts,
+  getBestSellers,
   getAllProductsByCategory,
   getProductById,
   updateProduct,
@@ -16,6 +17,9 @@ productsRouter.post("/", verifyToken, verifyAdmin, createProduct);
 
 // Get all products
 productsRouter.get("/", getAllProducts);
+
+// Get all products
+productsRouter.get("/best-sellers", getBestSellers);
 
 // Get all products for category
 productsRouter.get("/category/:category_name", getAllProductsByCategory);
