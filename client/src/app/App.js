@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../features/Header/Header";
-import Home from "../features/Home/Home";
+import CategoryPage from "../features/CategoryPage/CategoryPage";
 import Footer from "../features/Footer/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -40,12 +40,16 @@ export default function App() {
   );
 }
 
+function Home() {
+  return <CategoryPage title="Our Best Sellers" />;
+}
+
 function Swimwear() {
-  return <h2>Swimwear</h2>;
+  return <CategoryPage title="Swimwear" />;
 }
 
 function Accessories() {
-  return <h2>Accessories</h2>;
+  return <CategoryPage title="Accessories" />;
 }
 
 function Cart() {

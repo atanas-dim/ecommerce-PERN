@@ -36,7 +36,7 @@ export default function Footer() {
           </Typography>
         </Grid>
 
-        <Grid item xs={3} className={classes.gridColumn}>
+        <Grid item xs={12} sm={4} md={3} className={classes.gridColumn}>
           <Link component={RouterLink} to="#" color="inherit">
             Swimwear
           </Link>
@@ -44,7 +44,7 @@ export default function Footer() {
             Accessories
           </Link>
         </Grid>
-        <Grid item xs={3} className={classes.gridColumn}>
+        <Grid item xs={12} sm={4} md={3} className={classes.gridColumn}>
           <Link component={RouterLink} to="#" color="inherit">
             About
           </Link>
@@ -55,7 +55,7 @@ export default function Footer() {
             Contact us
           </Link>
         </Grid>
-        <Grid item xs={3} className={classes.gridColumn}>
+        <Grid item xs={12} sm={4} md={3} className={classes.gridColumn}>
           <Link component={RouterLink} to="#" color="inherit">
             Deliveries
           </Link>
@@ -66,7 +66,7 @@ export default function Footer() {
             Order tracking
           </Link>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item sm={12} md={3} className={classes.socialLinks}>
           <IconButton
             component={RouterLink}
             to="#"
