@@ -1,12 +1,12 @@
 const pool = require("../db");
 
 class ProductsModel {
-  async createProductDb(name, price, description) {
+  async createProductDb(name, price, description, images, categories, sizes) {
     try {
       const newProductInDb = await pool.query(
-        `INSERT INTO products(name, price, description)
-      VALUES($1, $2, $3) RETURNING *`,
-        [name, price, description]
+        `INSERT INTO products(name, price, description, images, categories, sizes)
+      VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
+        [name, price, description, images, categories, sizes]
       );
 
       if (newProductInDb.rows?.length) {

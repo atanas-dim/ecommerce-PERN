@@ -2,12 +2,19 @@ const ProductsModel = require("../models/products.model");
 const { ErrorHandler } = require("../helpers/errors");
 
 class ProductsService {
-  async createProduct(name, price, description) {
+  async createProduct(name, price, description, images, categories, sizes) {
     try {
-      if (!name || !price || !description)
+      if (!name || !price || !description || !images || !categories || !sizes)
         throw new ErrorHandler(406, "All fields are required.");
 
-      return await ProductsModel.createProductDb(name, price, description);
+      return await ProductsModel.createProductDb(
+        name,
+        price,
+        description,
+        images,
+        categories,
+        sizes
+      );
     } catch (error) {
       throw error;
     }
