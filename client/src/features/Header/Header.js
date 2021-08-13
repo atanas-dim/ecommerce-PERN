@@ -12,11 +12,13 @@ export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    window.innerWidth < 768 ? setIsMobile(true) : setIsMobile(false);
+    window.addEventListener("resize", function () {
+      window.innerWidth < 768 ? setIsMobile(true) : setIsMobile(false);
+    });
   }, []);
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" className={classes.root}>
       <Toolbar className={clsx(classes.container, classes.containerMain)}>
         <Typography
           variant="body1"

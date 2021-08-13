@@ -18,7 +18,7 @@ export default function DesktopMenu() {
         {["swimwear", "accessories"].map((text, index) => (
           <ButtonBase
             component={RouterLink}
-            to={text}
+            to={`/${text}`}
             key={text}
             className={classes.menuLink}
           >
@@ -31,7 +31,7 @@ export default function DesktopMenu() {
         {["bag", "login"].map((text, index) => (
           <ButtonBase
             component={RouterLink}
-            to={text === "bag" ? "cart" : text}
+            to={text === "bag" ? "/cart" : `/${text}`}
             key={text}
             className={classes.menuLink}
           >

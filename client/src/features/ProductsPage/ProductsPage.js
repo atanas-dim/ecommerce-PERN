@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Container, Typography } from "@material-ui/core";
-import { useStyles } from "./CategoryPage.styles";
+import { useStyles } from "./ProductsPage.styles";
 import ProductList from "../../components/ProductList/ProductList";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectProducts,
+  loadBestSellers,
+  loadProductsCategory,
+} from "./productsSlice";
 
 export default function CategoryPage({ title, category }) {
   const classes = useStyles();
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const products = useSelector(selectProducts);
 
   useEffect(() => {
-    async function fetchData() {
-      await fetch(
-        `https://pernstore.herokuapp.com/api/products/category/${category}`
-      )
-        .then((response) => response.json())
-        .then((data) => setProducts(data));
-    }
-    fetchData();
-  }, []);
+    if (category === "best-sellers") dispatch(loadBestSellers());
+    else dispatch(loadProductsCategory(category));
+  }, [category, dispatch]);
 
   return (
     <Container maxWidth="lg" className={classes.root}>

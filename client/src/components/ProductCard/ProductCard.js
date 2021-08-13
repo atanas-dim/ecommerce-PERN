@@ -1,13 +1,12 @@
 import React from "react";
 import {
   Card,
-  CardMedia,
-  CardContent,
   CardActions,
   Typography,
   Button,
   ButtonBase,
 } from "@material-ui/core";
+import { Link as RouterLink } from "react-router-dom";
 import { useStyles } from "./ProductCard.styles";
 import clsx from "clsx";
 
@@ -16,28 +15,36 @@ export default function ProductCard({ id, name, price, images }) {
   return (
     <Card className={classes.root}>
       <ButtonBase
-        component={CardMedia}
-        className={clsx(classes.buttonBase, classes.productImg)}
-        image={images[0]}
-        title={name}
-      ></ButtonBase>
-      <ButtonBase className={classes.buttonBase}>
-        <CardContent className={classes.content}>
-          <Typography
-            variant="body2"
-            component="h2"
-            style={{ fontWeight: 500 }}
-          >
-            #{id} {name}
-          </Typography>
-          <Typography
-            variant="body1"
-            component="h2"
-            style={{ fontWeight: 900 }}
-          >
-            £ {price}
-          </Typography>
-        </CardContent>
+        className={classes.image}
+        component={RouterLink}
+        to={`/products/${id}`}
+      >
+        <span
+          className={classes.imageSrc}
+          style={{
+            backgroundImage: `url(${images[0]})`,
+          }}
+        ></span>
+      </ButtonBase>
+      <ButtonBase
+        className={clsx(classes.buttonBase, classes.text)}
+        component={RouterLink}
+        to={`/products/${id}`}
+      >
+        <Typography
+          variant="body2"
+          component="span"
+          style={{ fontWeight: 500 }}
+        >
+          {name}
+        </Typography>
+        <Typography
+          variant="body1"
+          component="span"
+          style={{ fontWeight: 900 }}
+        >
+          £ {price}
+        </Typography>
       </ButtonBase>
 
       <CardActions className={classes.actions}>

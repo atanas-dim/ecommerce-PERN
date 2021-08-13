@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../features/Header/Header";
-import CategoryPage from "../features/CategoryPage/CategoryPage";
+import ProductsPage from "../features/ProductsPage/ProductsPage";
+import ProductItemPage from "../features/ProductItemPage/ProductItemPage";
 import Footer from "../features/Footer/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -16,50 +17,56 @@ export default function App() {
 
         <Switch>
           <Route path="/" exact>
-            <Home />
+            <ProductsPage title="Our Best Sellers" category="best-sellers" />
           </Route>
+
           <Route path="/swimwear">
-            <Swimwear />
+            <ProductsPage title="Swimwear" category="swimwear" />
           </Route>
+
           <Route path="/accessories">
-            <Accessories />
+            <ProductsPage title="Accessories" category="accessories" />
           </Route>
+
+          <Route path="/products/:id">
+            <ProductItemPage />
+          </Route>
+
           <Route path="/cart">
-            <Cart />
+            <h2
+              style={{
+                paddingTop: theme.spacing(6),
+                paddingBottom: theme.spacing(6),
+              }}
+            >
+              Shopping bag
+            </h2>
           </Route>
+
           <Route path="/login">
-            <Login />
+            <h2
+              style={{
+                paddingTop: theme.spacing(6),
+                paddingBottom: theme.spacing(6),
+              }}
+            >
+              Login
+            </h2>
           </Route>
+
           <Route path="/register">
-            <Register />
+            <h2
+              style={{
+                paddingTop: theme.spacing(6),
+                paddingBottom: theme.spacing(6),
+              }}
+            >
+              Register
+            </h2>
           </Route>
         </Switch>
         <Footer />
       </Router>
     </ThemeProvider>
   );
-}
-
-function Home() {
-  return <CategoryPage title="Our Best Sellers" category="swimwear" />;
-}
-
-function Swimwear() {
-  return <CategoryPage title="Swimwear" category="swimwear" />;
-}
-
-function Accessories() {
-  return <CategoryPage title="Accessories" category="accessories" />;
-}
-
-function Cart() {
-  return <h2>Shopping bag</h2>;
-}
-
-function Login() {
-  return <h2>Login</h2>;
-}
-
-function Register() {
-  return <h2>Register</h2>;
 }
