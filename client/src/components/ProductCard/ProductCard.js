@@ -6,6 +6,7 @@ import {
   Button,
   ButtonBase,
 } from "@material-ui/core";
+import { Add as AddIcon } from "@material-ui/icons/";
 import { Link as RouterLink } from "react-router-dom";
 import { useStyles } from "./ProductCard.styles";
 import clsx from "clsx";
@@ -55,7 +56,7 @@ export default function ProductCard({ id, name, price, images }) {
           size="small"
           style={{ width: "100%" }}
         >
-          Add to bag
+          <AddIcon /> Add to bag
         </Button>
       </CardActions>
     </Card>

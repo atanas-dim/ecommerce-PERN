@@ -21,7 +21,7 @@ export default function CategoryPage({ title, category }) {
 
   return (
     <Container maxWidth="lg" className={classes.root}>
-      <Typography variant="h4" component="h2">
+      <Typography variant="h6" component="h2">
         {title}
       </Typography>
       <ProductList products={products} />

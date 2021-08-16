@@ -2,7 +2,11 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    background: theme.palette.primary.light,
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   image: {
     position: "relative",
@@ -39,10 +43,17 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     paddingBottom: theme.spacing(1),
     width: "100%",
+    height: "100%",
     textAlign: "left",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     alignItems: "flex-start",
+    "&:hover": {
+      textDecoration: "none",
+    },
+  },
+  actions: {
+    width: "100%",
   },
 }));

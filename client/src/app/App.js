@@ -1,7 +1,9 @@
 import React from "react";
 import Header from "../features/Header/Header";
+import ScrollToTop from "../utils/ScrollToTop/ScrollToTop";
 import ProductsPage from "../features/ProductsPage/ProductsPage";
 import ProductItemPage from "../features/ProductItemPage/ProductItemPage";
+import Login from "../features/Login/Login";
 import Footer from "../features/Footer/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -14,7 +16,7 @@ export default function App() {
       <CssBaseline />
       <Router>
         <Header />
-
+        <ScrollToTop />
         <Switch>
           <Route path="/" exact>
             <ProductsPage title="Our Best Sellers" category="best-sellers" />
@@ -44,14 +46,7 @@ export default function App() {
           </Route>
 
           <Route path="/login">
-            <h2
-              style={{
-                paddingTop: theme.spacing(6),
-                paddingBottom: theme.spacing(6),
-              }}
-            >
-              Login
-            </h2>
+            <Login />
           </Route>
 
           <Route path="/register">

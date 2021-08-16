@@ -70,11 +70,11 @@ export default function MobileMenu() {
             </List>
             <Divider />
             <List>
-              {["swimwear", "Accessories"].map((text, index) => (
+              {["swimwear", "accessories"].map((text, index) => (
                 <ListItem
                   button
                   component={RouterLink}
-                  to={text}
+                  to={`/${text}`}
                   key={text}
                   className={classes.menuLink}
                 >

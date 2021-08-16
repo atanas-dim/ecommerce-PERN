@@ -27,5 +27,9 @@ export const useStyles = makeStyles((theme) => ({
     "& svg": {
       marginRight: theme.spacing(1),
     },
+
+    "&:hover": {
+      textDecoration: "none",
+    },
   },
 }));
