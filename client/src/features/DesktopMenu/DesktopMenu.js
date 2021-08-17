@@ -1,5 +1,5 @@
 import React from "react";
-import { useStyles } from "./DesktopMenu.styles";
+import { useStyles } from "../Header/Header.styles";
 import { List, ButtonBase, Button } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import clsx from "clsx";
