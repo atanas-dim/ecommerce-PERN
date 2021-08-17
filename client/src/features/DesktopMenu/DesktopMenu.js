@@ -1,6 +1,6 @@
 import React from "react";
 import { useStyles } from "./DesktopMenu.styles";
-import { List, ButtonBase } from "@material-ui/core";
+import { List, ButtonBase, Button } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import clsx from "clsx";
 import { capitalise } from "../../utils/capitaliseFirstLetter";
@@ -16,20 +16,20 @@ export default function DesktopMenu() {
     <>
       <List className={clsx(classes.containerList, classes.listMid)}>
         {["swimwear", "accessories"].map((text, index) => (
-          <ButtonBase
+          <Button
             component={RouterLink}
             to={`/${text}`}
             key={text}
             className={classes.menuLink}
           >
             {capitalise(text)}
-          </ButtonBase>
+          </Button>
         ))}
       </List>
 
       <List className={clsx(classes.containerList, classes.listRight)}>
         {["bag", "login"].map((text, index) => (
-          <ButtonBase
+          <Button
             component={RouterLink}
             to={text === "bag" ? "/cart" : `/${text}`}
             key={text}
@@ -38,7 +38,7 @@ export default function DesktopMenu() {
             {text === "bag" && <ShoppingBagIcon fontSize="small" />}
             {text === "login" && <LoginIcon fontSize="small" />}
             {capitalise(text)}
-          </ButtonBase>
+          </Button>
         ))}
       </List>
     </>
