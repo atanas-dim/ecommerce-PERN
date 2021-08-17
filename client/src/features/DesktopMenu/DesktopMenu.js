@@ -1,6 +1,6 @@
 import React from "react";
-import { useStyles } from "../Header/Header.styles";
-import { List, ButtonBase, Button } from "@material-ui/core";
+import { useStyles } from "./DesktopMenu.styles";
+import { List, ButtonBase } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import clsx from "clsx";
 import { capitalise } from "../../utils/capitaliseFirstLetter";
@@ -11,36 +11,35 @@ import {
 
 export default function DesktopMenu() {
   const classes = useStyles();
+  console.log(classes.customLink);
 
   return (
     <>
       <List className={clsx(classes.containerList, classes.listMid)}>
         {["swimwear", "accessories"].map((text, index) => (
-          <Button
+          <ButtonBase
             component={RouterLink}
             to={`/${text}`}
             key={text}
-            className={classes.customLink}
-            style={{ textTransform: "none" }}
+            className="makeStyles-customLink-9"
           >
             {capitalise(text)}
-          </Button>
+          </ButtonBase>
         ))}
       </List>
 
       <List className={clsx(classes.containerList, classes.listRight)}>
         {["bag", "login"].map((text, index) => (
-          <Button
+          <ButtonBase
             component={RouterLink}
             to={text === "bag" ? "/cart" : `/${text}`}
             key={text}
-            className={classes.customLink}
-            style={{ textTransform: "none" }}
+            className="makeStyles-customLink-9"
           >
             {text === "bag" && <ShoppingBagIcon fontSize="small" />}
             {text === "login" && <LoginIcon fontSize="small" />}
             {capitalise(text)}
-          </Button>
+          </ButtonBase>
         ))}
       </List>
     </>
