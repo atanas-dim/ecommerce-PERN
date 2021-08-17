@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AppBar, Toolbar, Typography, Link } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
-import DesktopMenuLinks from "../DesktopMenuLinks/DesktopMenuLinks";
+import DesktopMenu from "../DesktopMenu/DesktopMenu";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import { useStyles } from "./Header.styles";
 import clsx from "clsx";
@@ -34,7 +34,7 @@ export default function Header() {
             <LogoIcon fontSize="small" /> BeachShop
           </Link>
         </Typography>
-        {!isMobile ? <DesktopMenuLinks /> : <MobileMenu />}
+        {!isMobile ? <DesktopMenu /> : <MobileMenu />}
       </Toolbar>
     </AppBar>
   );
