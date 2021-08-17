@@ -14,7 +14,7 @@ export const useStyles = makeStyles((theme) => ({
   listRight: {
     justifyContent: "flex-end",
   },
-  menuLink: {
+  customLink: {
     fontSize: "1rem",
     fontWeight: 500,
     display: "flex",
