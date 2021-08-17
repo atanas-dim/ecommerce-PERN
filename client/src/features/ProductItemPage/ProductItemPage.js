@@ -16,19 +16,21 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectProductItem,
   loadProductById,
+  selectIsLoading,
 } from "../ProductsPage/productsSlice";
 import { Add as AddIcon } from "@material-ui/icons/";
 
-export default function CategoryPage() {
+export default function ProductItemPage() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { id } = useParams();
   const productItem = useSelector(selectProductItem);
+  const isLoading = useSelector(selectIsLoading);
   const [selectedSize, setSelectedSize] = useState("");
 
   useEffect(() => {
     dispatch(loadProductById(id));
-    // console.log(productItem);
+    console.log(productItem);
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -64,6 +66,15 @@ export default function CategoryPage() {
     });
   };
 
+  if (isLoading) {
+    console.log(isLoading);
+    return (
+      <Typography component="p" variant="h5" className={classes.root}>
+        Loading...
+      </Typography>
+    );
+  }
+
   return (
     <Container maxWidth="lg" className={classes.root}>
       <Card className={classes.card}>
@@ -78,7 +89,7 @@ export default function CategoryPage() {
             },
           }}
         >
-          {productItem.images &&
+          {productItem &&
             productItem.images.map((image, index) => (
               <Card className={classes.imageBase} elevation={0}>
                 <CardMedia

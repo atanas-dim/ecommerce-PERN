@@ -8,6 +8,7 @@ import {
 const initialState = {
   products: [],
   productItem: null,
+  isLoading: true,
 };
 
 export const loadBestSellers = createAsyncThunk(
@@ -53,7 +54,7 @@ export const productsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loadBestSellers.pending, (state) => {
-        state.status = "loading";
+        state.isLoading = true;
       })
       .addCase(loadBestSellers.fulfilled, (state, action) => {
         state.products = action.payload;
@@ -61,14 +62,19 @@ export const productsSlice = createSlice({
       .addCase(loadProductsCategory.fulfilled, (state, action) => {
         state.products = action.payload;
       })
+      .addCase(loadProductById.pending, (state, action) => {
+        state.isLoading = true;
+      })
       .addCase(loadProductById.fulfilled, (state, action) => {
         state.productItem = action.payload;
+        state.isLoading = false;
       });
   },
 });
 
 // export const { increment, decrement, incrementByAmount } = counterSlice.actions;
 
+export const selectIsLoading = (state) => state.products.isLoading;
 export const selectProducts = (state) => state.products.products;
 export const selectProductItem = (state) => state.products.productItem;
 

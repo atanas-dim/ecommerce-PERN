@@ -9,7 +9,7 @@ import {
   loadProductsCategory,
 } from "./productsSlice";
 
-export default function CategoryPage({ title, category }) {
+export default function ProductsPage({ title, category }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
