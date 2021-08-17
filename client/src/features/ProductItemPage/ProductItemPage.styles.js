@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    paddingTop: theme.spacing(5) + 22,
+    paddingTop: theme.spacing(6),
     paddingBottom: theme.spacing(6),
   },
   card: {
@@ -18,13 +18,9 @@ export const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(3),
     },
   },
-  backButton: {
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
   carousel: {
     width: "60%",
+    height: "100%",
     overflow: "unset !important",
     marginRight: theme.spacing(4),
     backgroundColor: theme.palette.primary.main,
@@ -36,22 +32,21 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   imageBase: {
-    height: "100%",
+    width: "100%",
+    height: "0",
     paddingTop: "100%",
     overflow: "hidden",
     position: "relative",
-    overflow: "hidden",
   },
   productImage: {
     width: "100%",
     height: "100%",
-    objectFit: "cover",
     position: "absolute",
     top: 0,
+    objectFit: "cover",
   },
   productInfo: {
     width: "40%",
-
     [theme.breakpoints.down("sm")]: {
       width: "100%",
     },
@@ -105,24 +100,15 @@ export const useStyles = makeStyles((theme) => ({
   sizeButtonSoldOut: {
     "&::before": {
       content: '"sold out"',
-      fontSize: "0.4rem",
+      fontSize: "0.5rem",
       fontWeight: "700",
       position: "absolute",
-      top: -6,
+      top: -8,
       background: theme.palette.primary.light,
       padding: "0 2px",
     },
   },
   addButton: {
     marginBottom: theme.spacing(4),
-  },
-  description: {
-    height: "100%",
-    maxHeight: "180px",
-    overflowY: "scroll",
-    overflowX: "inherit",
-    [theme.breakpoints.down("xs")]: {
-      maxHeight: "none",
-    },
   },
 }));

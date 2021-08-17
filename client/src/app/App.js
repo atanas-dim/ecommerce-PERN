@@ -4,6 +4,8 @@ import ScrollToTop from "../utils/ScrollToTop/ScrollToTop";
 import ProductsPage from "../features/ProductsPage/ProductsPage";
 import ProductItemPage from "../features/ProductItemPage/ProductItemPage";
 import Login from "../features/Login/Login";
+import Register from "../features/Register/Register";
+import ShoppingBag from "../features/ShoppingBag/ShoppingBag";
 import Footer from "../features/Footer/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -35,14 +37,7 @@ export default function App() {
           </Route>
 
           <Route path="/cart">
-            <h2
-              style={{
-                paddingTop: theme.spacing(6),
-                paddingBottom: theme.spacing(6),
-              }}
-            >
-              Shopping bag
-            </h2>
+            <ShoppingBag />
           </Route>
 
           <Route path="/login">
@@ -50,14 +45,7 @@ export default function App() {
           </Route>
 
           <Route path="/register">
-            <h2
-              style={{
-                paddingTop: theme.spacing(6),
-                paddingBottom: theme.spacing(6),
-              }}
-            >
-              Register
-            </h2>
+            <Register />
           </Route>
         </Switch>
         <Footer />

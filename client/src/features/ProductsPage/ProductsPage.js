@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Container, Typography } from "@material-ui/core";
 import { useStyles } from "./ProductsPage.styles";
 import ProductList from "../../components/ProductList/ProductList";
@@ -21,7 +21,7 @@ export default function CategoryPage({ title, category }) {
 
   return (
     <Container maxWidth="lg" className={classes.root}>
-      <Typography variant="h6" component="h2">
+      <Typography variant="h5" component="h2">
         {title}
       </Typography>
       <ProductList products={products} />

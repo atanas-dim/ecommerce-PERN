@@ -6,17 +6,16 @@ import {
   Typography,
   TextField,
 } from "@material-ui/core";
-import { useStyles } from "./Login.styles";
-import { Link as RouterLink } from "react-router-dom";
+import { useStyles } from "./Register.styles";
 
-export default function Login() {
+export default function Register() {
   const classes = useStyles();
 
   return (
     <Container maxWidth="sm" className={classes.root}>
       <Card className={classes.card}>
         <Typography component="h2" variant="h5" className={classes.heading}>
-          Login
+          Register
         </Typography>
         <form className={classes.form}>
           <TextField
@@ -40,34 +39,35 @@ export default function Login() {
             color="secondary"
             className={classes.input}
           />
+          <TextField
+            required
+            label="First name"
+            variant="outlined"
+            type="text"
+            fullWidth
+            color="secondary"
+            className={classes.input}
+          />
+          <TextField
+            required
+            label="Last name"
+            variant="outlined"
+            type="text"
+            fullWidth
+            color="secondary"
+            className={classes.input}
+          />
           <Button
             variant="contained"
             disableElevation
             color="secondary"
             size="large"
-            onClick={() => {}}
             type="submit"
+            onClick={() => {}}
           >
-            Log in
+            Create account
           </Button>
         </form>
-        <Typography
-          component="span"
-          variant="body2"
-          className={classes.newToShop}
-        >
-          New to BeachShop?
-        </Typography>
-
-        <Typography
-          component={RouterLink}
-          variant="body2"
-          to="/register"
-          className={classes.sizeGuideLink}
-          style={{ fontWeight: 900 }}
-        >
-          Register
-        </Typography>
       </Card>
     </Container>
   );

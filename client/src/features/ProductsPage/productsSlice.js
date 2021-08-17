@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   products: [],
-  productItem: {},
+  productItem: null,
 };
 
 export const loadBestSellers = createAsyncThunk(

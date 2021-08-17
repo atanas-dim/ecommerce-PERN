@@ -3,12 +3,12 @@ import {
   Container,
   Typography,
   Card,
-  Paper,
+  CardMedia,
   Box,
   Button,
   Grid,
 } from "@material-ui/core";
-import { Link as RouterLink, useHistory, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { useStyles } from "./ProductItemPage.styles";
 import clsx from "clsx";
 import Carousel from "react-material-ui-carousel";
@@ -17,10 +17,9 @@ import {
   selectProductItem,
   loadProductById,
 } from "../ProductsPage/productsSlice";
-import { ArrowBackIos, Add as AddIcon } from "@material-ui/icons/";
+import { Add as AddIcon } from "@material-ui/icons/";
 
 export default function CategoryPage() {
-  const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -29,7 +28,7 @@ export default function CategoryPage() {
 
   useEffect(() => {
     dispatch(loadProductById(id));
-    console.log(productItem);
+    // console.log(productItem);
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -67,15 +66,6 @@ export default function CategoryPage() {
 
   return (
     <Container maxWidth="lg" className={classes.root}>
-      <Typography
-        component={RouterLink}
-        variant="h6"
-        onClick={() => history.goBack()}
-        className={classes.backButton}
-      >
-        <ArrowBackIos fontSize="small" /> Back
-      </Typography>
-
       <Card className={classes.card}>
         <Carousel
           autoPlay={false}
@@ -90,14 +80,16 @@ export default function CategoryPage() {
         >
           {productItem.images &&
             productItem.images.map((image, index) => (
-              <Paper className={classes.imageBase} elevation={0}>
-                <img
-                  src={`${image}`}
+              <Card className={classes.imageBase} elevation={0}>
+                <CardMedia
                   key={`${productItem.name + index}`}
+                  component="img"
                   alt={`${productItem.name + index}`}
+                  image={`${image}`}
+                  title={`${productItem.name + index}`}
                   className={classes.productImage}
-                />
-              </Paper>
+                ></CardMedia>
+              </Card>
             ))}
         </Carousel>
 
@@ -112,7 +104,7 @@ export default function CategoryPage() {
             justifyContent="space-between"
             className={classes.productTitleContainer}
           >
-            <Typography variant="h6" component="h2">
+            <Typography variant="h5" component="h2">
               {productItem.name}
             </Typography>
             <Typography variant="h5" component="span" className={classes.price}>
@@ -144,27 +136,27 @@ export default function CategoryPage() {
           <Grid container spacing={3} className={classes.sizeButtonsContainer}>
             {productItem.sizes && renderSizeButtons()}
           </Grid>
+
           <Box>
             <Button
+              type="submit"
               className={classes.addButton}
               variant="contained"
               disableElevation
               color="secondary"
               size="large"
-              onClick={() => {}}
+              onClick={() => console.log(selectedSize)}
             >
               <AddIcon /> Add to bag
             </Button>
           </Box>
+
           <Typography
             component="p"
             variant="body1"
             className={classes.description}
           >
             {productItem.description}
-            Swimming shorts with jungle pattern. Swimming shorts with jungle
-            pattern. Swimming shorts with jungle pattern. Swimming shorts with
-            jungle pattern. Swimming shorts with jungle pattern.
           </Typography>
         </Box>
       </Card>

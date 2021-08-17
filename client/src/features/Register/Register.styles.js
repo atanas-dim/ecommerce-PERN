@@ -18,7 +18,6 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    marginBottom: theme.spacing(4),
   },
   input: {
     marginBottom: theme.spacing(4),
