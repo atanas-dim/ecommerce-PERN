@@ -27,4 +27,11 @@ export const useStyles = makeStyles((theme) => ({
   newToShop: {
     marginRight: theme.spacing(2),
   },
+  error: {
+    color: "red",
+    marginBottom: theme.spacing(3),
+  },
+  testUser: {
+    marginBottom: theme.spacing(3),
+  },
 }));

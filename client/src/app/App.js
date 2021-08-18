@@ -16,40 +16,47 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Header />
-        <ScrollToTop />
-        <Switch>
-          <Route path="/" exact>
-            <ProductsPage title="Our Best Sellers" category="best-sellers" />
-          </Route>
 
-          <Route path="/swimwear">
-            <ProductsPage title="Swimwear" category="swimwear" />
-          </Route>
+      <Header />
+      <ScrollToTop />
+      <Switch>
+        <Route path="/" exact>
+          <ProductsPage title="Our Best Sellers" category="best-sellers" />
+        </Route>
 
-          <Route path="/accessories">
-            <ProductsPage title="Accessories" category="accessories" />
-          </Route>
+        <Route path="/swimwear">
+          <ProductsPage title="Swimwear" category="swimwear" />
+        </Route>
 
-          <Route path="/products/:id">
-            <ProductItemPage />
-          </Route>
+        <Route path="/accessories">
+          <ProductsPage title="Accessories" category="accessories" />
+        </Route>
 
-          <Route path="/cart">
-            <Cart />
-          </Route>
+        <Route path="/products/:id">
+          <ProductItemPage />
+        </Route>
 
-          <Route path="/login">
-            <Login />
-          </Route>
+        <Route path="/cart">
+          <Cart />
+        </Route>
 
-          <Route path="/register">
-            <Register />
-          </Route>
-        </Switch>
-        <Footer />
-      </Router>
+        <Route path="/login/">
+          <Login />
+        </Route>
+
+        <Route path="/register">
+          <Register />
+        </Route>
+
+        <Route path="/account">
+          <h2>
+            <br />
+            <br />
+            Account
+          </h2>
+        </Route>
+      </Switch>
+      <Footer />
     </ThemeProvider>
   );
 }

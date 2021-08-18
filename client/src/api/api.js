@@ -1,5 +1,9 @@
 import axiosAPI from "./axiosConfig";
 
+// const config = {
+//   headers: { Authorization: `Bearer ${token}` }
+// };
+
 //Best Sellers
 export const fetchBestSellers = async () => {
   const response = await axiosAPI.get("/products/best-sellers");
@@ -24,15 +28,6 @@ export const fetchUser = async (email, password) => {
     email: email,
     password: password,
   };
-
-  try {
-    const response = await axiosAPI.post(`/auth/login`, body);
-    return response.data;
-  } catch (error) {
-    if (error.response) {
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
-    }
-  }
+  const response = await axiosAPI.post(`/auth/login`, body);
+  return response.data;
 };

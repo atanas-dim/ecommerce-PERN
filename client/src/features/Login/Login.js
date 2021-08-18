@@ -7,32 +7,59 @@ import {
   TextField,
 } from "@material-ui/core";
 import { useStyles } from "./Login.styles";
-import { Link as RouterLink } from "react-router-dom";
+import {
+  Link as RouterLink,
+  Redirect,
+  useLocation,
+  useHistory,
+  useParams,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectIsLoading,
   selectIsLoggedIn,
   selectUser,
+  selectError,
   loginUser,
 } from "./userSlice";
+import { fetchProductsCategory } from "../../api/api";
 
 export default function Login() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const error = useSelector(selectError);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    console.log(isLoggedIn);
-    console.log(user);
-  }, [isLoggedIn, user]);
+  const history = useHistory();
 
   const handleLogin = (event) => {
     event.preventDefault();
     dispatch(loginUser({ email, password }));
   };
+
+  const fetchTest = async () => {
+    console.log(user);
+    const orders = await fetch(
+      `https://pernstore.herokuapp.com/api/orders/user/${user.user.id}`,
+      {
+        method: "get",
+        headers: {
+          Authorization: "Beared " + user.token,
+        },
+      }
+    );
+
+    console.log(await orders.json());
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      // fetchTest();
+      history.goBack();
+    }
+  }, [isLoggedIn]);
 
   return (
     <Container maxWidth="sm" className={classes.root}>
@@ -40,6 +67,14 @@ export default function Login() {
         <Typography component="h2" variant="h5" className={classes.heading}>
           Login
         </Typography>
+        <Typography component="p" variant="body2" className={classes.testUser}>
+          Test - email: <b>john@email.com</b> password: <b>JohnsPassword</b>
+        </Typography>
+        {error && (
+          <Typography component="p" variant="body2" className={classes.error}>
+            {error}
+          </Typography>
+        )}
         <form className={classes.form} onSubmit={handleLogin}>
           <TextField
             required

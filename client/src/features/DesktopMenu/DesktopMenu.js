@@ -4,18 +4,25 @@ import { List, Button } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import clsx from "clsx";
 import { capitalise } from "../../utils/capitaliseFirstLetter";
+import { selectIsLoggedIn } from "../Login/userSlice";
+import { useSelector } from "react-redux";
 import {
   LocalMallOutlined as ShoppingBagIcon,
   ExitToAppOutlined as LoginIcon,
+  AccountCircleOutlined as AccountIcon,
 } from "@material-ui/icons/";
 
 export default function DesktopMenu() {
   const classes = useStyles();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
+  const categories = ["swimwear", "accessories"];
+  const userArea = isLoggedIn ? ["bag", "account"] : ["bag", "login"];
 
   return (
     <>
       <List className={clsx(classes.containerList, classes.listMid)}>
-        {["swimwear", "accessories"].map((text, index) => (
+        {categories.map((text, index) => (
           <Button
             component={RouterLink}
             to={`/${text}`}
@@ -28,7 +35,7 @@ export default function DesktopMenu() {
       </List>
 
       <List className={clsx(classes.containerList, classes.listRight)}>
-        {["bag", "login"].map((text, index) => (
+        {userArea.map((text, index) => (
           <Button
             component={RouterLink}
             to={text === "bag" ? "/cart" : `/${text}`}
@@ -37,6 +44,7 @@ export default function DesktopMenu() {
           >
             {text === "bag" && <ShoppingBagIcon fontSize="small" />}
             {text === "login" && <LoginIcon fontSize="small" />}
+            {text === "account" && <AccountIcon fontSize="small" />}
             {capitalise(text)}
           </Button>
         ))}

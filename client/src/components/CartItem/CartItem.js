@@ -18,11 +18,11 @@ import { capitalise } from "../../utils/capitaliseFirstLetter";
 export default function BagItem({ product }) {
   const classes = useStyles();
   const [size, setSize] = useState("");
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
-  useEffect(() => {
-    console.log(product);
-  }, []);
+  // useEffect(() => {
+  //   console.log(product);
+  // }, []);
 
   return (
     <Card className={clsx(classes.root)}>
