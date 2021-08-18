@@ -13,19 +13,6 @@ export const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: "100%",
     width: "100%",
-
-    "&:hover, &$focusVisible": {
-      zIndex: 1,
-      "& $imageBackdrop": {
-        opacity: 0.15,
-      },
-      "& $imageMarked": {
-        opacity: 0,
-      },
-      "& $imageTitle": {
-        border: "4px solid currentColor",
-      },
-    },
   },
   imageSrc: {
     position: "absolute",

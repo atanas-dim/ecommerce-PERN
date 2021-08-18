@@ -1,28 +1,34 @@
-const url = "https://pernstore.herokuapp.com/api/";
+import axiosAPI from "./axiosConfig";
 
 //Best Sellers
 export const fetchBestSellers = async () => {
-  const endpoint = `${url}/products/best-sellers`;
-  const response = await fetch(endpoint);
-  const jsonResponse = await response.json();
-
-  return jsonResponse;
+  const response = await axiosAPI.get("/products/best-sellers");
+  return response.data;
 };
 
 //All products by category
 export const fetchProductsCategory = async (category) => {
-  const endpoint = `${url}/products/category/${category}`;
-  const response = await fetch(endpoint);
-  const jsonResponse = await response.json();
-
-  return jsonResponse;
+  const response = await axiosAPI.get(`/products/category/${category}`);
+  return response.data;
 };
 
 //Get product by ID
 export const fetchProductById = async (id) => {
-  const endpoint = `${url}/products/${id}`;
-  const response = await fetch(endpoint);
-  const jsonResponse = await response.json();
+  const response = await axiosAPI.get(`/products/${id}`);
+  return response.data;
+};
 
-  return jsonResponse;
+// Get user
+export const fetchUser = async (email, password) => {
+  const body = {
+    email: email,
+    password: password,
+  };
+
+  try {
+    const response = await axiosAPI.post(`/auth/login`, body);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };

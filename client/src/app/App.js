@@ -5,7 +5,7 @@ import ProductsPage from "../features/ProductsPage/ProductsPage";
 import ProductItemPage from "../features/ProductItemPage/ProductItemPage";
 import Login from "../features/Login/Login";
 import Register from "../features/Register/Register";
-import ShoppingBag from "../features/ShoppingBag/ShoppingBag";
+import Cart from "../features/Cart/Cart";
 import Footer from "../features/Footer/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -37,7 +37,7 @@ export default function App() {
           </Route>
 
           <Route path="/cart">
-            <ShoppingBag />
+            <Cart />
           </Route>
 
           <Route path="/login">

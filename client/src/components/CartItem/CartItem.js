@@ -10,7 +10,7 @@ import {
   FormControl,
   OutlinedInput,
 } from "@material-ui/core";
-import { useStyles } from "./BagItem.styles";
+import { useStyles } from "./CartItem.styles";
 import clsx from "clsx";
 import { Link as RouterLink } from "react-router-dom";
 import { capitalise } from "../../utils/capitaliseFirstLetter";

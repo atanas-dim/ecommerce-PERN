@@ -8,7 +8,7 @@ import {
 const initialState = {
   products: [],
   productItem: null,
-  isLoading: true,
+  isLoading: false,
 };
 
 export const loadBestSellers = createAsyncThunk(
@@ -40,9 +40,9 @@ export const productsSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    // increment: (state) => {
-    //   state.value += 1;
-    // },
+    clearProductItem: (state) => {
+      state.productItem = null;
+    },
     // decrement: (state) => {
     //   state.value -= 1;
     // },
@@ -68,11 +68,15 @@ export const productsSlice = createSlice({
       .addCase(loadProductById.fulfilled, (state, action) => {
         state.productItem = action.payload;
         state.isLoading = false;
+      })
+      .addCase(loadProductById.rejected, (state, action) => {
+        console.log("rejected");
+        state.isLoading = false;
       });
   },
 });
 
-// export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { clearProductItem } = productsSlice.actions;
 
 export const selectIsLoading = (state) => state.products.isLoading;
 export const selectProducts = (state) => state.products.products;

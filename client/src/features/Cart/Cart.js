@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container, Typography, Card, Box } from "@material-ui/core";
 import OrderSummary from "../../components/OrderSummary/OrderSummary";
-import BagItem from "../../components/BagItem/BagItem";
-import { useStyles } from "./ShoppingBag.styles";
+import CartItem from "../../components/CartItem/CartItem";
+import { useStyles } from "./Cart.styles";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -39,9 +39,9 @@ export default function ShoppingBag() {
         >
           {productItem && (
             <>
-              <BagItem product={productItem} />
-              <BagItem product={productItem} />
-              <BagItem product={productItem} />
+              <CartItem product={productItem} />
+              <CartItem product={productItem} />
+              <CartItem product={productItem} />
             </>
           )}
         </Box>

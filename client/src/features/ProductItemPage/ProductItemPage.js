@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Container,
   Typography,
@@ -17,6 +17,7 @@ import {
   selectProductItem,
   loadProductById,
   selectIsLoading,
+  clearProductItem,
 } from "../ProductsPage/productsSlice";
 import { Add as AddIcon } from "@material-ui/icons/";
 
@@ -30,19 +31,19 @@ export default function ProductItemPage() {
 
   useEffect(() => {
     dispatch(loadProductById(id));
-    console.log(productItem);
+    return () => dispatch(clearProductItem());
   }, [dispatch, id]);
 
-  useEffect(() => {
-    console.log(selectedSize);
-  }, [selectedSize]);
+  // useEffect(() => {
+  //   console.log(productItem);
+  // }, [productItem]);
 
   const renderSizeButtons = () => {
     const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
     return sizes.map((size) => {
       return (
-        <Grid item xs={4} sm={3} md={3} lg={2}>
+        <Grid item xs={4} sm={3} md={3} lg={2} key={`${size}-grid-item`}>
           <Button
             variant="outlined"
             size="small"
@@ -66,12 +67,13 @@ export default function ProductItemPage() {
     });
   };
 
-  if (isLoading) {
-    console.log(isLoading);
+  if (isLoading || !productItem) {
     return (
-      <Typography component="p" variant="h5" className={classes.root}>
-        Loading...
-      </Typography>
+      <Container maxWidth="lg" className={classes.root}>
+        <Typography component="p" variant="h5">
+          Loading...
+        </Typography>
+      </Container>
     );
   }
 
@@ -89,19 +91,21 @@ export default function ProductItemPage() {
             },
           }}
         >
-          {productItem &&
-            productItem.images.map((image, index) => (
-              <Card className={classes.imageBase} elevation={0}>
-                <CardMedia
-                  key={`${productItem.name + index}`}
-                  component="img"
-                  alt={`${productItem.name + index}`}
-                  image={`${image}`}
-                  title={`${productItem.name + index}`}
-                  className={classes.productImage}
-                ></CardMedia>
-              </Card>
-            ))}
+          {productItem.images.map((image, index) => (
+            <Card
+              className={classes.imageBase}
+              elevation={0}
+              key={`${productItem.name + index}`}
+            >
+              <CardMedia
+                component="img"
+                alt={`${productItem.name + index}`}
+                image={`${image}`}
+                title={`${productItem.name + index}`}
+                className={classes.productImage}
+              ></CardMedia>
+            </Card>
+          ))}
         </Carousel>
 
         <Box

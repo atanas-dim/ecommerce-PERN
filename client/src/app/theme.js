@@ -23,7 +23,7 @@ const theme = createTheme({
       secondary: blueGrey[600],
     },
   },
-  spacing: [0, 4, 8, 16, 32, 64, 128],
+  spacing: [0, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048],
 });
 
 theme.overrides = {

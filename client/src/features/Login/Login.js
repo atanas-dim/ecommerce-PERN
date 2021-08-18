@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Card,
@@ -8,9 +8,31 @@ import {
 } from "@material-ui/core";
 import { useStyles } from "./Login.styles";
 import { Link as RouterLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectIsLoading,
+  selectIsLoggedIn,
+  selectUser,
+  loginUser,
+} from "./userSlice";
 
 export default function Login() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    console.log(isLoggedIn);
+    console.log(user);
+  }, [isLoggedIn, user]);
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    dispatch(loginUser({ email, password }));
+  };
 
   return (
     <Container maxWidth="sm" className={classes.root}>
@@ -18,7 +40,7 @@ export default function Login() {
         <Typography component="h2" variant="h5" className={classes.heading}>
           Login
         </Typography>
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={handleLogin}>
           <TextField
             required
             label="Email"
@@ -30,6 +52,7 @@ export default function Login() {
             fullWidth
             color="secondary"
             className={classes.input}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             required
@@ -39,13 +62,13 @@ export default function Login() {
             fullWidth
             color="secondary"
             className={classes.input}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Button
             variant="contained"
             disableElevation
             color="secondary"
             size="large"
-            onClick={() => {}}
             type="submit"
           >
             Log in
