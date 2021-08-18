@@ -29,6 +29,10 @@ export const fetchUser = async (email, password) => {
     const response = await axiosAPI.post(`/auth/login`, body);
     return response.data;
   } catch (error) {
-    console.log(error);
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    }
   }
 };

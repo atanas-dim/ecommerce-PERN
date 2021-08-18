@@ -8,24 +8,25 @@ const {
   refreshToken,
 } = require("../controllers/auth.controller");
 
+function passportCheck(req, res, next) {
+  //this function is to send the passport messages as response if not authorized
+  passport.authenticate("local", function (err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      res.status(401);
+      res.end(info.message);
+      return;
+    }
+    req.user = user;
+    next();
+  })(req, res, next);
+}
+
 authRouter.post("/register", registerUser);
 
-//this one is for the redirect from passport authentication failure below
-// authRouter.get("/failurejson", (req, res) => {
-//   console.log(req.sessionStore);
-//   res.json({ message: "Incorrect email or password" });
-// });
-
-// authRouter.post(
-//   "/login",
-//   passport.authenticate("local", {
-//     failureRedirect: "/api/auth/failurejson", // redirect back to the signup page if there is an error
-//     failureFlash: true, // allow flash messages
-//   }),
-//   loginUser
-// );
-
-authRouter.post("/login", passport.authenticate("local"), loginUser);
+authRouter.post("/login", passportCheck, loginUser);
 
 authRouter.post("/refresh-token", refreshToken);
 
