@@ -24,6 +24,12 @@ export const useStyles = makeStyles((theme) => ({
     height: "100%",
     padding: `${theme.spacing(3)}px`,
     textTransform: "none",
+    borderRadius: 0,
+    marginRight: theme.spacing(1),
+
+    "&:last-of-type": {
+      marginRight: 0,
+    },
 
     "& svg": {
       marginRight: theme.spacing(1),

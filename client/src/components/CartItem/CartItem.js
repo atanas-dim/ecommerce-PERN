@@ -14,15 +14,34 @@ import { useStyles } from "./CartItem.styles";
 import clsx from "clsx";
 import { Link as RouterLink } from "react-router-dom";
 import { capitalise } from "../../utils/capitaliseFirstLetter";
+import {
+  updateTempCartProduct,
+  deleteTempCartProduct,
+} from "../../store/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function BagItem({ product }) {
+export default function BagItem({ product, tempCartProductIndex }) {
   const classes = useStyles();
-  const [size, setSize] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
 
   // useEffect(() => {
   //   console.log(product);
   // }, []);
+
+  const handleQuantityOnChange = (event) => {
+    if (tempCartProductIndex >= 0) {
+      dispatch(
+        updateTempCartProduct({
+          tempCartProductIndex,
+          quantity: event.target.value,
+        })
+      );
+    }
+  };
+
+  const handleRemove = () => {
+    dispatch(deleteTempCartProduct({ tempCartProductIndex }));
+  };
 
   return (
     <Card className={clsx(classes.root)}>
@@ -70,7 +89,7 @@ export default function BagItem({ product }) {
           <Box className={classes.selectionsContainer}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel
-                id={`product-${product.product_id}-size-${size}-quantity-label`}
+                id={`product-${product.product_id}-size-${product.size}-quantity-label`}
                 shrink
                 color="secondary"
               >
@@ -80,10 +99,10 @@ export default function BagItem({ product }) {
                 input={
                   <OutlinedInput notched label="Quantity" color="secondary" />
                 }
-                labelId={`product-${product.product_id}-size-${size}-quantity-label`}
-                id={`product-${product.product_id}-size-${size}-quantity-select`}
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                labelId={`product-${product.product_id}-size-${product.size}-quantity-label`}
+                id={`product-${product.product_id}-size-${product.size}-quantity-select`}
+                value={product.quantity}
+                onChange={(event) => handleQuantityOnChange(event)}
                 className={classes.select}
               >
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number) => {
@@ -92,7 +111,11 @@ export default function BagItem({ product }) {
               </Select>
             </FormControl>
           </Box>
-          <ButtonBase className={classes.removeButton} disableRipple>
+          <ButtonBase
+            className={classes.removeButton}
+            disableRipple
+            onClick={() => handleRemove()}
+          >
             Remove
           </ButtonBase>
         </Box>

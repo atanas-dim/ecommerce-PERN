@@ -7,8 +7,9 @@ import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCartProducts,
-  // selectTempCartProducts,
+  selectTempCartProducts,
   loadCartProducts,
+  loadTempCartProducts,
 } from "../../store/cartSlice";
 import { selectUser } from "../../store/userSlice";
 
@@ -18,17 +19,20 @@ export default function ShoppingBag() {
   const user = useSelector(selectUser);
   const cartId = user?.user.cart_id;
   const cartProducts = useSelector(selectCartProducts);
-  // const tempCartProducts = useSelector(selectTempCartProducts);
-  const tempCartProducts = JSON.parse(localStorage.getItem("tempCartProducts"));
-
-  // useEffect(() => {
-  //   if (user) dispatch(loadCartProducts(cartId));
-  // }, [dispatch, user, cartId]);
+  const tempCartProducts = useSelector(selectTempCartProducts);
 
   useEffect(() => {
-    console.log(cartProducts);
-    console.log(tempCartProducts);
-  }, [cartProducts, tempCartProducts]);
+    if (user) {
+      dispatch(loadCartProducts(cartId));
+    } else {
+      dispatch(loadTempCartProducts());
+    }
+  }, [dispatch, user, cartId]);
+
+  // useEffect(() => {
+  //   console.log(cartProducts);
+  //   console.log(tempCartProducts);
+  // }, [cartProducts, tempCartProducts]);
 
   return (
     <Container maxWidth="lg" className={classes.root}>
@@ -41,11 +45,16 @@ export default function ShoppingBag() {
           flexDirection="column"
           className={classes.bagItemsContainer}
         >
-          {cartProducts.map((product) => {
+          {cartProducts?.map((product) => {
             return <CartItem product={product} />;
           })}
-          {tempCartProducts?.map((product) => {
-            return <CartItem product={product} />;
+          {tempCartProducts?.map((product, tempCartProductIndex) => {
+            return (
+              <CartItem
+                product={product}
+                tempCartProductIndex={tempCartProductIndex}
+              />
+            );
           })}
         </Box>
 

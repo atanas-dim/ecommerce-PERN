@@ -1,8 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchCartProducts, fetchProductById } from "../api/api";
 
+const updateTempCart = (data) => {
+  localStorage.setItem("tempCartProducts", JSON.stringify(data));
+};
+
 const initialState = {
-  // tempCartProducts: [],
+  tempCartProducts: [],
   cartProducts: [],
   isLoading: false,
   error: false,
@@ -21,16 +25,46 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addTempCartProduct: (state, action) => {
-      // console.log(action);
-      // state.tempCartProducts.push(action.payload);
+      const existingProductIndex = state.tempCartProducts.findIndex(
+        (product) => {
+          return (
+            product?.product_id === action.payload.product_id &&
+            product?.size === action.payload.size
+          );
+        }
+      );
 
-      const tempCartProducts =
-        JSON.parse(localStorage.getItem("tempCartProducts")) || [];
-      tempCartProducts.push(action.payload);
+      if (existingProductIndex >= 0) {
+        if (state.tempCartProducts[existingProductIndex].quantity < 10) {
+          state.tempCartProducts[existingProductIndex].quantity +=
+            action.payload.quantity;
+        }
+      } else {
+        state.tempCartProducts.push(action.payload);
+      }
 
-      localStorage.setItem(
-        "tempCartProducts",
-        JSON.stringify(tempCartProducts)
+      updateTempCart(state.tempCartProducts);
+    },
+    updateTempCartProduct: (state, action) => {
+      const { tempCartProductIndex, quantity } = action.payload;
+      state.tempCartProducts[tempCartProductIndex].quantity = quantity;
+
+      updateTempCart(state.tempCartProducts);
+    },
+    deleteTempCartProduct: (state, action) => {
+      const { tempCartProductIndex } = action.payload;
+      const filteredTempCartProducts = state.tempCartProducts.filter(
+        (product, index) => {
+          if (index !== tempCartProductIndex) return product;
+        }
+      );
+
+      state.tempCartProducts = filteredTempCartProducts;
+      updateTempCart(state.tempCartProducts);
+    },
+    loadTempCartProducts: (state) => {
+      state.tempCartProducts = JSON.parse(
+        localStorage.getItem("tempCartProducts")
       );
     },
     clearCartProducts: (state) => {
@@ -55,11 +89,17 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addTempCartProduct, clearCartProducts } = cartSlice.actions;
+export const {
+  loadTempCartProducts,
+  addTempCartProduct,
+  updateTempCartProduct,
+  deleteTempCartProduct,
+  clearCartProducts,
+} = cartSlice.actions;
 
 export const selectIsLoading = (state) => state.cart.isLoading;
 export const selectError = (state) => state.cart.error;
 export const selectCartProducts = (state) => state.cart.cartProducts;
-// export const selectTempCartProducts = (state) => state.cart.tempCartProducts;
+export const selectTempCartProducts = (state) => state.cart.tempCartProducts;
 
 export default cartSlice.reducer;

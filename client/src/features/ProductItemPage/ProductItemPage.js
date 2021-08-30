@@ -43,6 +43,7 @@ export default function ProductItemPage() {
       categories: productItem.categories,
       price: productItem.price,
       size: selectedSize,
+      quantity: 1,
     };
     dispatch(addTempCartProduct(tempProductToAdd));
   };

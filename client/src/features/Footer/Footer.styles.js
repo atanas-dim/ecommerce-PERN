@@ -28,12 +28,10 @@ export const useStyles = makeStyles((theme) => ({
   gridContainer: {
     maxWidth: "800px",
     margin: "auto",
+    marginTop: "180px",
 
     [theme.breakpoints.down("sm")]: {
       maxWidth: "540px",
-    },
-    [theme.breakpoints.down("xs")]: {
-      marginTop: "30%",
     },
   },
   gridColumn: {
