@@ -39,24 +39,8 @@ export default function Login() {
     dispatch(loginUser({ email, password }));
   };
 
-  // const fetchTest = async () => {
-  //   console.log(user);
-  //   const orders = await fetch(
-  //     `https://pernstore.herokuapp.com/api/orders/user/${user.user.id}`,
-  //     {
-  //       method: "get",
-  //       headers: {
-  //         Authorization: "Beared " + user.token,
-  //       },
-  //     }
-  //   );
-
-  //   console.log(await orders.json());
-  // };
-
   useEffect(() => {
     if (isLoggedIn) {
-      // fetchTest();
       history.goBack();
     }
   }, [isLoggedIn]);

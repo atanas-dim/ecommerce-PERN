@@ -29,7 +29,7 @@ export default function BagItem({ product }) {
       <ButtonBase
         className={classes.imageLink}
         component={RouterLink}
-        to={`/products/${product.id}`}
+        to={`/products/${product.product_id}`}
       >
         <img className={classes.image} src={`${product.images[0]}`}></img>
       </ButtonBase>
@@ -45,7 +45,7 @@ export default function BagItem({ product }) {
             className={classes.headingsMain}
           >
             <Typography component="h3" variant="body1">
-              {product.name}
+              {product.product_name}
             </Typography>
             <Typography component="span" variant="h6" className={classes.price}>
               £ {product.price}
@@ -69,7 +69,7 @@ export default function BagItem({ product }) {
           <Box className={classes.selectionsContainer}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel
-                id={`product-${product.id}-size-${size}-quantity-label`}
+                id={`product-${product.product_id}-size-${size}-quantity-label`}
                 shrink
                 color="secondary"
               >
@@ -79,9 +79,9 @@ export default function BagItem({ product }) {
                 input={
                   <OutlinedInput notched label="Quantity" color="secondary" />
                 }
-                labelId={`product-${product.id}-size-${size}-quantity-label`}
-                id={`product-${product.id}-size-${size}-quantity-select`}
-                value={quantity}
+                labelId={`product-${product.product_id}-size-${size}-quantity-label`}
+                id={`product-${product.product_id}-size-${size}-quantity-select`}
+                value={product.quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 className={classes.select}
               >

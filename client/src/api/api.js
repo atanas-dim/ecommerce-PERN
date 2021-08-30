@@ -1,4 +1,4 @@
-import axiosAPI, { config } from "./axiosConfig";
+import axiosAPI, { createConfig } from "./axiosConfig";
 
 //Best Sellers
 export const fetchBestSellers = async () => {
@@ -30,6 +30,6 @@ export const fetchUser = async (email, password) => {
 
 // Get cart with products
 export const fetchCartProducts = async (cart_id) => {
-  const response = await axiosAPI.get(`/carts/${cart_id}`, config);
+  const response = await axiosAPI.get(`/carts/${cart_id}`, createConfig());
   return response.data;
 };

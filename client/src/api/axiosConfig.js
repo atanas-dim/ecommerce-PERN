@@ -1,11 +1,10 @@
 import axios from "axios";
 
-const getToken = () => {
-  return localStorage.getItem("token");
-};
-
-export const config = {
-  headers: { Authorization: `Bearer ${getToken()}` },
+export const createConfig = () => {
+  const token = localStorage.getItem("token");
+  return {
+    headers: { Authorization: `Bearer ${token}` },
+  };
 };
 
 const axiosAPI = axios.create({

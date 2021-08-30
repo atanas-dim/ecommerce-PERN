@@ -16,6 +16,7 @@ export default function ShoppingBag() {
   const cartProducts = useSelector(selectCartProducts);
 
   useEffect(() => {
+    // console.log(user);
     if (user) dispatch(loadCartProducts(cartId));
   }, [dispatch, user, cartId]);
 

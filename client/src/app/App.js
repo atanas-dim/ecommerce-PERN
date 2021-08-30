@@ -13,6 +13,12 @@ import { theme } from "./theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 export default function App() {
+  const handleLogout = () => {
+    //
+    localStorage.setItem("token", null);
+    window.location.replace("/");
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -52,7 +58,7 @@ export default function App() {
           <h2>
             <br />
             <br />
-            Account
+            <button onClick={() => handleLogout()}>log out</button>
           </h2>
         </Route>
       </Switch>
