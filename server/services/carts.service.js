@@ -49,18 +49,19 @@ class CartsService {
 
   async addCartProduct(cart_id, product_id, quantity, size) {
     try {
-      if (!product_id) throw new ErrorHandler(406, "Product ID required.");
+      if (!product_id || !size)
+        throw new ErrorHandler(406, "Product ID and size required.");
 
       if (quantity <= 0)
         throw new ErrorHandler(406, "Quantity has to be a positive value.");
 
-      const findCartProduct = await CartsProductsModel.getCartProductDb(
-        cart_id,
-        product_id,
-        size
-      );
+      // const findCartProduct = await CartsProductsModel.getCartProductDb(
+      //   cart_id,
+      //   product_id,
+      //   size
+      // );
 
-      if (findCartProduct) return "Product already exists in this cart.";
+      // if (findCartProduct) return "Product already exists in this cart.";
 
       const newCartProduct = await CartsProductsModel.addCartProductDb(
         cart_id,

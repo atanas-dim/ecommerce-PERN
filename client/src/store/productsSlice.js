@@ -38,17 +38,10 @@ export const loadProductById = createAsyncThunk(
 export const productsSlice = createSlice({
   name: "products",
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     clearProductItem: (state) => {
       state.productItem = null;
     },
-    // decrement: (state) => {
-    //   state.value -= 1;
-    // },
-    // incrementByAmount: (state, action) => {
-    //   state.value += action.payload;
-    // },
   },
 
   extraReducers: (builder) => {

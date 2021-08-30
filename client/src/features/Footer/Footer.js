@@ -93,7 +93,11 @@ export default function Footer() {
           </IconButton>
         </Grid>
         <Grid item xs={12} className={classes.socialLinks}>
-          <Typography variant="body2" component="span">
+          <Typography
+            variant="body2"
+            component="span"
+            style={{ marginTop: 32 }}
+          >
             Original products from H&M
           </Typography>
         </Grid>

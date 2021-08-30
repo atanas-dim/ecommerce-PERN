@@ -13,6 +13,7 @@ import clsx from "clsx";
 
 export default function ProductCard({ id, name, price, images }) {
   const classes = useStyles();
+
   return (
     <Card className={classes.root}>
       <ButtonBase
@@ -47,18 +48,6 @@ export default function ProductCard({ id, name, price, images }) {
           £ {price}
         </Typography>
       </ButtonBase>
-
-      <CardActions className={classes.actions}>
-        <Button
-          variant="contained"
-          disableElevation
-          color="secondary"
-          size="small"
-          style={{ width: "100%" }}
-        >
-          <AddIcon /> Add to bag
-        </Button>
-      </CardActions>
     </Card>
   );
 }

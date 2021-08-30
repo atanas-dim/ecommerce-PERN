@@ -28,7 +28,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   text: {
     padding: theme.spacing(3),
-    paddingBottom: theme.spacing(1),
     width: "100%",
     height: "100%",
     textAlign: "left",
@@ -39,8 +38,5 @@ export const useStyles = makeStyles((theme) => ({
     "&:hover": {
       textDecoration: "none",
     },
-  },
-  actions: {
-    width: "100%",
   },
 }));

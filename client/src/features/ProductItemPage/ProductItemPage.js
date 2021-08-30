@@ -19,6 +19,7 @@ import {
   selectIsLoading,
   clearProductItem,
 } from "../../store/productsSlice";
+import { addTempCartProduct } from "../../store/cartSlice";
 import { Add as AddIcon } from "@material-ui/icons/";
 
 export default function ProductItemPage() {
@@ -33,6 +34,18 @@ export default function ProductItemPage() {
     dispatch(loadProductById(id));
     return () => dispatch(clearProductItem());
   }, [dispatch, id]);
+
+  const handleAddToBag = () => {
+    const tempProductToAdd = {
+      product_id: productItem.id,
+      product_name: productItem.name,
+      images: productItem.images,
+      categories: productItem.categories,
+      price: productItem.price,
+      size: selectedSize,
+    };
+    dispatch(addTempCartProduct(tempProductToAdd));
+  };
 
   // useEffect(() => {
   //   console.log(productItem);
@@ -160,7 +173,7 @@ export default function ProductItemPage() {
               disableElevation
               color="secondary"
               size="large"
-              onClick={() => console.log(selectedSize)}
+              onClick={() => handleAddToBag()}
             >
               <AddIcon /> Add to bag
             </Button>

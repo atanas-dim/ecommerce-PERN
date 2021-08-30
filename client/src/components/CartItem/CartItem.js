@@ -20,9 +20,9 @@ export default function BagItem({ product }) {
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(1);
 
-  useEffect(() => {
-    console.log(product);
-  }, []);
+  // useEffect(() => {
+  //   console.log(product);
+  // }, []);
 
   return (
     <Card className={clsx(classes.root)}>
@@ -45,8 +45,9 @@ export default function BagItem({ product }) {
             className={classes.headingsMain}
           >
             <Typography component="h3" variant="body1">
-              {product.product_name}
+              {product.product_name}, {product.size}
             </Typography>
+
             <Typography component="span" variant="h6" className={classes.price}>
               £ {product.price}
             </Typography>
@@ -81,7 +82,7 @@ export default function BagItem({ product }) {
                 }
                 labelId={`product-${product.product_id}-size-${size}-quantity-label`}
                 id={`product-${product.product_id}-size-${size}-quantity-select`}
-                value={product.quantity}
+                value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 className={classes.select}
               >

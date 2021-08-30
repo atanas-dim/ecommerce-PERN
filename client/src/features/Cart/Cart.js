@@ -5,7 +5,11 @@ import CartItem from "../../components/CartItem/CartItem";
 import { useStyles } from "./Cart.styles";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCartProducts, loadCartProducts } from "../../store/cartSlice";
+import {
+  selectCartProducts,
+  // selectTempCartProducts,
+  loadCartProducts,
+} from "../../store/cartSlice";
 import { selectUser } from "../../store/userSlice";
 
 export default function ShoppingBag() {
@@ -14,15 +18,17 @@ export default function ShoppingBag() {
   const user = useSelector(selectUser);
   const cartId = user?.user.cart_id;
   const cartProducts = useSelector(selectCartProducts);
+  // const tempCartProducts = useSelector(selectTempCartProducts);
+  const tempCartProducts = JSON.parse(localStorage.getItem("tempCartProducts"));
 
-  useEffect(() => {
-    // console.log(user);
-    if (user) dispatch(loadCartProducts(cartId));
-  }, [dispatch, user, cartId]);
+  // useEffect(() => {
+  //   if (user) dispatch(loadCartProducts(cartId));
+  // }, [dispatch, user, cartId]);
 
   useEffect(() => {
     console.log(cartProducts);
-  }, [cartProducts]);
+    console.log(tempCartProducts);
+  }, [cartProducts, tempCartProducts]);
 
   return (
     <Container maxWidth="lg" className={classes.root}>
@@ -36,6 +42,9 @@ export default function ShoppingBag() {
           className={classes.bagItemsContainer}
         >
           {cartProducts.map((product) => {
+            return <CartItem product={product} />;
+          })}
+          {tempCartProducts?.map((product) => {
             return <CartItem product={product} />;
           })}
         </Box>

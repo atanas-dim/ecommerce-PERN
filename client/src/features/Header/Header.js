@@ -11,9 +11,14 @@ export default function Header() {
   const classes = useStyles();
   const [isMobile, setIsMobile] = useState(false);
 
+  const setIsMobileFromWindowWidth = () => {
+    window.innerWidth < 768 ? setIsMobile(true) : setIsMobile(false);
+  };
+
   useEffect(() => {
+    setIsMobileFromWindowWidth();
     window.addEventListener("resize", function () {
-      window.innerWidth < 768 ? setIsMobile(true) : setIsMobile(false);
+      setIsMobileFromWindowWidth();
     });
   }, []);
 

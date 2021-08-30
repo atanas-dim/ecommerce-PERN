@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchCartProducts } from "../api/api";
+import { fetchCartProducts, fetchProductById } from "../api/api";
 
 const initialState = {
+  // tempCartProducts: [],
   cartProducts: [],
   isLoading: false,
   error: false,
@@ -19,6 +20,19 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    addTempCartProduct: (state, action) => {
+      // console.log(action);
+      // state.tempCartProducts.push(action.payload);
+
+      const tempCartProducts =
+        JSON.parse(localStorage.getItem("tempCartProducts")) || [];
+      tempCartProducts.push(action.payload);
+
+      localStorage.setItem(
+        "tempCartProducts",
+        JSON.stringify(tempCartProducts)
+      );
+    },
     clearCartProducts: (state) => {
       state.cartProducts = null;
     },
@@ -41,10 +55,11 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { clearCartProducts } = cartSlice.actions;
+export const { addTempCartProduct, clearCartProducts } = cartSlice.actions;
 
 export const selectIsLoading = (state) => state.cart.isLoading;
 export const selectError = (state) => state.cart.error;
 export const selectCartProducts = (state) => state.cart.cartProducts;
+// export const selectTempCartProducts = (state) => state.cart.tempCartProducts;
 
 export default cartSlice.reducer;
