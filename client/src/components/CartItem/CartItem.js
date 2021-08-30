@@ -20,9 +20,9 @@ export default function BagItem({ product }) {
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(1);
 
-  // useEffect(() => {
-  //   console.log(product);
-  // }, []);
+  useEffect(() => {
+    console.log(product);
+  }, []);
 
   return (
     <Card className={clsx(classes.root)}>
@@ -67,35 +67,6 @@ export default function BagItem({ product }) {
           className={classes.actionsContainer}
         >
           <Box className={classes.selectionsContainer}>
-            {/* <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel
-                id={`product-${product.id}-size-${size}-label`}
-                shrink
-                color="secondary"
-              >
-                Size
-              </InputLabel>
-              <Select
-                input={<OutlinedInput notched label="Size" color="secondary" />}
-                labelId={`product-${product.id}-size-${size}-label`}
-                id={`product-${product.id}-size-select`}
-                value={size}
-                onChange={(e) => setSize(e.target.value)}
-                className={classes.select}
-              >
-                {["XS", "S", "M", "L", "XL", "XXL"].map((sizeOption) => {
-                  return (
-                    <MenuItem
-                      value={sizeOption}
-                      disabled={!product.sizes.includes(sizeOption)}
-                    >
-                      {sizeOption}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl> */}
-
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel
                 id={`product-${product.id}-size-${size}-quantity-label`}

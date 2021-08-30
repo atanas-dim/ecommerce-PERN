@@ -4,7 +4,7 @@ import { List, Button } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import clsx from "clsx";
 import { capitalise } from "../../utils/capitaliseFirstLetter";
-import { selectIsLoggedIn } from "../Login/userSlice";
+import { selectIsLoggedIn } from "../../store/userSlice";
 import { useSelector } from "react-redux";
 import {
   LocalMallOutlined as ShoppingBagIcon,

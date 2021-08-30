@@ -7,7 +7,7 @@ import {
   selectProducts,
   loadBestSellers,
   loadProductsCategory,
-} from "./productsSlice";
+} from "../../store/productsSlice";
 
 export default function ProductsPage({ title, category }) {
   const classes = useStyles();

@@ -3,7 +3,7 @@ import {
   fetchBestSellers,
   fetchProductsCategory,
   fetchProductById,
-} from "../../api/api";
+} from "../api/api";
 
 const initialState = {
   products: [],

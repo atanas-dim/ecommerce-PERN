@@ -27,7 +27,9 @@ class CartsProductsModel {
                 products.name AS product_name, 
                 SUM(carts_products.quantity)::integer AS quantity,
                 carts_products.size AS size,
-                products.price AS price 
+                products.price AS price, 
+                products.categories AS categories,
+                products.images AS images
         FROM carts 
         JOIN carts_products 
                 ON carts_products.cart_id = carts.id

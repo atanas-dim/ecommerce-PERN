@@ -21,7 +21,7 @@ import {
   selectUser,
   selectError,
   loginUser,
-} from "./userSlice";
+} from "../../store/userSlice";
 import { fetchProductsCategory } from "../../api/api";
 
 export default function Login() {
@@ -39,20 +39,20 @@ export default function Login() {
     dispatch(loginUser({ email, password }));
   };
 
-  const fetchTest = async () => {
-    console.log(user);
-    const orders = await fetch(
-      `https://pernstore.herokuapp.com/api/orders/user/${user.user.id}`,
-      {
-        method: "get",
-        headers: {
-          Authorization: "Beared " + user.token,
-        },
-      }
-    );
+  // const fetchTest = async () => {
+  //   console.log(user);
+  //   const orders = await fetch(
+  //     `https://pernstore.herokuapp.com/api/orders/user/${user.user.id}`,
+  //     {
+  //       method: "get",
+  //       headers: {
+  //         Authorization: "Beared " + user.token,
+  //       },
+  //     }
+  //   );
 
-    console.log(await orders.json());
-  };
+  //   console.log(await orders.json());
+  // };
 
   useEffect(() => {
     if (isLoggedIn) {

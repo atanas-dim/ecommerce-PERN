@@ -5,26 +5,23 @@ import CartItem from "../../components/CartItem/CartItem";
 import { useStyles } from "./Cart.styles";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectProductItem,
-  loadProductById,
-} from "../ProductsPage/productsSlice";
+import { selectCartProducts, loadCartProducts } from "../../store/cartSlice";
+import { selectUser } from "../../store/userSlice";
 
 export default function ShoppingBag() {
   const classes = useStyles();
   const dispatch = useDispatch();
-
-  /// temporary for dev
-  const [id, setId] = useState(3);
-  const productItem = useSelector(selectProductItem);
+  const user = useSelector(selectUser);
+  const cartId = user?.user.cart_id;
+  const cartProducts = useSelector(selectCartProducts);
 
   useEffect(() => {
-    dispatch(loadProductById(id));
-  }, [dispatch, id]);
+    if (user) dispatch(loadCartProducts(cartId));
+  }, [dispatch, user, cartId]);
 
-  // useEffect(() => {
-  //   console.log(productItem);
-  // }, [productItem]);
+  useEffect(() => {
+    console.log(cartProducts);
+  }, [cartProducts]);
 
   return (
     <Container maxWidth="lg" className={classes.root}>
@@ -37,13 +34,9 @@ export default function ShoppingBag() {
           flexDirection="column"
           className={classes.bagItemsContainer}
         >
-          {productItem && (
-            <>
-              <CartItem product={productItem} />
-              <CartItem product={productItem} />
-              <CartItem product={productItem} />
-            </>
-          )}
+          {cartProducts.map((product) => {
+            return <CartItem product={product} />;
+          })}
         </Box>
 
         <OrderSummary />

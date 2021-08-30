@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchUser } from "../../api/api";
+import { fetchUser } from "../api/api";
 
 const initialState = {
   user: null,
@@ -24,7 +24,6 @@ export const loginUser = createAsyncThunk(
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     clearUser: (state) => {
       state.user = null;
@@ -38,12 +37,15 @@ export const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload;
+        console.log(action.payload);
+
+        localStorage.setItem("token", action.payload.token);
+        localStorage.setItem("refreshToken", action.payload.refreshToken);
+
         state.isLoggedIn = true;
         state.isLoading = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        // console.log("rejected");
-        // console.log(action.error.message);
         state.error = action.error.message;
         state.isLoading = false;
       });

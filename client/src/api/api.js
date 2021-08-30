@@ -1,8 +1,4 @@
-import axiosAPI from "./axiosConfig";
-
-// const config = {
-//   headers: { Authorization: `Bearer ${token}` }
-// };
+import axiosAPI, { config } from "./axiosConfig";
 
 //Best Sellers
 export const fetchBestSellers = async () => {
@@ -29,5 +25,11 @@ export const fetchUser = async (email, password) => {
     password: password,
   };
   const response = await axiosAPI.post(`/auth/login`, body);
+  return response.data;
+};
+
+// Get cart with products
+export const fetchCartProducts = async (cart_id) => {
+  const response = await axiosAPI.get(`/carts/${cart_id}`, config);
   return response.data;
 };

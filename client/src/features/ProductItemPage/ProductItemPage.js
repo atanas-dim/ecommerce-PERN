@@ -18,7 +18,7 @@ import {
   loadProductById,
   selectIsLoading,
   clearProductItem,
-} from "../ProductsPage/productsSlice";
+} from "../../store/productsSlice";
 import { Add as AddIcon } from "@material-ui/icons/";
 
 export default function ProductItemPage() {
