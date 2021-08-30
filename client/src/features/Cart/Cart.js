@@ -11,7 +11,7 @@ import {
   loadCartProducts,
   loadTempCartProducts,
 } from "../../store/cartSlice";
-import { selectUser } from "../../store/userSlice";
+import { selectUser, selectIsLoggedIn } from "../../store/userSlice";
 
 export default function ShoppingBag() {
   const classes = useStyles();
@@ -20,6 +20,7 @@ export default function ShoppingBag() {
   const cartId = user?.user.cart_id;
   const cartProducts = useSelector(selectCartProducts);
   const tempCartProducts = useSelector(selectTempCartProducts);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   useEffect(() => {
     if (user) {
@@ -45,17 +46,18 @@ export default function ShoppingBag() {
           flexDirection="column"
           className={classes.bagItemsContainer}
         >
-          {cartProducts?.map((product) => {
-            return <CartItem product={product} />;
-          })}
-          {tempCartProducts?.map((product, tempCartProductIndex) => {
-            return (
-              <CartItem
-                product={product}
-                tempCartProductIndex={tempCartProductIndex}
-              />
-            );
-          })}
+          {isLoggedIn
+            ? cartProducts?.map((product) => {
+                return <CartItem product={product} />;
+              })
+            : tempCartProducts?.map((product, tempCartProductIndex) => {
+                return (
+                  <CartItem
+                    product={product}
+                    tempCartProductIndex={tempCartProductIndex}
+                  />
+                );
+              })}
         </Box>
 
         <OrderSummary />

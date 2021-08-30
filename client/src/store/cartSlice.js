@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchCartProducts, fetchProductById } from "../api/api";
+import {
+  fetchCartProducts,
+  fetchProductById,
+  postCartProduct,
+} from "../api/api";
 
 const updateTempCart = (data) => {
   localStorage.setItem("tempCartProducts", JSON.stringify(data));
@@ -16,6 +20,14 @@ export const loadCartProducts = createAsyncThunk(
   "cart/fetchCartProducts",
   async (cart_id) => {
     const response = await fetchCartProducts(cart_id);
+    return response;
+  }
+);
+
+export const addCartProduct = createAsyncThunk(
+  "cart/postCartProduct",
+  async (data) => {
+    const response = await postCartProduct(data);
     return response;
   }
 );
@@ -67,6 +79,10 @@ export const cartSlice = createSlice({
         localStorage.getItem("tempCartProducts")
       );
     },
+    clearTempCartProducts: (state) => {
+      state.tempCartProducts = [];
+      updateTempCart([]);
+    },
     clearCartProducts: (state) => {
       state.cartProducts = null;
     },
@@ -94,6 +110,7 @@ export const {
   addTempCartProduct,
   updateTempCartProduct,
   deleteTempCartProduct,
+  clearTempCartProducts,
   clearCartProducts,
 } = cartSlice.actions;
 

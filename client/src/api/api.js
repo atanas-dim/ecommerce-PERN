@@ -33,3 +33,21 @@ export const fetchCartProducts = async (cart_id) => {
   const response = await axiosAPI.get(`/carts/${cart_id}`, createConfig());
   return response.data;
 };
+
+// Add product to cart
+export const postCartProduct = async (data) => {
+  const { cart_id, product_id, quantity, size } = data;
+
+  const body = {
+    product_id: product_id,
+    quantity: quantity,
+    size: size,
+  };
+
+  const response = await axiosAPI.post(
+    `/carts/${cart_id}`,
+    body,
+    createConfig()
+  );
+  return response.data;
+};

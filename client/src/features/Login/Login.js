@@ -7,22 +7,19 @@ import {
   TextField,
 } from "@material-ui/core";
 import { useStyles } from "./Login.styles";
-import {
-  Link as RouterLink,
-  Redirect,
-  useLocation,
-  useHistory,
-  useParams,
-} from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectIsLoading,
   selectIsLoggedIn,
   selectUser,
   selectError,
   loginUser,
 } from "../../store/userSlice";
-import { fetchProductsCategory } from "../../api/api";
+import {
+  addCartProduct,
+  selectTempCartProducts,
+  clearTempCartProducts,
+} from "../../store/cartSlice";
 
 export default function Login() {
   const classes = useStyles();
@@ -33,6 +30,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+  const tempCartProducts = useSelector(selectTempCartProducts);
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -41,9 +39,25 @@ export default function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
+      console.log("outside adding to DB cart");
+      console.log(tempCartProducts);
+
+      tempCartProducts.forEach((product) => {
+        console.log("adding to DB cart");
+        const data = {
+          cart_id: user.user.cart_id,
+          product_id: product.product_id,
+          quantity: product.quantity,
+          size: product.size,
+        };
+        dispatch(addCartProduct(data));
+      });
+
+      dispatch(clearTempCartProducts());
+
       history.goBack();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, user]);
 
   return (
     <Container maxWidth="sm" className={classes.root}>
