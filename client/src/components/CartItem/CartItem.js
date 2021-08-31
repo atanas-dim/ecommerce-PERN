@@ -28,9 +28,9 @@ export default function BagItem({ product, tempCartProductIndex }) {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
-  // useEffect(() => {
-  //   console.log(product);
-  // }, [product]);
+  useEffect(() => {
+    console.log(product);
+  }, [product]);
 
   const handleQuantityOnChange = (event) => {
     if (tempCartProductIndex >= 0) {
@@ -50,6 +50,7 @@ export default function BagItem({ product, tempCartProductIndex }) {
         deleteCartProduct({
           cart_id: product.cart_id,
           product_id: product.product_id,
+          size: product.size,
         })
       );
       dispatch(loadCartProducts(product.cart_id));
