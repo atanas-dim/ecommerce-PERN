@@ -87,6 +87,7 @@ class CartsProductsModel {
   }
 
   async deleteCartProductDb(cart_id, product_id, size) {
+    console.log(cart_id, product_id, size);
     try {
       const deletedProduct = await pool.query(
         `DELETE FROM carts_products

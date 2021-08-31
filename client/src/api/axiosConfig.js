@@ -9,6 +9,7 @@ export const createConfig = () => {
 
 const axiosAPI = axios.create({
   baseURL: "https://pernstore.herokuapp.com/api/",
+  // baseURL: "http://localhost:4000/api/",
 
   // withCredentials: true,
 });

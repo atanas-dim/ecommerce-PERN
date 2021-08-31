@@ -28,9 +28,9 @@ export default function BagItem({ product, tempCartProductIndex }) {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
-  useEffect(() => {
-    console.log(product);
-  }, [product]);
+  // useEffect(() => {
+  //   console.log(product);
+  // }, [product]);
 
   const handleQuantityOnChange = (event) => {
     if (tempCartProductIndex >= 0) {
@@ -96,9 +96,10 @@ export default function BagItem({ product, tempCartProductIndex }) {
             variant="body2"
             className={classes.categories}
           >
-            {product.categories
-              .map((category) => capitalise(category))
-              .join(", ")}
+            {product.categories &&
+              product.categories
+                .map((category) => capitalise(category))
+                .join(", ")}
           </Typography>
         </Box>
         <Box

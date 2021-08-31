@@ -28,7 +28,7 @@ export default function App() {
     axiosAPI.interceptors.response.use(
       function (response) {
         console.log("inside return response");
-
+        console.log(response);
         return response;
       },
       function (error) {
@@ -37,7 +37,6 @@ export default function App() {
         if (error.response.status === 401) {
           console.log("inside redirect");
 
-          console.log("toasting");
           toast.info(
             "Logged out - your token has expired. Log in to continue.",
             {

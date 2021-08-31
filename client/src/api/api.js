@@ -55,14 +55,18 @@ export const postCartProduct = async (data) => {
 // Delete product from cart
 export const removeCartProduct = async (data) => {
   const { cart_id, product_id, size } = data;
-  const body = {
-    size: size,
+
+  const config = createConfig();
+
+  config.data = {
+    size,
   };
+
+  console.log(cart_id, product_id, config);
 
   const response = await axiosAPI.delete(
     `/carts/${cart_id}/product/${product_id}`,
-    body,
-    createConfig()
+    config
   );
   return response.data;
 };

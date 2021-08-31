@@ -34,7 +34,6 @@ export default function ShoppingBag() {
 
   useEffect(() => {
     isLoggedIn ? setProducts(cartProducts) : setProducts(tempCartProducts);
-    console.log(products);
   }, [isLoggedIn, cartProducts, tempCartProducts]);
 
   return (
@@ -43,14 +42,14 @@ export default function ShoppingBag() {
         Shopping bag
       </Typography>
       <Box display="flex" className={classes.cardsContainer}>
-        {products.length ? (
+        {products?.length ? (
           <>
             <Box
               display="flex"
               flexDirection="column"
               className={classes.bagItemsContainer}
             >
-              {products?.map((product, tempCartProductIndex) => {
+              {products.map((product, tempCartProductIndex) => {
                 return (
                   <CartItem
                     product={product}

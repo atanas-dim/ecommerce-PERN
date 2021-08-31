@@ -39,7 +39,7 @@ class CartsService {
       const findCartWithProducts =
         await CartsProductsModel.getCartWithProductsDb(cart_id);
 
-      if (!findCartWithProducts) return "Cart is empty";
+      if (!findCartWithProducts) return null;
 
       return findCartWithProducts;
     } catch (error) {
@@ -119,6 +119,7 @@ class CartsService {
         product_id,
         size
       );
+
       return deletedProduct;
     } catch (error) {
       throw error;

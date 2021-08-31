@@ -103,6 +103,7 @@ export const cartSlice = createSlice({
       })
       .addCase(loadCartProducts.fulfilled, (state, action) => {
         console.log("loaded cart products");
+        console.log(action.payload);
         state.cartProducts = action.payload;
         state.isLoading = false;
       })
@@ -116,7 +117,6 @@ export const cartSlice = createSlice({
       })
       .addCase(deleteCartProduct.fulfilled, (state, action) => {
         console.log(action.payload);
-        // state.cartProducts = action.payload;
         state.isLoading = false;
       })
       .addCase(deleteCartProduct.rejected, (state) => {
