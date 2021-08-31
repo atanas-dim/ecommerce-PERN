@@ -45,6 +45,7 @@ export default function ProductItemPage() {
       price: productItem.price,
       size: selectedSize,
       quantity: 1,
+      cart_id: "tempCart",
     };
 
     dispatch(addTempCartProduct(tempProductToAdd));

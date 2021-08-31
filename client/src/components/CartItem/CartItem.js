@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Typography,
   Card,
@@ -17,17 +17,20 @@ import { capitalise } from "../../utils/capitaliseFirstLetter";
 import {
   updateTempCartProduct,
   deleteTempCartProduct,
+  deleteCartProduct,
+  loadCartProducts,
 } from "../../store/cartSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../store/userSlice";
 
 export default function BagItem({ product, tempCartProductIndex }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   // useEffect(() => {
   //   console.log(product);
-  //   console.log(tempCartProductIndex);
-  // }, []);
+  // }, [product]);
 
   const handleQuantityOnChange = (event) => {
     if (tempCartProductIndex >= 0) {
@@ -42,7 +45,17 @@ export default function BagItem({ product, tempCartProductIndex }) {
 
   const handleRemove = () => {
     console.log("handle remove");
-    dispatch(deleteTempCartProduct({ tempCartProductIndex }));
+    if (isLoggedIn) {
+      dispatch(
+        deleteCartProduct({
+          cart_id: product.cart_id,
+          product_id: product.product_id,
+        })
+      );
+      dispatch(loadCartProducts(product.cart_id));
+    } else {
+      dispatch(deleteTempCartProduct({ tempCartProductIndex }));
+    }
   };
 
   return (

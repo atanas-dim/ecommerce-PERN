@@ -51,3 +51,14 @@ export const postCartProduct = async (data) => {
   );
   return response.data;
 };
+
+// Delete product from cart
+export const removeCartProduct = async (data) => {
+  const { cart_id, product_id } = data;
+
+  const response = await axiosAPI.delete(
+    `/carts/${cart_id}/product/${product_id}`,
+    createConfig()
+  );
+  return response.data;
+};

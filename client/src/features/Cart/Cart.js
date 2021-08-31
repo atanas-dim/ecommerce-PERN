@@ -34,6 +34,7 @@ export default function ShoppingBag() {
 
   useEffect(() => {
     isLoggedIn ? setProducts(cartProducts) : setProducts(tempCartProducts);
+    console.log(products);
   }, [isLoggedIn, cartProducts, tempCartProducts]);
 
   return (

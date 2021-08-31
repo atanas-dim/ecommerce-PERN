@@ -62,9 +62,14 @@ const updateCartProduct = async (req, res, next) => {
 
 const deleteCartProduct = async (req, res, next) => {
   const { cart_id, product_id } = req.params;
+  const { size } = req.body;
 
   try {
-    const data = await CartsService.deleteCartProduct(cart_id, product_id);
+    const data = await CartsService.deleteCartProduct(
+      cart_id,
+      product_id,
+      size
+    );
 
     res.status(200).json("Product was removed from cart!");
   } catch (error) {
