@@ -39,11 +39,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log("outside adding to DB cart");
-      console.log(tempCartProducts);
-
       tempCartProducts.forEach((product) => {
-        console.log("adding to DB cart");
         const data = {
           cart_id: user.user.cart_id,
           product_id: product.product_id,

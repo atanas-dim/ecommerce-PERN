@@ -7,14 +7,47 @@ import Login from "../features/Login/Login";
 import Register from "../features/Register/Register";
 import Cart from "../features/Cart/Cart";
 import Footer from "../features/Footer/Footer";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useHistory,
+} from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
+import axiosAPI from "../api/axiosConfig";
+
 export default function App() {
+  const history = useHistory();
+
+  const setupInterceptor = (history) => {
+    console.log("setting up interceptor");
+    axiosAPI.interceptors.response.use(
+      function (response) {
+        console.log("inside return response");
+
+        return response;
+      },
+      function (error) {
+        console.log("inside error");
+        console.log(error.response.status);
+        if (error.response.status === 401) {
+          console.log("inside redirect");
+          //this should be logout user
+          localStorage.setItem("token", undefined);
+          history.push("/login");
+        }
+        return Promise.reject(error);
+      }
+    );
+  };
+
+  setupInterceptor(history);
+
+  // temporary for dev only
   const handleLogout = () => {
-    //
     localStorage.setItem("token", null);
     window.location.replace("/");
   };
