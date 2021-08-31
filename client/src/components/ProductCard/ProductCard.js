@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardActions,
-  Typography,
-  Button,
-  ButtonBase,
-} from "@material-ui/core";
-import { Add as AddIcon } from "@material-ui/icons/";
+import { Card, Typography, ButtonBase } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import { useStyles } from "./ProductCard.styles";
 import clsx from "clsx";

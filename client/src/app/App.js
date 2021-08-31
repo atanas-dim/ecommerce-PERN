@@ -54,7 +54,7 @@ export default function App() {
 
   useEffect(() => {
     setupInterceptor(history);
-  }, []);
+  }, [history]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -80,7 +80,7 @@ export default function App() {
         </Route>
 
         <Route path="/cart">
-          // use isLoggedIn here to render Public or Private cart
+          {/* use isLoggedIn here to render Public or Private cart */}
           <Cart />
         </Route>
 

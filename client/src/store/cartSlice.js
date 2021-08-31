@@ -1,9 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  fetchCartProducts,
-  fetchProductById,
-  postCartProduct,
-} from "../api/api";
+import { fetchCartProducts, postCartProduct } from "../api/api";
 
 const updateTempCart = (data) => {
   localStorage.setItem("tempCartProducts", JSON.stringify(data));

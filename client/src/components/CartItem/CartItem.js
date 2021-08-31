@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Typography,
   Card,
@@ -18,7 +18,7 @@ import {
   updateTempCartProduct,
   deleteTempCartProduct,
 } from "../../store/cartSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function BagItem({ product, tempCartProductIndex }) {
   const classes = useStyles();
@@ -52,7 +52,11 @@ export default function BagItem({ product, tempCartProductIndex }) {
         component={RouterLink}
         to={`/products/${product.product_id}`}
       >
-        <img className={classes.image} src={`${product.images[0]}`}></img>
+        <img
+          className={classes.image}
+          src={`${product.images[0]}`}
+          alt={product.product_name}
+        ></img>
       </ButtonBase>
       <Box className={classes.productDetails}>
         <Box

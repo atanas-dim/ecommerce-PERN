@@ -3,7 +3,6 @@ import { Container, Typography, Card, Box } from "@material-ui/core";
 import OrderSummary from "../../components/OrderSummary/OrderSummary";
 import CartItem from "../../components/CartItem/CartItem";
 import { useStyles } from "./Cart.styles";
-import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCartProducts,
@@ -35,7 +34,7 @@ export default function ShoppingBag() {
 
   useEffect(() => {
     isLoggedIn ? setProducts(cartProducts) : setProducts(tempCartProducts);
-  }, [cartProducts, tempCartProducts]);
+  }, [isLoggedIn, cartProducts, tempCartProducts]);
 
   return (
     <Container maxWidth="lg" className={classes.root}>

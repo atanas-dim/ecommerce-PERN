@@ -15,6 +15,8 @@ export const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(3),
   },
   emptyCart: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(6),
+    textAlign: "center",
+    width: "100%",
   },
 }));

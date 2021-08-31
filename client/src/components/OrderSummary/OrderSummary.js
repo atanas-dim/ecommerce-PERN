@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Typography, Card, Box, Button } from "@material-ui/core";
 import { useStyles } from "./OrderSummary.styles";
 import clsx from "clsx";

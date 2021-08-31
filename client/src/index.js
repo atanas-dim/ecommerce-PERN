@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
 import { setUser, setIsLoggedIn } from "./store/userSlice";
-import { loadTempCartProducts } from "./store/cartSlice";
 import createHistory from "history/createBrowserHistory";
 import jwt from "jsonwebtoken";
 

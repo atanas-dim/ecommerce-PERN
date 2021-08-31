@@ -63,7 +63,7 @@ export default function Login() {
 
       history.goBack();
     }
-  }, [isLoggedIn, user]);
+  }, [dispatch, isLoggedIn, user, history, tempCartProducts]);
 
   return (
     <Container maxWidth="sm" className={classes.root}>
