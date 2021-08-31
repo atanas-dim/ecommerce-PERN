@@ -23,9 +23,11 @@ export default function ShoppingBag() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   useEffect(() => {
-    if (user) {
+    if (isLoggedIn) {
+      console.log("dispatch cart products");
       dispatch(loadCartProducts(cartId));
     } else {
+      console.log("dispatch temp cart products");
       dispatch(loadTempCartProducts());
     }
   }, [dispatch, user, cartId]);

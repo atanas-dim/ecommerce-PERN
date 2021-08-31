@@ -7,20 +7,17 @@ import Login from "../features/Login/Login";
 import Register from "../features/Register/Register";
 import Cart from "../features/Cart/Cart";
 import Footer from "../features/Footer/Footer";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useHistory,
-} from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
-
+import { clearUser, setIsLoggedIn } from "../store/userSlice";
+import { useDispatch } from "react-redux";
 import axiosAPI from "../api/axiosConfig";
 
 export default function App() {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const setupInterceptor = (history) => {
     console.log("setting up interceptor");
@@ -37,7 +34,8 @@ export default function App() {
           console.log("inside redirect");
           //this should be logout user
           localStorage.setItem("token", undefined);
-          history.push("/login");
+
+          handleLogout();
         }
         return Promise.reject(error);
       }
@@ -48,8 +46,10 @@ export default function App() {
 
   // temporary for dev only
   const handleLogout = () => {
-    localStorage.setItem("token", null);
-    window.location.replace("/");
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    dispatch(setIsLoggedIn(false));
+    history.push("/login");
   };
 
   return (
