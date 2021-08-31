@@ -14,4 +14,7 @@ export const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginRight: theme.spacing(3),
   },
+  emptyCart: {
+    padding: theme.spacing(3),
+  },
 }));

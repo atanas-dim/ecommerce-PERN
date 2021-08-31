@@ -31,8 +31,11 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    clearUser: (state) => {
+    logoutUser: (state) => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
       state.user = null;
+      state.isLoggedIn = false;
     },
   },
 
@@ -58,7 +61,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, setIsLoggedIn, clearUser } = userSlice.actions;
+export const { setUser, setIsLoggedIn, logoutUser } = userSlice.actions;
 
 export const selectIsLoading = (state) => state.user.isLoading;
 export const selectIsLoggedIn = (state) => state.user.isLoggedIn;

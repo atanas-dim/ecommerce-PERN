@@ -26,6 +26,7 @@ export default function BagItem({ product, tempCartProductIndex }) {
 
   // useEffect(() => {
   //   console.log(product);
+  //   console.log(tempCartProductIndex);
   // }, []);
 
   const handleQuantityOnChange = (event) => {
@@ -40,6 +41,7 @@ export default function BagItem({ product, tempCartProductIndex }) {
   };
 
   const handleRemove = () => {
+    console.log("handle remove");
     dispatch(deleteTempCartProduct({ tempCartProductIndex }));
   };
 

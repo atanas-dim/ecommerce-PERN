@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../features/Header/Header";
 import ScrollToTop from "../utils/ScrollToTop/ScrollToTop";
 import ProductsPage from "../features/ProductsPage/ProductsPage";
@@ -7,13 +7,17 @@ import Login from "../features/Login/Login";
 import Register from "../features/Register/Register";
 import Cart from "../features/Cart/Cart";
 import Footer from "../features/Footer/Footer";
-import { Switch, Route, useHistory } from "react-router-dom";
+import Account from "../features/Account/Account";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { clearUser, setIsLoggedIn } from "../store/userSlice";
+import { logoutUser } from "../store/userSlice";
 import { useDispatch } from "react-redux";
 import axiosAPI from "../api/axiosConfig";
+import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   const history = useHistory();
@@ -32,25 +36,25 @@ export default function App() {
         console.log(error.response.status);
         if (error.response.status === 401) {
           console.log("inside redirect");
-          //this should be logout user
-          localStorage.setItem("token", undefined);
 
-          handleLogout();
+          console.log("toasting");
+          toast.info(
+            "Logged out - your token has expired. Log in to continue.",
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+            }
+          );
+          <Redirect to="/login" />;
+          dispatch(logoutUser());
         }
         return Promise.reject(error);
       }
     );
   };
 
-  setupInterceptor(history);
-
-  // temporary for dev only
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("refreshToken");
-    dispatch(setIsLoggedIn(false));
-    history.push("/login");
-  };
+  useEffect(() => {
+    setupInterceptor(history);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -76,6 +80,7 @@ export default function App() {
         </Route>
 
         <Route path="/cart">
+          // use isLoggedIn here to render Public or Private cart
           <Cart />
         </Route>
 
@@ -87,15 +92,10 @@ export default function App() {
           <Register />
         </Route>
 
-        <Route path="/account">
-          <h2>
-            <br />
-            <br />
-            <button onClick={() => handleLogout()}>log out</button>
-          </h2>
-        </Route>
+        <PrivateRoute restricted={true} component={Account} path="/account" />
       </Switch>
       <Footer />
+      <ToastContainer />
     </ThemeProvider>
   );
 }

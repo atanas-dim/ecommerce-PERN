@@ -21,6 +21,7 @@ export default function ShoppingBag() {
   const cartProducts = useSelector(selectCartProducts);
   const tempCartProducts = useSelector(selectTempCartProducts);
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -30,12 +31,11 @@ export default function ShoppingBag() {
       console.log("dispatch temp cart products");
       dispatch(loadTempCartProducts());
     }
-  }, [dispatch, user, cartId]);
+  }, [dispatch, isLoggedIn, cartId]);
 
-  // useEffect(() => {
-  //   console.log(cartProducts);
-  //   console.log(tempCartProducts);
-  // }, [cartProducts, tempCartProducts]);
+  useEffect(() => {
+    isLoggedIn ? setProducts(cartProducts) : setProducts(tempCartProducts);
+  }, [cartProducts, tempCartProducts]);
 
   return (
     <Container maxWidth="lg" className={classes.root}>
@@ -43,26 +43,33 @@ export default function ShoppingBag() {
         Shopping bag
       </Typography>
       <Box display="flex" className={classes.cardsContainer}>
-        <Box
-          display="flex"
-          flexDirection="column"
-          className={classes.bagItemsContainer}
-        >
-          {isLoggedIn
-            ? cartProducts?.map((product) => {
-                return <CartItem product={product} />;
-              })
-            : tempCartProducts?.map((product, tempCartProductIndex) => {
+        {products.length ? (
+          <>
+            <Box
+              display="flex"
+              flexDirection="column"
+              className={classes.bagItemsContainer}
+            >
+              {products?.map((product, tempCartProductIndex) => {
                 return (
                   <CartItem
                     product={product}
-                    tempCartProductIndex={tempCartProductIndex}
+                    tempCartProductIndex={
+                      !isLoggedIn ? tempCartProductIndex : undefined
+                    }
                   />
                 );
               })}
-        </Box>
-
-        <OrderSummary />
+            </Box>
+            <OrderSummary />
+          </>
+        ) : (
+          <Card className={classes.emptyCart}>
+            <Typography component="h3" variant="body1">
+              No items added to this bag
+            </Typography>
+          </Card>
+        )}
       </Box>
     </Container>
   );

@@ -20,6 +20,7 @@ import {
   selectTempCartProducts,
   clearTempCartProducts,
 } from "../../store/cartSlice";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const classes = useStyles();
@@ -32,8 +33,17 @@ export default function Login() {
   const history = useHistory();
   const tempCartProducts = useSelector(selectTempCartProducts);
 
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     history.goBack();
+  //   }
+  // }, []);
+
   const handleLogin = (event) => {
     event.preventDefault();
+    toast.success("Welcome", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
     dispatch(loginUser({ email, password }));
   };
 

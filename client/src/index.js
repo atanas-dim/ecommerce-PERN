@@ -8,10 +8,8 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
 import { setUser, setIsLoggedIn } from "./store/userSlice";
 import { loadTempCartProducts } from "./store/cartSlice";
-import jwt from "jsonwebtoken";
-
 import createHistory from "history/createBrowserHistory";
-const history = createHistory();
+import jwt from "jsonwebtoken";
 
 // Keeping the user logged in on refresh
 // Reading the JWT user data and expiry set in localStorage when first logged in
@@ -24,10 +22,12 @@ if (decodedToken?.payload.exp * 1000 > dateNow.getTime()) {
   store.dispatch(setUser(decodedToken.payload));
   store.dispatch(setIsLoggedIn(true));
   //updating the tempCart from localStorage on refresh
-  store.dispatch(loadTempCartProducts());
+  // store.dispatch(loadTempCartProducts());
 } else {
   store.dispatch(setIsLoggedIn(false));
 }
+
+const history = createHistory();
 
 ReactDOM.render(
   <React.StrictMode>

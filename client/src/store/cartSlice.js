@@ -37,6 +37,7 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addTempCartProduct: (state, action) => {
+      console.log(action.payload);
       const existingProductIndex = state.tempCartProducts.findIndex(
         (product) => {
           return (
@@ -66,9 +67,7 @@ export const cartSlice = createSlice({
     deleteTempCartProduct: (state, action) => {
       const { tempCartProductIndex } = action.payload;
       const filteredTempCartProducts = state.tempCartProducts.filter(
-        (product, index) => {
-          if (index !== tempCartProductIndex) return product;
-        }
+        (product, index) => index !== tempCartProductIndex
       );
 
       state.tempCartProducts = filteredTempCartProducts;

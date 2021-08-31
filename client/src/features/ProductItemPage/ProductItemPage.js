@@ -21,6 +21,7 @@ import {
 } from "../../store/productsSlice";
 import { addTempCartProduct } from "../../store/cartSlice";
 import { Add as AddIcon } from "@material-ui/icons/";
+import { toast } from "react-toastify";
 
 export default function ProductItemPage() {
   const classes = useStyles();
@@ -45,7 +46,12 @@ export default function ProductItemPage() {
       size: selectedSize,
       quantity: 1,
     };
+
     dispatch(addTempCartProduct(tempProductToAdd));
+    toast.success("Item added to shopping bag.", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+    setSelectedSize("");
   };
 
   // useEffect(() => {
