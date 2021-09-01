@@ -14,13 +14,7 @@ import { useStyles } from "./CartItem.styles";
 import clsx from "clsx";
 import { Link as RouterLink } from "react-router-dom";
 import { capitalise } from "../../utils/capitaliseFirstLetter";
-import {
-  updateTempCartProduct,
-  deleteTempCartProduct,
-  deleteCartProduct,
-  updateCartProduct,
-  loadCartProducts,
-} from "../../store/cartSlice";
+import { updateCartProduct, deleteCartProduct } from "../../store/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../store/userSlice";
 
@@ -35,42 +29,20 @@ export default function CartItem({ product, tempCartProductIndex }) {
   // }, [product]);
 
   useEffect(() => {
-    console.log(quantity);
     if (quantity !== product.quantity) {
-      if (isLoggedIn) {
-        dispatch(
-          updateCartProduct({
-            cart_id: product.cart_id,
-            product_id: product.product_id,
-            size: product.size,
-            quantity: quantity,
-          })
-        );
-      } else if (tempCartProductIndex >= 0) {
-        dispatch(
-          updateTempCartProduct({
-            tempCartProductIndex,
-            quantity: quantity,
-          })
-        );
-      }
+      dispatch(
+        updateCartProduct({
+          id: product.id,
+          size: product.size,
+          quantity: quantity,
+        })
+      );
     }
   }, [quantity]);
 
   const handleRemove = () => {
     console.log("handle remove");
-
-    if (isLoggedIn) {
-      dispatch(
-        deleteCartProduct({
-          cart_id: product.cart_id,
-          product_id: product.product_id,
-          size: product.size,
-        })
-      );
-    } else {
-      dispatch(deleteTempCartProduct({ tempCartProductIndex }));
-    }
+    dispatch(deleteCartProduct({ id: product.id, size: product.size }));
   };
 
   return (
@@ -98,7 +70,7 @@ export default function CartItem({ product, tempCartProductIndex }) {
             className={classes.headingsMain}
           >
             <Typography component="h3" variant="body1">
-              {product.product_name}, {product.size}
+              {product.name}, {product.size}
             </Typography>
 
             <Typography component="span" variant="h6" className={classes.price}>

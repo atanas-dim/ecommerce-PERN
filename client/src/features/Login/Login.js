@@ -17,9 +17,8 @@ import {
 } from "../../store/userSlice";
 import {
   addCartProduct,
-  selectTempCartProducts,
-  clearTempCartProducts,
   loadCartProducts,
+  setCartId,
 } from "../../store/cartSlice";
 import { toast } from "react-toastify";
 
@@ -32,7 +31,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
-  const tempCartProducts = useSelector(selectTempCartProducts);
   const cartId = user ? user.user.cart_id : undefined;
 
   // useEffect(() => {
@@ -50,23 +48,10 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
-      tempCartProducts.forEach((product) => {
-        const data = {
-          cart_id: cartId,
-          product_id: product.product_id,
-          quantity: product.quantity,
-          size: product.size,
-        };
-        dispatch(addCartProduct(data));
-      });
-
-      dispatch(clearTempCartProducts());
-      dispatch(loadCartProducts(cartId));
-
-      history.goBack();
-    }
-  }, [dispatch, isLoggedIn, user, history, tempCartProducts]);
+    console.log("hereeeeee");
+    console.log(cartId);
+    dispatch(setCartId(cartId));
+  }, [cartId]);
 
   return (
     <Container maxWidth="sm" className={classes.root}>

@@ -10,6 +10,11 @@ import { setUser, setIsLoggedIn } from "./store/userSlice";
 import createHistory from "history/createBrowserHistory";
 import jwt from "jsonwebtoken";
 
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+
+let persistor = persistStore(store);
+
 // Keeping the user logged in on refresh
 // Reading the JWT user data and expiry set in localStorage when first logged in
 // There may be better solution, maybe rework this inside axios interceptor in App.js
@@ -29,9 +34,11 @@ const history = createHistory();
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router history={history}>
-        <App />
-      </Router>
+      <PersistGate loading={null} persistor={persistor}>
+        <Router history={history}>
+          <App />
+        </Router>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

@@ -6,15 +6,11 @@ import {
   fetchUpdateCartProduct,
 } from "../api/api";
 
-const updateTempCart = (data) => {
-  localStorage.setItem("tempCartProducts", JSON.stringify(data));
-};
-
 const initialState = {
-  tempCartProducts: [],
   cartProducts: [],
   isLoading: false,
   error: false,
+  cartId: undefined,
 };
 
 export const loadCartProducts = createAsyncThunk(
@@ -25,27 +21,16 @@ export const loadCartProducts = createAsyncThunk(
   }
 );
 
-export const addCartProduct = createAsyncThunk(
-  "cart/postCartProduct",
-  async (data) => {
-    const response = await fetchAddCartProduct(data);
-    return response;
-  }
-);
-
-export const deleteCartProduct = createAsyncThunk(
-  "cart/removeCartProduct",
-  async (data) => {
-    const response = await fetchDeleteCartProduct(data);
-    return response;
-  }
-);
-
-export const updateCartProduct = createAsyncThunk(
-  "cart/updateCartProduct",
-  async (data) => {
-    const response = await fetchUpdateCartProduct(data);
-    return response;
+export const updateCart = createAsyncThunk(
+  "cart/fetchUpdateCart",
+  async (products) => {
+    console.log(products);
+    products.forEach(async (product) => {
+      console.log(product);
+      await fetchUpdateCartProduct(product);
+    });
+    // const response = await fetchUpdateCart(data);
+    // return response;
   }
 );
 
@@ -53,56 +38,45 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addTempCartProduct: (state, action) => {
-      const existingProductIndex = state.tempCartProducts.findIndex(
-        (product) => {
-          return (
-            product?.product_id === action.payload.product_id &&
-            product?.size === action.payload.size
-          );
-        }
-      );
+    addCartProduct: (state, action) => {
+      const data = action.payload;
+      const existingProductIndex = state.cartProducts?.findIndex((product) => {
+        return product.id === data.id && product.size === data.size;
+      });
 
       if (existingProductIndex >= 0) {
-        if (state.tempCartProducts[existingProductIndex].quantity < 10) {
-          state.tempCartProducts[existingProductIndex].quantity +=
-            action.payload.quantity;
+        if (state.cartProducts[existingProductIndex].quantity < 10) {
+          state.cartProducts[existingProductIndex].quantity += data.quantity;
         }
       } else {
-        state.tempCartProducts.push(action.payload);
+        state.cartProducts.push(data);
       }
+    },
+    updateCartProduct: (state, action) => {
+      const data = action.payload;
+      state.cartProducts.forEach((product, index) => {
+        if (product.id === data.id && product.size === data.size) {
+          product.quantity = data.quantity;
+        }
+      });
+    },
+    deleteCartProduct: (state, action) => {
+      console.log(action.payload);
+      const data = action.payload;
 
-      updateTempCart(state.tempCartProducts);
-    },
-    updateTempCartProduct: (state, action) => {
-      const { tempCartProductIndex, quantity } = action.payload;
-      state.tempCartProducts[tempCartProductIndex].quantity = quantity;
+      const indexToDelete = state.cartProducts.findIndex((product) => {
+        return product.id === data.id && product.size === data.size;
+      });
 
-      updateTempCart(state.tempCartProducts);
+      if (indexToDelete > -1) {
+        state.cartProducts.splice(indexToDelete, 1);
+      }
     },
-    deleteTempCartProduct: (state, action) => {
-      const { tempCartProductIndex } = action.payload;
-      const filteredTempCartProducts = state.tempCartProducts.filter(
-        (product, index) => index !== tempCartProductIndex
-      );
-
-      state.tempCartProducts = filteredTempCartProducts;
-      updateTempCart(state.tempCartProducts);
-    },
-    loadTempCartProducts: (state) => {
-      state.tempCartProducts = JSON.parse(
-        localStorage.getItem("tempCartProducts")
-      );
-    },
-    clearTempCartProducts: (state) => {
-      state.tempCartProducts = [];
-      updateTempCart([]);
-    },
-    clearCartProducts: (state) => {
-      state.cartProducts = null;
+    setCartId: (state, action) => {
+      console.log(action.payload);
+      state.cartId = action.payload;
     },
   },
-
   extraReducers: (builder) => {
     builder
       .addCase(loadCartProducts.pending, (state) => {
@@ -111,51 +85,12 @@ export const cartSlice = createSlice({
       })
       .addCase(loadCartProducts.fulfilled, (state, action) => {
         console.log("loaded cart products");
-        state.cartProducts = action.payload;
+        action.payload !== null
+          ? (state.cartProducts = action.payload)
+          : (state.cartProducts = []);
         state.isLoading = false;
       })
       .addCase(loadCartProducts.rejected, (state) => {
-        state.error = true;
-        state.isLoading = false;
-      })
-      // Delete cart product
-      .addCase(deleteCartProduct.pending, (state) => {
-        state.error = false;
-        state.isLoading = true;
-      })
-      .addCase(deleteCartProduct.fulfilled, (state, action) => {
-        const data = action.payload;
-
-        let indexToDelete;
-        current(state.cartProducts).forEach((product, index) => {
-          if (
-            product?.product_id === Number(data.product_id) &&
-            product?.size === data.size
-          ) {
-            indexToDelete = index;
-          }
-        });
-
-        const filteredTempCartProducts = current(state.cartProducts).filter(
-          (product, index) => index !== indexToDelete
-        );
-        state.cartProducts = filteredTempCartProducts;
-        state.isLoading = false;
-      })
-      .addCase(deleteCartProduct.rejected, (state) => {
-        state.error = true;
-        state.isLoading = false;
-      })
-      // Update cart product
-      .addCase(updateCartProduct.pending, (state) => {
-        state.error = false;
-        state.isLoading = true;
-      })
-      .addCase(updateCartProduct.fulfilled, (state, action) => {
-        // console.log(action.payload);
-        state.isLoading = false;
-      })
-      .addCase(updateCartProduct.rejected, (state) => {
         state.error = true;
         state.isLoading = false;
       });
@@ -163,17 +98,15 @@ export const cartSlice = createSlice({
 });
 
 export const {
-  loadTempCartProducts,
-  addTempCartProduct,
-  updateTempCartProduct,
-  deleteTempCartProduct,
-  clearTempCartProducts,
-  clearCartProducts,
+  addCartProduct,
+  updateCartProduct,
+  deleteCartProduct,
+  setCartId,
 } = cartSlice.actions;
 
 export const selectIsLoading = (state) => state.cart.isLoading;
 export const selectError = (state) => state.cart.error;
 export const selectCartProducts = (state) => state.cart.cartProducts;
-export const selectTempCartProducts = (state) => state.cart.tempCartProducts;
+export const selectCartId = (state) => state.cart.cartId;
 
 export default cartSlice.reducer;

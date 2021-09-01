@@ -6,9 +6,7 @@ import { useStyles } from "./Cart.styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCartProducts,
-  selectTempCartProducts,
   loadCartProducts,
-  loadTempCartProducts,
   selectIsLoading,
 } from "../../store/cartSlice";
 import { selectUser, selectIsLoggedIn } from "../../store/userSlice";
@@ -19,26 +17,14 @@ export default function ShoppingBag() {
   const user = useSelector(selectUser);
   const cartId = user?.user.cart_id;
   const cartProducts = useSelector(selectCartProducts);
-  const tempCartProducts = useSelector(selectTempCartProducts);
   const isLoading = useSelector(selectIsLoading);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const [allCartProducts, setAllCartProducts] = useState([]);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      console.log("dispatch cart products");
-      dispatch(loadCartProducts(cartId));
-    } else {
-      console.log("dispatch temp cart products");
-      dispatch(loadTempCartProducts());
-    }
-  }, [dispatch, isLoggedIn, cartId]);
-
-  useEffect(() => {
-    isLoggedIn
-      ? setAllCartProducts(cartProducts)
-      : setAllCartProducts(tempCartProducts);
-  }, [isLoggedIn, cartProducts, tempCartProducts]);
+    // console.log(cartProducts);
+    setAllCartProducts(cartProducts);
+  }, [cartProducts]);
 
   return (
     <Container maxWidth="lg" className={classes.root}>
