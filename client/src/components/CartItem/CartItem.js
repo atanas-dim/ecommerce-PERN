@@ -24,7 +24,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../store/userSlice";
 
-export default function BagItem({ product, tempCartProductIndex }) {
+export default function CartItem({ product, tempCartProductIndex }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -68,7 +68,6 @@ export default function BagItem({ product, tempCartProductIndex }) {
           size: product.size,
         })
       );
-      // dispatch(loadCartProducts(product.cart_id));
     } else {
       dispatch(deleteTempCartProduct({ tempCartProductIndex }));
     }

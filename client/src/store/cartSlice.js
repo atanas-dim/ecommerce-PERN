@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import {
   fetchCartProducts,
   fetchAddCartProduct,
@@ -54,7 +54,6 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addTempCartProduct: (state, action) => {
-      console.log(action.payload);
       const existingProductIndex = state.tempCartProducts.findIndex(
         (product) => {
           return (
@@ -125,8 +124,22 @@ export const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(deleteCartProduct.fulfilled, (state, action) => {
-        console.log(action.payload.config.data);
-        // state.cartProducts = state.cartProducts.filter(product => product.)
+        const data = action.payload;
+
+        let indexToDelete;
+        current(state.cartProducts).forEach((product, index) => {
+          if (
+            product?.product_id === Number(data.product_id) &&
+            product?.size === data.size
+          ) {
+            indexToDelete = index;
+          }
+        });
+
+        const filteredTempCartProducts = current(state.cartProducts).filter(
+          (product, index) => index !== indexToDelete
+        );
+        state.cartProducts = filteredTempCartProducts;
         state.isLoading = false;
       })
       .addCase(deleteCartProduct.rejected, (state) => {
@@ -139,7 +152,7 @@ export const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(updateCartProduct.fulfilled, (state, action) => {
-        console.log(action.payload);
+        // console.log(action.payload);
         state.isLoading = false;
       })
       .addCase(updateCartProduct.rejected, (state) => {

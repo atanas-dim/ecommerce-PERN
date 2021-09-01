@@ -9,6 +9,7 @@ import {
   selectTempCartProducts,
   loadCartProducts,
   loadTempCartProducts,
+  selectIsLoading,
 } from "../../store/cartSlice";
 import { selectUser, selectIsLoggedIn } from "../../store/userSlice";
 
@@ -19,8 +20,9 @@ export default function ShoppingBag() {
   const cartId = user?.user.cart_id;
   const cartProducts = useSelector(selectCartProducts);
   const tempCartProducts = useSelector(selectTempCartProducts);
+  const isLoading = useSelector(selectIsLoading);
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const [products, setProducts] = useState([]);
+  const [allCartProducts, setAllCartProducts] = useState([]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -33,8 +35,9 @@ export default function ShoppingBag() {
   }, [dispatch, isLoggedIn, cartId]);
 
   useEffect(() => {
-    console.log("refreshing products");
-    isLoggedIn ? setProducts(cartProducts) : setProducts(tempCartProducts);
+    isLoggedIn
+      ? setAllCartProducts(cartProducts)
+      : setAllCartProducts(tempCartProducts);
   }, [isLoggedIn, cartProducts, tempCartProducts]);
 
   return (
@@ -43,14 +46,14 @@ export default function ShoppingBag() {
         Shopping bag
       </Typography>
       <Box display="flex" className={classes.cardsContainer}>
-        {products?.length ? (
+        {allCartProducts?.length ? (
           <>
             <Box
               display="flex"
               flexDirection="column"
               className={classes.bagItemsContainer}
             >
-              {products.map((product, tempCartProductIndex) => {
+              {allCartProducts.map((product, tempCartProductIndex) => {
                 return (
                   <CartItem
                     product={product}

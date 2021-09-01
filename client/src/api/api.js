@@ -66,7 +66,7 @@ export const fetchDeleteCartProduct = async (data) => {
     `/carts/${cart_id}/product/${product_id}`,
     config
   );
-  return response;
+  return response.data;
 };
 
 // Update product from cart

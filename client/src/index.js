@@ -20,8 +20,6 @@ const dateNow = new Date();
 if (decodedToken?.payload.exp * 1000 > dateNow.getTime()) {
   store.dispatch(setUser(decodedToken.payload));
   store.dispatch(setIsLoggedIn(true));
-  //updating the tempCart from localStorage on refresh
-  // store.dispatch(loadTempCartProducts());
 } else {
   store.dispatch(setIsLoggedIn(false));
 }

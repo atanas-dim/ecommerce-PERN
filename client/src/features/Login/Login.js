@@ -19,6 +19,7 @@ import {
   addCartProduct,
   selectTempCartProducts,
   clearTempCartProducts,
+  loadCartProducts,
 } from "../../store/cartSlice";
 import { toast } from "react-toastify";
 
@@ -32,6 +33,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const history = useHistory();
   const tempCartProducts = useSelector(selectTempCartProducts);
+  const cartId = user ? user.user.cart_id : undefined;
 
   // useEffect(() => {
   //   if (isLoggedIn) {
@@ -51,7 +53,7 @@ export default function Login() {
     if (isLoggedIn) {
       tempCartProducts.forEach((product) => {
         const data = {
-          cart_id: user.user.cart_id,
+          cart_id: cartId,
           product_id: product.product_id,
           quantity: product.quantity,
           size: product.size,
@@ -60,6 +62,7 @@ export default function Login() {
       });
 
       dispatch(clearTempCartProducts());
+      dispatch(loadCartProducts(cartId));
 
       history.goBack();
     }
