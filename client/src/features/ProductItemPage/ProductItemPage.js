@@ -19,7 +19,10 @@ import {
   selectIsLoading,
   clearProductItem,
 } from "../../store/productsSlice";
-import { addTempCartProduct } from "../../store/cartSlice";
+import {
+  addTempCartProduct,
+  selectTempCartProducts,
+} from "../../store/cartSlice";
 import { Add as AddIcon } from "@material-ui/icons/";
 import { toast } from "react-toastify";
 
@@ -48,11 +51,13 @@ export default function ProductItemPage() {
       cart_id: "tempCart",
     };
 
-    dispatch(addTempCartProduct(tempProductToAdd));
-    toast.success("Item added to shopping bag.", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-    setSelectedSize("");
+    if (selectedSize) {
+      dispatch(addTempCartProduct(tempProductToAdd));
+      toast.success("Item added to shopping bag.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      setSelectedSize("");
+    }
   };
 
   // useEffect(() => {
@@ -181,6 +186,7 @@ export default function ProductItemPage() {
               disableElevation
               color="secondary"
               size="large"
+              disabled={selectedSize ? false : true}
               onClick={() => handleAddToBag()}
             >
               <AddIcon /> Add to bag

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Card,
@@ -18,6 +18,7 @@ import {
   updateTempCartProduct,
   deleteTempCartProduct,
   deleteCartProduct,
+  updateCartProduct,
   loadCartProducts,
 } from "../../store/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,24 +28,38 @@ export default function BagItem({ product, tempCartProductIndex }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const [quantity, setQuantity] = useState(product.quantity);
 
   // useEffect(() => {
   //   console.log(product);
   // }, [product]);
 
-  const handleQuantityOnChange = (event) => {
-    if (tempCartProductIndex >= 0) {
-      dispatch(
-        updateTempCartProduct({
-          tempCartProductIndex,
-          quantity: event.target.value,
-        })
-      );
+  useEffect(() => {
+    console.log(quantity);
+    if (quantity !== product.quantity) {
+      if (isLoggedIn) {
+        dispatch(
+          updateCartProduct({
+            cart_id: product.cart_id,
+            product_id: product.product_id,
+            size: product.size,
+            quantity: quantity,
+          })
+        );
+      } else if (tempCartProductIndex >= 0) {
+        dispatch(
+          updateTempCartProduct({
+            tempCartProductIndex,
+            quantity: quantity,
+          })
+        );
+      }
     }
-  };
+  }, [quantity]);
 
   const handleRemove = () => {
     console.log("handle remove");
+
     if (isLoggedIn) {
       dispatch(
         deleteCartProduct({
@@ -53,7 +68,7 @@ export default function BagItem({ product, tempCartProductIndex }) {
           size: product.size,
         })
       );
-      dispatch(loadCartProducts(product.cart_id));
+      // dispatch(loadCartProducts(product.cart_id));
     } else {
       dispatch(deleteTempCartProduct({ tempCartProductIndex }));
     }
@@ -122,8 +137,8 @@ export default function BagItem({ product, tempCartProductIndex }) {
                 }
                 labelId={`product-${product.product_id}-size-${product.size}-quantity-label`}
                 id={`product-${product.product_id}-size-${product.size}-quantity-select`}
-                value={product.quantity}
-                onChange={(event) => handleQuantityOnChange(event)}
+                value={quantity}
+                onChange={(event) => setQuantity(event.target.value)}
                 className={classes.select}
               >
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number) => {

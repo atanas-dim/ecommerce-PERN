@@ -33,6 +33,7 @@ export default function ShoppingBag() {
   }, [dispatch, isLoggedIn, cartId]);
 
   useEffect(() => {
+    console.log("refreshing products");
     isLoggedIn ? setProducts(cartProducts) : setProducts(tempCartProducts);
   }, [isLoggedIn, cartProducts, tempCartProducts]);
 

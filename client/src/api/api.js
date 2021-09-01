@@ -35,7 +35,7 @@ export const fetchCartProducts = async (cart_id) => {
 };
 
 // Add product to cart
-export const postCartProduct = async (data) => {
+export const fetchAddCartProduct = async (data) => {
   const { cart_id, product_id, quantity, size } = data;
 
   const body = {
@@ -53,7 +53,7 @@ export const postCartProduct = async (data) => {
 };
 
 // Delete product from cart
-export const removeCartProduct = async (data) => {
+export const fetchDeleteCartProduct = async (data) => {
   const { cart_id, product_id, size } = data;
 
   const config = createConfig();
@@ -62,11 +62,29 @@ export const removeCartProduct = async (data) => {
     size,
   };
 
-  console.log(cart_id, product_id, config);
-
   const response = await axiosAPI.delete(
     `/carts/${cart_id}/product/${product_id}`,
     config
+  );
+  return response;
+};
+
+// Update product from cart
+export const fetchUpdateCartProduct = async (data) => {
+  const { cart_id, product_id, quantity, size } = data;
+
+  const config = createConfig();
+
+  const body = {
+    product_id,
+    quantity,
+    size,
+  };
+
+  const response = await axiosAPI.put(
+    `/carts/${cart_id}`,
+    body,
+    createConfig()
   );
   return response.data;
 };

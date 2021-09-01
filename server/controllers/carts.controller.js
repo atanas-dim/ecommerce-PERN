@@ -72,7 +72,14 @@ const deleteCartProduct = async (req, res, next) => {
       size
     );
 
-    res.status(200).json("Product was removed from cart!");
+    res
+      .status(200)
+      .json({
+        message: "Product was removed from cart!",
+        cart_id,
+        product_id,
+        size,
+      });
   } catch (error) {
     next(error);
   }

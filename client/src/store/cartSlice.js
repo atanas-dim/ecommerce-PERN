@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   fetchCartProducts,
-  postCartProduct,
-  removeCartProduct,
+  fetchAddCartProduct,
+  fetchDeleteCartProduct,
+  fetchUpdateCartProduct,
 } from "../api/api";
 
 const updateTempCart = (data) => {
@@ -27,7 +28,7 @@ export const loadCartProducts = createAsyncThunk(
 export const addCartProduct = createAsyncThunk(
   "cart/postCartProduct",
   async (data) => {
-    const response = await postCartProduct(data);
+    const response = await fetchAddCartProduct(data);
     return response;
   }
 );
@@ -35,7 +36,15 @@ export const addCartProduct = createAsyncThunk(
 export const deleteCartProduct = createAsyncThunk(
   "cart/removeCartProduct",
   async (data) => {
-    const response = await removeCartProduct(data);
+    const response = await fetchDeleteCartProduct(data);
+    return response;
+  }
+);
+
+export const updateCartProduct = createAsyncThunk(
+  "cart/updateCartProduct",
+  async (data) => {
+    const response = await fetchUpdateCartProduct(data);
     return response;
   }
 );
@@ -103,7 +112,6 @@ export const cartSlice = createSlice({
       })
       .addCase(loadCartProducts.fulfilled, (state, action) => {
         console.log("loaded cart products");
-        console.log(action.payload);
         state.cartProducts = action.payload;
         state.isLoading = false;
       })
@@ -111,15 +119,30 @@ export const cartSlice = createSlice({
         state.error = true;
         state.isLoading = false;
       })
+      // Delete cart product
       .addCase(deleteCartProduct.pending, (state) => {
         state.error = false;
         state.isLoading = true;
       })
       .addCase(deleteCartProduct.fulfilled, (state, action) => {
-        console.log(action.payload);
+        console.log(action.payload.config.data);
+        // state.cartProducts = state.cartProducts.filter(product => product.)
         state.isLoading = false;
       })
       .addCase(deleteCartProduct.rejected, (state) => {
+        state.error = true;
+        state.isLoading = false;
+      })
+      // Update cart product
+      .addCase(updateCartProduct.pending, (state) => {
+        state.error = false;
+        state.isLoading = true;
+      })
+      .addCase(updateCartProduct.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+      })
+      .addCase(updateCartProduct.rejected, (state) => {
         state.error = true;
         state.isLoading = false;
       });
