@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../features/Header/Header";
 import ScrollToTop from "../utils/ScrollToTop/ScrollToTop";
 import ProductsPage from "../features/ProductsPage/ProductsPage";
@@ -12,7 +12,7 @@ import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { logoutUser, selectIsLoggedIn } from "../store/userSlice";
+import { logoutUser, selectIsLoggedIn, persistLogin } from "../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axiosAPI from "../api/axiosConfig";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
@@ -21,41 +21,31 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   loadCartProducts,
   selectCartId,
-  selectCartProducts,
   clearCart,
+  selectCartProducts,
 } from "../store/cartSlice";
+import jwt from "jsonwebtoken";
 
 export default function App() {
   const history = useHistory();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const cartProducts = useSelector(selectCartProducts);
   const cartId = useSelector(selectCartId);
 
   const setupInterceptor = (history) => {
     console.log("setting up interceptor");
     axiosAPI.interceptors.response.use(
       function (response) {
-        console.log("inside return response");
-        console.log(response);
         return response;
       },
       function (error) {
-        console.log("inside error");
-        console.log(error.response);
         if (error.response.status === 401) {
-          console.log("inside redirect");
-
-          toast.info(
-            "Logged out - your token has expired. Log in to continue.",
-            {
-              position: toast.POSITION.BOTTOM_RIGHT,
-            }
-          );
-          // <Redirect to="/login" />;
-
+          console.log("interceptor loggin out");
           dispatch(logoutUser());
           dispatch(clearCart());
+          toast.error("Request failed. Not authorized. Log in to continue", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
           history.push("/login");
         }
         return Promise.reject(error);
@@ -63,16 +53,43 @@ export default function App() {
     );
   };
 
+  // Keeping the user logged in on refresh
+  // Reading the JWT user data and expiry set in localStorage when first logged in
+  // There may be better solution, maybe rework this inside axios interceptor in App.js
+  const token = localStorage.getItem("token");
+  const decodedToken = jwt.decode(token, { complete: true });
+  const dateNow = new Date();
+  const isValid = decodedToken?.payload.exp * 1000 > dateNow.getTime();
+
+  if (token && isValid) {
+    console.log("setting user and logging in");
+    dispatch(
+      persistLogin({ user: decodedToken.payload.user, isLoggedIn: true })
+    );
+  } else if (token && !isValid) {
+    console.log("inside decodedToken in index");
+    dispatch(logoutUser());
+    dispatch(clearCart());
+  }
+
   useEffect(() => {
     setupInterceptor(history);
   }, [history]);
 
   useEffect(() => {
     if (isLoggedIn && cartId) {
-      console.log(isLoggedIn, cartId);
       dispatch(loadCartProducts(cartId));
     }
   }, [dispatch, isLoggedIn, cartId]);
+
+  // useEffect(() => {
+  //   if (cartProducts.length > cartProductsCount) {
+  //     toast.success("Item added to shopping bag.", {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //     });
+  //   }
+  //   setCartProductsCount(cartProducts.length);
+  // }, [cartProducts, cartProductsCount]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -98,9 +115,10 @@ export default function App() {
         </Route>
 
         <Route path="/cart">
-          {/* use isLoggedIn here to render Public or Private cart */}
-          <Cart />
+          {isLoggedIn ? <Redirect to="/user/cart" /> : <Cart />}
         </Route>
+
+        <PrivateRoute restricted={true} component={Cart} path="/user/cart" />
 
         <Route path="/login/">
           <Login />

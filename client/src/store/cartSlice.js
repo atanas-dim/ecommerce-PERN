@@ -10,7 +10,6 @@ const initialState = {
   cartProducts: [],
   isLoading: false,
   error: false,
-  cartId: undefined,
 };
 
 export const loadCartProducts = createAsyncThunk(
@@ -24,12 +23,15 @@ export const loadCartProducts = createAsyncThunk(
 export const addCartProduct = createAsyncThunk(
   "cart/addCartProduct",
   async (product, thunkAPI) => {
-    const isLoggedIn = thunkAPI.getState().user.isLoggedIn;
-    const cartId = thunkAPI.getState().cart.cart_id;
+    const isLoggedIn = thunkAPI.getState().user?.isLoggedIn;
+    const cartId = thunkAPI.getState().user?.user?.cart_id;
 
-    if (isLoggedIn && cartId)
-      await fetchAddCartProduct({ ...product, cart_id: cartId });
-
+    if (isLoggedIn && cartId) {
+      await fetchAddCartProduct({
+        ...product,
+        cart_id: cartId,
+      });
+    }
     return product;
   }
 );
@@ -37,10 +39,12 @@ export const addCartProduct = createAsyncThunk(
 export const deleteCartProduct = createAsyncThunk(
   "cart/deleteCartProduct",
   async (product, thunkAPI) => {
-    const isLoggedIn = thunkAPI.getState().user.isLoggedIn;
-    const cartId = thunkAPI.getState().cart.cartId;
-    if (isLoggedIn)
+    const isLoggedIn = thunkAPI.getState().user?.isLoggedIn;
+    const cartId = thunkAPI.getState().user?.user?.cart_id;
+
+    if (isLoggedIn) {
       await fetchDeleteCartProduct({ ...product, cart_id: cartId });
+    }
     return product;
   }
 );
@@ -48,8 +52,10 @@ export const deleteCartProduct = createAsyncThunk(
 export const updateCartProduct = createAsyncThunk(
   "cart/updateCartProduct",
   async (product, thunkAPI) => {
-    const isLoggedIn = thunkAPI.getState().user.isLoggedIn;
-    const cartId = thunkAPI.getState().cart.cartId;
+    const isLoggedIn = thunkAPI.getState().user?.isLoggedIn;
+    const cartId = thunkAPI.getState().user?.user?.cart_id;
+
+    console.log(thunkAPI.getState().user);
 
     if (isLoggedIn)
       await fetchUpdateCartProduct({
@@ -63,8 +69,12 @@ export const updateCartProduct = createAsyncThunk(
 export const syncCart = createAsyncThunk(
   "cart/syncCart",
   async (products, thunkAPI) => {
-    const isLoggedIn = thunkAPI.getState().user.isLoggedIn;
-    const cartId = thunkAPI.getState().cart.cartId;
+    const isLoggedIn = thunkAPI.getState().user?.isLoggedIn;
+    const cartId = thunkAPI.getState().user?.user?.cart_id;
+
+    console.log(isLoggedIn, cartId);
+    console.log(products);
+    console.log("syncing cart");
 
     products.forEach(async (product) => {
       if (isLoggedIn)
@@ -82,6 +92,7 @@ export const cartSlice = createSlice({
       state.cartId = action.payload;
     },
     clearCart: (state) => {
+      console.log("clearing cart in cartSlice");
       state.cartProducts = [];
     },
   },
@@ -108,6 +119,8 @@ export const cartSlice = createSlice({
       })
       .addCase(addCartProduct.fulfilled, (state, action) => {
         console.log("added cart product");
+        // check here if product already in cart then update quantity
+        console.log(action.payload);
 
         state.cartProducts.push(action.payload);
         state.isLoading = false;
@@ -174,5 +187,7 @@ export const selectIsLoading = (state) => state.cart.isLoading;
 export const selectError = (state) => state.cart.error;
 export const selectCartProducts = (state) => state.cart.cartProducts;
 export const selectCartId = (state) => state.cart.cartId;
+export const selectAddedProductToCartStatus = (state) =>
+  state.cart.addedProductToCartStatus;
 
 export default cartSlice.reducer;

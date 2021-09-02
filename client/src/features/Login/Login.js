@@ -34,21 +34,15 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
-  const cartId = user ? user.user.cart_id : undefined;
-
-  useEffect(() => {
-    if (user) dispatch(setCartId(user.user.cart_id));
-  }, [dispatch, user]);
+  const cartId = user ? user?.cart_id : undefined;
 
   useEffect(() => {
     if (isLoggedIn && cartId) {
-      console.log("use effect syncing");
-      console.log("cart is " + cartId);
       dispatch(syncCart(cartProducts));
       dispatch(loadCartProducts(cartId));
       history.goBack();
     }
-  }, [dispatch, isLoggedIn, user, history]);
+  }, [dispatch, isLoggedIn, cartId, history]);
 
   const handleLogin = (event) => {
     event.preventDefault();

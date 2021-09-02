@@ -15,13 +15,11 @@ import clsx from "clsx";
 import { Link as RouterLink } from "react-router-dom";
 import { capitalise } from "../../utils/capitaliseFirstLetter";
 import { updateCartProduct, deleteCartProduct } from "../../store/cartSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { selectIsLoggedIn } from "../../store/userSlice";
+import { useDispatch } from "react-redux";
 
-export default function CartItem({ product, tempCartProductIndex }) {
+export default function CartItem({ product }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(selectIsLoggedIn);
   const [quantity, setQuantity] = useState(product.quantity);
 
   useEffect(() => {

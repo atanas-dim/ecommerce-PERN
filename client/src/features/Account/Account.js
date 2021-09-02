@@ -7,13 +7,13 @@ import { toast } from "react-toastify";
 export default function Account() {
   const dispatch = useDispatch();
 
-  // temporary for dev only
   const handleLogout = () => {
+    dispatch(logoutUser());
+    dispatch(clearCart());
+
     toast.info("Logged out.", {
       position: toast.POSITION.BOTTOM_RIGHT,
     });
-    dispatch(logoutUser());
-    dispatch(clearCart());
   };
 
   return (

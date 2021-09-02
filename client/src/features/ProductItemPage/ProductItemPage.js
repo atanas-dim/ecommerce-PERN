@@ -19,7 +19,11 @@ import {
   selectIsLoading,
   clearProductItem,
 } from "../../store/productsSlice";
-import { addCartProduct } from "../../store/cartSlice";
+import {
+  selectCartProducts,
+  addCartProduct,
+  selectAddedProductToCartStatus,
+} from "../../store/cartSlice";
 import { selectIsLoggedIn, selectUser } from "../../store/userSlice";
 import { Add as AddIcon } from "@material-ui/icons/";
 import { toast } from "react-toastify";
@@ -32,8 +36,9 @@ export default function ProductItemPage() {
   const isLoading = useSelector(selectIsLoading);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const user = useSelector(selectUser);
+  const cartProducts = useSelector(selectCartProducts);
+  const [cartProductsCount, setCartProductsCount] = useState(-1);
   const [selectedSize, setSelectedSize] = useState("");
-  const cartId = user?.user.cart_id || null;
 
   useEffect(() => {
     dispatch(loadProductById(id));
@@ -51,9 +56,13 @@ export default function ProductItemPage() {
 
     dispatch(addCartProduct(newCartProduct));
 
-    toast.success("Item added to shopping bag.", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
+    if (cartProducts.length > cartProductsCount) {
+      toast.success("Adding item to shopping bag.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
+    setCartProductsCount(cartProducts.length);
+
     setSelectedSize("");
   };
 

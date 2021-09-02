@@ -3,26 +3,17 @@ import { Container, Typography, Card, Box } from "@material-ui/core";
 import OrderSummary from "../../components/OrderSummary/OrderSummary";
 import CartItem from "../../components/CartItem/CartItem";
 import { useStyles } from "./Cart.styles";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectCartProducts,
-  loadCartProducts,
-  selectIsLoading,
-} from "../../store/cartSlice";
-import { selectUser, selectIsLoggedIn } from "../../store/userSlice";
+import { useSelector } from "react-redux";
+import { selectCartProducts } from "../../store/cartSlice";
 
 export default function ShoppingBag() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const user = useSelector(selectUser);
-  const cartId = user?.user.cart_id;
   const cartProducts = useSelector(selectCartProducts);
-  const isLoading = useSelector(selectIsLoading);
-  const isLoggedIn = useSelector(selectIsLoggedIn);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // console.log(cartProducts);
+    console.log("setting products in cart");
+    console.log(cartProducts);
     // Setting products with useState so that the cart rerenders on each delete/update of cart product
     setProducts(cartProducts);
   }, [cartProducts]);
@@ -40,15 +31,8 @@ export default function ShoppingBag() {
               flexDirection="column"
               className={classes.bagItemsContainer}
             >
-              {products.map((product, tempCartProductIndex) => {
-                return (
-                  <CartItem
-                    product={product}
-                    tempCartProductIndex={
-                      !isLoggedIn ? tempCartProductIndex : undefined
-                    }
-                  />
-                );
+              {products.map((product) => {
+                return <CartItem product={product} />;
               })}
             </Box>
             <OrderSummary />

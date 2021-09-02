@@ -31,6 +31,12 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    persistLogin: (state, action) => {
+      const data = action.payload;
+      console.log(data);
+      state.user = data.user;
+      state.isLoggedIn = data.isLoggedIn;
+    },
     logoutUser: (state) => {
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
@@ -43,15 +49,16 @@ export const userSlice = createSlice({
     builder
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-
         localStorage.setItem("token", action.payload.token);
         localStorage.setItem("refreshToken", action.payload.refreshToken);
 
+        state.user = action.payload.user;
         state.isLoggedIn = true;
         state.isLoading = false;
+        state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.error.message;
@@ -60,7 +67,8 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, setIsLoggedIn, logoutUser } = userSlice.actions;
+export const { persistLogin, setUser, setIsLoggedIn, logoutUser } =
+  userSlice.actions;
 
 export const selectIsLoading = (state) => state.user.isLoading;
 export const selectIsLoggedIn = (state) => state.user.isLoggedIn;
