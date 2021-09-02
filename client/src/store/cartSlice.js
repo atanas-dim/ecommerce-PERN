@@ -26,9 +26,6 @@ export const addCartProduct = createAsyncThunk(
     const isLoggedIn = thunkAPI.getState().user?.isLoggedIn;
     const cartId = thunkAPI.getState().user?.user?.cart_id;
 
-    console.log("inside thunk");
-    console.log(product.quantity);
-
     if (isLoggedIn && cartId) {
       await fetchAddCartProduct({
         ...product,
@@ -58,8 +55,6 @@ export const updateCartProduct = createAsyncThunk(
     const isLoggedIn = thunkAPI.getState().user?.isLoggedIn;
     const cartId = thunkAPI.getState().user?.user?.cart_id;
 
-    console.log(thunkAPI.getState().user);
-
     if (isLoggedIn)
       await fetchUpdateCartProduct({
         ...product,
@@ -74,10 +69,6 @@ export const syncCart = createAsyncThunk(
   async (products, thunkAPI) => {
     const isLoggedIn = thunkAPI.getState().user?.isLoggedIn;
     const cartId = thunkAPI.getState().user?.user?.cart_id;
-
-    console.log(isLoggedIn, cartId);
-    console.log(products);
-    console.log("syncing cart");
 
     products.forEach(async (product) => {
       if (isLoggedIn)
@@ -95,7 +86,6 @@ export const cartSlice = createSlice({
       state.cartId = action.payload;
     },
     clearCart: (state) => {
-      console.log("clearing cart in cartSlice");
       state.cartProducts = [];
     },
   },
@@ -106,7 +96,6 @@ export const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loadCartProducts.fulfilled, (state, action) => {
-        console.log("loaded cart products");
         action.payload !== null
           ? (state.cartProducts = action.payload)
           : (state.cartProducts = []);
@@ -121,8 +110,6 @@ export const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(addCartProduct.fulfilled, (state, action) => {
-        console.log("added cart product");
-
         const data = action.payload;
         const productIndex = current(state.cartProducts).findIndex(
           (product) => {
@@ -174,7 +161,6 @@ export const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(updateCartProduct.fulfilled, (state, action) => {
-        console.log("updated cart products");
         const data = action.payload;
 
         const indexToUpdate = current(state.cartProducts).findIndex(

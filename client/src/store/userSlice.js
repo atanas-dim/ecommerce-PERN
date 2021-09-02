@@ -33,7 +33,6 @@ export const userSlice = createSlice({
     },
     persistLogin: (state, action) => {
       const data = action.payload;
-      console.log(data);
       state.user = data.user;
       state.isLoggedIn = data.isLoggedIn;
     },

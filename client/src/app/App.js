@@ -33,14 +33,12 @@ export default function App() {
   const cartId = useSelector(selectCartId);
 
   const setupInterceptor = (history) => {
-    console.log("setting up interceptor");
     axiosAPI.interceptors.response.use(
       function (response) {
         return response;
       },
       function (error) {
         if (error.response.status === 401) {
-          console.log("interceptor loggin out");
           dispatch(logoutUser());
           dispatch(clearCart());
           toast.error("Request failed. Not authorized. Log in to continue", {
@@ -62,12 +60,10 @@ export default function App() {
   const isValid = decodedToken?.payload.exp * 1000 > dateNow.getTime();
 
   if (token && isValid) {
-    console.log("setting user and logging in");
     dispatch(
       persistLogin({ user: decodedToken.payload.user, isLoggedIn: true })
     );
   } else if (token && !isValid) {
-    console.log("inside decodedToken in index");
     dispatch(logoutUser());
     dispatch(clearCart());
   }
@@ -81,15 +77,6 @@ export default function App() {
       dispatch(loadCartProducts(cartId));
     }
   }, [dispatch, isLoggedIn, cartId]);
-
-  // useEffect(() => {
-  //   if (cartProducts.length > cartProductsCount) {
-  //     toast.success("Item added to shopping bag.", {
-  //       position: toast.POSITION.BOTTOM_RIGHT,
-  //     });
-  //   }
-  //   setCartProductsCount(cartProducts.length);
-  // }, [cartProducts, cartProductsCount]);
 
   return (
     <ThemeProvider theme={theme}>

@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Card, Box, Button } from "@material-ui/core";
 import { useStyles } from "./OrderSummary.styles";
 import clsx from "clsx";
+import { selectCartProducts } from "../../store/cartSlice";
+import { useSelector } from "react-redux";
 
 export default function OrderSummary() {
   const classes = useStyles();
+  const cartProducts = useSelector(selectCartProducts);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const newTotal = getTotal();
+    setTotal(newTotal);
+  }, [cartProducts]);
+
+  const getTotal = () => {
+    let sum = 0;
+    cartProducts.forEach((product) => {
+      sum += product.price * product.quantity;
+    });
+    return sum;
+  };
 
   return (
     <Card className={clsx(classes.root)}>
@@ -21,7 +38,7 @@ export default function OrderSummary() {
             Subtotal:
           </Typography>
           <Typography component="span" variant="body1">
-            £ 145
+            £ {total}
           </Typography>
         </Box>
         <Box
@@ -51,7 +68,7 @@ export default function OrderSummary() {
           variant="h6"
           className={classes.totalValue}
         >
-          £ 145
+          £ {total}
         </Typography>
       </Box>
       <Button
