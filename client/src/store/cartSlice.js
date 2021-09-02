@@ -119,10 +119,22 @@ export const cartSlice = createSlice({
       })
       .addCase(addCartProduct.fulfilled, (state, action) => {
         console.log("added cart product");
-        // check here if product already in cart then update quantity
-        console.log(action.payload);
 
-        state.cartProducts.push(action.payload);
+        const data = action.payload;
+        const productIndex = current(state.cartProducts).findIndex(
+          (product) => {
+            return (
+              product.product_id === Number(data.product_id) &&
+              product.size === data.size
+            );
+          }
+        );
+
+        if (productIndex > -1) {
+          state.cartProducts[productIndex].quantity += data.quantity;
+        } else {
+          state.cartProducts.push(action.payload);
+        }
         state.isLoading = false;
       })
       .addCase(addCartProduct.rejected, (state) => {

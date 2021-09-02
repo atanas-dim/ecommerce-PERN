@@ -10,7 +10,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
   useEffect(() => {
     if (!isLoggedIn) {
       console.log("from redirect route");
-      toast.info("Your token has expired. Log in to continue.", {
+      toast.info("Logged out.", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     }

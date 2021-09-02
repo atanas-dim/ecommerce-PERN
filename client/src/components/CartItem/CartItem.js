@@ -9,6 +9,7 @@ import {
   InputLabel,
   FormControl,
   OutlinedInput,
+  Field,
 } from "@material-ui/core";
 import { useStyles } from "./CartItem.styles";
 import clsx from "clsx";
@@ -39,6 +40,14 @@ export default function CartItem({ product }) {
     console.log("handle remove");
     console.log(product);
     dispatch(deleteCartProduct(product));
+  };
+
+  const generateMaxQuantity = () => {
+    if (quantity < 10) {
+      return 10;
+    } else {
+      return quantity;
+    }
   };
 
   return (
@@ -108,7 +117,10 @@ export default function CartItem({ product }) {
                 onChange={(event) => setQuantity(event.target.value)}
                 className={classes.select}
               >
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number) => {
+                {Array.from(
+                  { length: generateMaxQuantity() },
+                  (_, i) => i + 1
+                ).map((number) => {
                   return <MenuItem value={number}>{number}</MenuItem>;
                 })}
               </Select>

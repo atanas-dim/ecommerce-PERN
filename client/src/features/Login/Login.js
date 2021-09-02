@@ -40,15 +40,18 @@ export default function Login() {
     if (isLoggedIn && cartId) {
       dispatch(syncCart(cartProducts));
       dispatch(loadCartProducts(cartId));
+      if (user) {
+        toast.success("Welcome", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
       history.goBack();
     }
-  }, [dispatch, isLoggedIn, cartId, history]);
+  }, [dispatch, isLoggedIn, cartId, history, user]);
 
   const handleLogin = (event) => {
     event.preventDefault();
-    toast.success("Welcome", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
+
     dispatch(loginUser({ email, password }));
   };
 

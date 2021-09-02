@@ -10,10 +10,6 @@ export default function Account() {
   const handleLogout = () => {
     dispatch(logoutUser());
     dispatch(clearCart());
-
-    toast.info("Logged out.", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
   };
 
   return (
