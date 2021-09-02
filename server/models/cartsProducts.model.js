@@ -51,7 +51,6 @@ class CartsProductsModel {
   }
 
   async addCartProductDb({ cart_id, product_id, quantity, size }) {
-    console.log(cart_id, product_id, quantity, size);
     try {
       const newCartProductInDb = await pool.query(
         `INSERT INTO carts_products(cart_id, product_id, quantity, size)
@@ -89,7 +88,6 @@ class CartsProductsModel {
   }
 
   async deleteCartProductDb(cart_id, product_id, size) {
-    console.log(cart_id, product_id, size);
     try {
       const deletedProduct = await pool.query(
         `DELETE FROM carts_products

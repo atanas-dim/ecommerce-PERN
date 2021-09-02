@@ -55,38 +55,27 @@ class CartsService {
       if (quantity <= 0)
         throw new ErrorHandler(406, "Quantity has to be a positive value.");
 
-      console.log("HERE 1");
       const findCartProduct = await CartsProductsModel.getCartProductDb(
         cart_id,
         product_id,
         size
       );
 
-      if (findCartProduct) {
-        console.log("HERE 2");
-        const updatedProduct = await CartsProductsModel.updateCartProductDb({
-          cart_id,
-          product_id,
-          size,
-          quantity,
-        });
-        return updatedProduct;
-      } else {
-        console.log("HERE 3");
-        const newCartProduct = await CartsProductsModel.addCartProductDb({
-          cart_id,
-          product_id,
-          size,
-          quantity,
-        });
-        return newCartProduct;
-      }
+      if (findCartProduct) return "Product already exists in this cart.";
+
+      const newCartProduct = await CartsProductsModel.addCartProductDb({
+        cart_id,
+        product_id,
+        size,
+        quantity,
+      });
+      return newCartProduct;
     } catch (error) {
       throw error;
     }
   }
 
-  async updateCartProduct(cart_id, product_id, size, quantity) {
+  async updateCartProduct({ cart_id, product_id, size, quantity }) {
     try {
       if (!product_id || !quantity || !size)
         throw new ErrorHandler(406, "Product ID, quantity and size required.");
@@ -100,12 +89,12 @@ class CartsService {
       if (!findCartProduct)
         throw new ErrorHandler(404, "Product is still not added to this cart.");
 
-      const updatedProduct = await CartsProductsModel.updateCartProductDb(
+      const updatedProduct = await CartsProductsModel.updateCartProductDb({
         cart_id,
         product_id,
         size,
-        quantity
-      );
+        quantity,
+      });
 
       return {
         product_id: updatedProduct.product_id,

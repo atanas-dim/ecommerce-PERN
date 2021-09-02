@@ -22,7 +22,8 @@ import {
 import {
   selectCartProducts,
   addCartProduct,
-  selectAddedProductToCartStatus,
+  selectError,
+  clearError,
 } from "../../store/cartSlice";
 import { selectIsLoggedIn, selectUser } from "../../store/userSlice";
 import { Add as AddIcon } from "@material-ui/icons/";
@@ -39,6 +40,7 @@ export default function ProductItemPage() {
   const cartProducts = useSelector(selectCartProducts);
   const [cartProductsCount, setCartProductsCount] = useState(-1);
   const [selectedSize, setSelectedSize] = useState("");
+  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(loadProductById(id));
@@ -57,7 +59,7 @@ export default function ProductItemPage() {
     dispatch(addCartProduct(newCartProduct));
 
     if (cartProducts.length > cartProductsCount) {
-      toast.success("Adding item to shopping bag.", {
+      toast.success("Item added to shopping bag.", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     }

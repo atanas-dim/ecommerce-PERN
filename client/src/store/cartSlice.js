@@ -26,6 +26,9 @@ export const addCartProduct = createAsyncThunk(
     const isLoggedIn = thunkAPI.getState().user?.isLoggedIn;
     const cartId = thunkAPI.getState().user?.user?.cart_id;
 
+    console.log("inside thunk");
+    console.log(product.quantity);
+
     if (isLoggedIn && cartId) {
       await fetchAddCartProduct({
         ...product,

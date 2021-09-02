@@ -47,12 +47,12 @@ const updateCartProduct = async (req, res, next) => {
   const { product_id, size, quantity } = req.body;
 
   try {
-    const data = await CartsService.updateCartProduct(
+    const data = await CartsService.updateCartProduct({
       cart_id,
       product_id,
       size,
-      quantity
-    );
+      quantity,
+    });
 
     res.status(200).json(data);
   } catch (error) {
@@ -63,7 +63,6 @@ const updateCartProduct = async (req, res, next) => {
 const deleteCartProduct = async (req, res, next) => {
   const { cart_id, product_id } = req.params;
   const { size } = req.body;
-  console.log(req.body);
 
   try {
     const data = await CartsService.deleteCartProduct(
@@ -72,14 +71,12 @@ const deleteCartProduct = async (req, res, next) => {
       size
     );
 
-    res
-      .status(200)
-      .json({
-        message: "Product was removed from cart!",
-        cart_id,
-        product_id,
-        size,
-      });
+    res.status(200).json({
+      message: "Product was removed from cart!",
+      cart_id,
+      product_id,
+      size,
+    });
   } catch (error) {
     next(error);
   }

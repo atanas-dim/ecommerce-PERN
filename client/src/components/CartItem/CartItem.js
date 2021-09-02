@@ -9,7 +9,6 @@ import {
   InputLabel,
   FormControl,
   OutlinedInput,
-  Field,
 } from "@material-ui/core";
 import { useStyles } from "./CartItem.styles";
 import clsx from "clsx";
@@ -24,7 +23,7 @@ export default function CartItem({ product }) {
   const [quantity, setQuantity] = useState(product.quantity);
 
   useEffect(() => {
-    if (quantity !== product.quantity) {
+    if (quantity) {
       dispatch(
         updateCartProduct({
           ...product,
