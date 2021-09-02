@@ -25,9 +25,19 @@ export const addCartProduct = createAsyncThunk(
   "cart/addCartProduct",
   async (product, thunkAPI) => {
     const isLoggedIn = thunkAPI.getState().user.isLoggedIn;
-    if (isLoggedIn) await fetchAddCartProduct(product);
+    const cartId = thunkAPI.getState().cart.cartId;
+    if (isLoggedIn) await fetchAddCartProduct({ ...product, cart_id: cartId });
 
     return product;
+  }
+);
+
+export const deleteCartProduct = createAsyncThunk(
+  "cart/deleteCartProduct",
+  async (data, thunkAPI) => {
+    const cartId = thunkAPI.getState().cart.cartId;
+    const response = await fetchDeleteCartProduct({ ...data, cart_id: cartId });
+    return response;
   }
 );
 
@@ -46,20 +56,7 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    // addCartProduct: (state, action) => {
-    //   const data = action.payload;
-    //   const existingProductIndex = state.cartProducts?.findIndex((product) => {
-    //     return product.id === data.id && product.size === data.size;
-    //   });
-
-    //   if (existingProductIndex >= 0) {
-    //     if (state.cartProducts[existingProductIndex].quantity < 10) {
-    //       state.cartProducts[existingProductIndex].quantity += data.quantity;
-    //     }
-    //   } else {
-    //     state.cartProducts.push(data);
-    //   }
-    // },
+    //make this an async thunk
     updateCartProduct: (state, action) => {
       const data = action.payload;
       state.cartProducts.forEach((product, index) => {
@@ -68,21 +65,12 @@ export const cartSlice = createSlice({
         }
       });
     },
-    deleteCartProduct: (state, action) => {
-      console.log(action.payload);
-      const data = action.payload;
-
-      const indexToDelete = state.cartProducts.findIndex((product) => {
-        return product.id === data.id && product.size === data.size;
-      });
-
-      if (indexToDelete > -1) {
-        state.cartProducts.splice(indexToDelete, 1);
-      }
-    },
     setCartId: (state, action) => {
       console.log(action.payload);
       state.cartId = action.payload;
+    },
+    clearCart: (state) => {
+      state.cartProducts = [];
     },
   },
   extraReducers: (builder) => {
@@ -115,12 +103,36 @@ export const cartSlice = createSlice({
       .addCase(addCartProduct.rejected, (state) => {
         state.error = true;
         state.isLoading = false;
+      })
+      .addCase(deleteCartProduct.pending, (state) => {
+        state.error = false;
+        state.isLoading = true;
+      })
+      .addCase(deleteCartProduct.fulfilled, (state, action) => {
+        const data = action.payload;
+
+        const indexToDelete = current(state.cartProducts).findIndex(
+          (product) => {
+            return (
+              product.product_id === Number(data.product_id) &&
+              product.size === data.size
+            );
+          }
+        );
+
+        if (indexToDelete > -1) {
+          state.cartProducts.splice(indexToDelete, 1);
+        }
+        state.isLoading = false;
+      })
+      .addCase(deleteCartProduct.rejected, (state) => {
+        state.error = true;
+        state.isLoading = false;
       });
   },
 });
 
-export const { updateCartProduct, deleteCartProduct, setCartId } =
-  cartSlice.actions;
+export const { updateCartProduct, setCartId, clearCart } = cartSlice.actions;
 
 export const selectIsLoading = (state) => state.cart.isLoading;
 export const selectError = (state) => state.cart.error;

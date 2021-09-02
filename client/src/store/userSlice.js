@@ -46,7 +46,6 @@ export const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload;
-        // console.log(action.payload);
 
         localStorage.setItem("token", action.payload.token);
         localStorage.setItem("refreshToken", action.payload.refreshToken);

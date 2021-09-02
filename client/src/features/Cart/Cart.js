@@ -19,11 +19,11 @@ export default function ShoppingBag() {
   const cartProducts = useSelector(selectCartProducts);
   const isLoading = useSelector(selectIsLoading);
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const [allCartProducts, setAllCartProducts] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // console.log(cartProducts);
-    setAllCartProducts(cartProducts);
+    console.log(cartProducts);
+    setProducts(cartProducts);
   }, [cartProducts]);
 
   return (
@@ -32,14 +32,14 @@ export default function ShoppingBag() {
         Shopping bag
       </Typography>
       <Box display="flex" className={classes.cardsContainer}>
-        {allCartProducts?.length ? (
+        {products?.length ? (
           <>
             <Box
               display="flex"
               flexDirection="column"
               className={classes.bagItemsContainer}
             >
-              {allCartProducts.map((product, tempCartProductIndex) => {
+              {products.map((product, tempCartProductIndex) => {
                 return (
                   <CartItem
                     product={product}

@@ -43,7 +43,8 @@ export default function ProductItemPage() {
   const handleAddToBag = () => {
     const newCartProduct = {
       ...productItem,
-      cart_id: cartId,
+      product_id: productItem.id,
+      product_name: productItem.name,
       quantity: 1,
       size: selectedSize,
     };

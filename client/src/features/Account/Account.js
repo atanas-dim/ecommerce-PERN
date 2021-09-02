@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../store/userSlice";
+import { clearCart } from "../../store/cartSlice";
 import { toast } from "react-toastify";
 
 export default function Account() {
@@ -12,6 +13,7 @@ export default function Account() {
       position: toast.POSITION.BOTTOM_RIGHT,
     });
     dispatch(logoutUser());
+    dispatch(clearCart());
   };
 
   return (

@@ -36,18 +36,13 @@ export const fetchCartProducts = async (cart_id) => {
 
 // Add product to cart
 export const fetchAddCartProduct = async (data) => {
-  console.log(data);
   const { cart_id, id, quantity, size } = data;
-
-  console.log(id);
 
   const body = {
     product_id: id,
     quantity,
     size,
   };
-
-  console.log(body);
 
   const response = await axiosAPI.post(
     `/carts/${cart_id}`,

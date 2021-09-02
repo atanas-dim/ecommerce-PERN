@@ -42,7 +42,9 @@ export default function CartItem({ product, tempCartProductIndex }) {
 
   const handleRemove = () => {
     console.log("handle remove");
-    dispatch(deleteCartProduct({ id: product.id, size: product.size }));
+    dispatch(
+      deleteCartProduct({ product_id: product.product_id, size: product.size })
+    );
   };
 
   return (
@@ -70,7 +72,7 @@ export default function CartItem({ product, tempCartProductIndex }) {
             className={classes.headingsMain}
           >
             <Typography component="h3" variant="body1">
-              {product.name}, {product.size}
+              {product.product_name}, {product.size}
             </Typography>
 
             <Typography component="span" variant="h6" className={classes.price}>

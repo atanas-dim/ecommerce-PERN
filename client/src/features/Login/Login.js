@@ -48,8 +48,6 @@ export default function Login() {
   };
 
   useEffect(() => {
-    console.log("hereeeeee");
-    console.log(cartId);
     dispatch(setCartId(cartId));
   }, [cartId]);
 
