@@ -24,14 +24,11 @@ export default function CartItem({ product, tempCartProductIndex }) {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const [quantity, setQuantity] = useState(product.quantity);
 
-  // useEffect(() => {
-  //   console.log(product);
-  // }, [product]);
-
   useEffect(() => {
     if (quantity !== product.quantity) {
       dispatch(
         updateCartProduct({
+          ...product,
           id: product.product_id,
           size: product.size,
           quantity: quantity,
@@ -42,9 +39,8 @@ export default function CartItem({ product, tempCartProductIndex }) {
 
   const handleRemove = () => {
     console.log("handle remove");
-    dispatch(
-      deleteCartProduct({ product_id: product.product_id, size: product.size })
-    );
+    console.log(product);
+    dispatch(deleteCartProduct(product));
   };
 
   return (

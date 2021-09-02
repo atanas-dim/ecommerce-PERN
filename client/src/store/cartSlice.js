@@ -16,8 +16,6 @@ const initialState = {
 export const loadCartProducts = createAsyncThunk(
   "cart/loadCartProducts",
   async (cart_id) => {
-    console.log(cart_id);
-
     const response = await fetchCartProducts(cart_id);
     return response;
   }
@@ -38,21 +36,27 @@ export const addCartProduct = createAsyncThunk(
 
 export const deleteCartProduct = createAsyncThunk(
   "cart/deleteCartProduct",
-  async (data, thunkAPI) => {
+  async (product, thunkAPI) => {
+    const isLoggedIn = thunkAPI.getState().user.isLoggedIn;
     const cartId = thunkAPI.getState().cart.cartId;
-    const response = await fetchDeleteCartProduct({ ...data, cart_id: cartId });
-    return response;
+    if (isLoggedIn)
+      await fetchDeleteCartProduct({ ...product, cart_id: cartId });
+    return product;
   }
 );
 
 export const updateCartProduct = createAsyncThunk(
   "cart/updateCartProduct",
-  async (data, thunkAPI) => {
+  async (product, thunkAPI) => {
+    const isLoggedIn = thunkAPI.getState().user.isLoggedIn;
     const cartId = thunkAPI.getState().cart.cartId;
 
-    console.log(data);
-    const response = await fetchUpdateCartProduct({ ...data, cart_id: cartId });
-    return response;
+    if (isLoggedIn)
+      await fetchUpdateCartProduct({
+        ...product,
+        cart_id: cartId,
+      });
+    return product;
   }
 );
 

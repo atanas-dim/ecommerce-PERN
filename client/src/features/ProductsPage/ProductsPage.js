@@ -19,9 +19,9 @@ export default function ProductsPage({ title, category }) {
     else dispatch(loadProductsCategory(category));
   }, [category, dispatch]);
 
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
+  // useEffect(() => {
+  //   console.log(products);
+  // }, [products]);
 
   return (
     <Container maxWidth="lg" className={classes.root}>

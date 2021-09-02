@@ -71,7 +71,6 @@ export const fetchDeleteCartProduct = async (data) => {
 
 // Update product from cart
 export const fetchUpdateCartProduct = async (data) => {
-  console.log(data);
   const { cart_id, id, quantity, size } = data;
 
   const config = createConfig();
@@ -81,8 +80,6 @@ export const fetchUpdateCartProduct = async (data) => {
     quantity,
     size,
   };
-
-  console.log(body);
 
   const response = await axiosAPI.put(
     `/carts/${cart_id}`,

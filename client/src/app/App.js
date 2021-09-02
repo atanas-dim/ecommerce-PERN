@@ -22,6 +22,7 @@ import {
   loadCartProducts,
   selectCartId,
   selectCartProducts,
+  clearCart,
 } from "../store/cartSlice";
 
 export default function App() {
@@ -51,8 +52,11 @@ export default function App() {
               position: toast.POSITION.BOTTOM_RIGHT,
             }
           );
-          <Redirect to="/login" />;
+          // <Redirect to="/login" />;
+
           dispatch(logoutUser());
+          dispatch(clearCart());
+          history.push("/login");
         }
         return Promise.reject(error);
       }
