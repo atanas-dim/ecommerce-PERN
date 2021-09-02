@@ -32,7 +32,7 @@ export default function CartItem({ product, tempCartProductIndex }) {
     if (quantity !== product.quantity) {
       dispatch(
         updateCartProduct({
-          id: product.id,
+          id: product.product_id,
           size: product.size,
           quantity: quantity,
         })

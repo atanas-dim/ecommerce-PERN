@@ -22,7 +22,8 @@ export default function ShoppingBag() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    console.log(cartProducts);
+    // console.log(cartProducts);
+    // Setting products with useState so that the cart rerenders on each delete/update of cart product
     setProducts(cartProducts);
   }, [cartProducts]);
 

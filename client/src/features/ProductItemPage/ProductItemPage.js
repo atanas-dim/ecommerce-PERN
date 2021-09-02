@@ -49,8 +49,6 @@ export default function ProductItemPage() {
       size: selectedSize,
     };
 
-    console.log(newCartProduct);
-
     dispatch(addCartProduct(newCartProduct));
 
     toast.success("Item added to shopping bag.", {

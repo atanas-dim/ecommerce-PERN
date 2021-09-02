@@ -22,7 +22,6 @@ import {
   loadCartProducts,
   selectCartId,
   selectCartProducts,
-  updateCart,
 } from "../store/cartSlice";
 
 export default function App() {
@@ -64,16 +63,9 @@ export default function App() {
     setupInterceptor(history);
   }, [history]);
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     dispatch(updateCart(cartProducts));
-  //   }
-  //   // console.log(isLoggedIn);
-  // }, [dispatch, isLoggedIn, cartProducts]);
-
   useEffect(() => {
-    console.log(isLoggedIn, cartId);
     if (isLoggedIn && cartId) {
+      console.log(isLoggedIn, cartId);
       dispatch(loadCartProducts(cartId));
     }
   }, [dispatch, isLoggedIn, cartId]);

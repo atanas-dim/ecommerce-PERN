@@ -16,8 +16,10 @@ import {
   loginUser,
 } from "../../store/userSlice";
 import {
+  selectCartProducts,
   addCartProduct,
   loadCartProducts,
+  syncCart,
   setCartId,
 } from "../../store/cartSlice";
 import { toast } from "react-toastify";
@@ -28,16 +30,25 @@ export default function Login() {
   const user = useSelector(selectUser);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const error = useSelector(selectError);
+  const cartProducts = useSelector(selectCartProducts);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
   const cartId = user ? user.user.cart_id : undefined;
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     history.goBack();
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (user) dispatch(setCartId(user.user.cart_id));
+  }, [dispatch, user]);
+
+  useEffect(() => {
+    if (isLoggedIn && cartId) {
+      console.log("use effect syncing");
+      console.log("cart is " + cartId);
+      dispatch(syncCart(cartProducts));
+      dispatch(loadCartProducts(cartId));
+      history.goBack();
+    }
+  }, [dispatch, isLoggedIn, user, history]);
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -46,10 +57,6 @@ export default function Login() {
     });
     dispatch(loginUser({ email, password }));
   };
-
-  useEffect(() => {
-    dispatch(setCartId(cartId));
-  }, [cartId]);
 
   return (
     <Container maxWidth="sm" className={classes.root}>
