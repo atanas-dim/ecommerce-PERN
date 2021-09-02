@@ -55,26 +55,29 @@ class CartsService {
       if (quantity <= 0)
         throw new ErrorHandler(406, "Quantity has to be a positive value.");
 
-      // const findCartProduct = await CartsProductsModel.getCartProductDb(
-      //   cart_id,
-      //   product_id,
-      //   size
-      // );
-
-      // if (findCartProduct) return "Product already exists in this cart.";
-
-      const newCartProduct = await CartsProductsModel.addCartProductDb(
+      const findCartProduct = await CartsProductsModel.getCartProductDb(
         cart_id,
         product_id,
-        quantity,
         size
       );
-      return {
-        product_id: newCartProduct.product_id,
-        quantity: newCartProduct.quantity,
-        size: newCartProduct.size,
-        cart_id: newCartProduct.cart_id,
-      };
+
+      if (findCartProduct) {
+        const updatedProduct = await CartsProductsModel.updateCartProductDb(
+          cart_id,
+          product_id,
+          size,
+          quantity
+        );
+        return updatedProduct;
+      } else {
+        const newCartProduct = await CartsProductsModel.addCartProductDb(
+          cart_id,
+          product_id,
+          size,
+          quantity
+        );
+        return newCartProduct;
+      }
     } catch (error) {
       throw error;
     }

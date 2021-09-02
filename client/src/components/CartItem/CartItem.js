@@ -43,7 +43,7 @@ export default function CartItem({ product }) {
   };
 
   const generateMaxQuantity = () => {
-    if (quantity < 10) {
+    if (quantity <= 10) {
       return 10;
     } else {
       return quantity;
