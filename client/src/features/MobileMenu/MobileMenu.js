@@ -14,14 +14,19 @@ import { Link as RouterLink } from "react-router-dom";
 import {
   LocalMallOutlined as ShoppingBagIcon,
   ExitToAppOutlined as LoginIcon,
+  AccountCircleOutlined as AccountIcon,
   Menu as MenuIcon,
   ArrowLeft as CategoryIcon,
 } from "@material-ui/icons/";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../store/userSlice";
 
 export default function MobileMenu() {
   const classes = useStyles();
-
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+
+  const categories = ["swimwear", "accessories"];
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -61,16 +66,35 @@ export default function MobileMenu() {
             onKeyDown={toggleDrawer(false)}
           >
             <List>
-              <ListItem button component={RouterLink} to="/login" key={"Login"}>
-                <ListItemIcon>
-                  <LoginIcon color="secondary" />
-                </ListItemIcon>
-                <ListItemText>Login</ListItemText>
-              </ListItem>
+              {isLoggedIn ? (
+                <ListItem
+                  button
+                  component={RouterLink}
+                  to="/account"
+                  key={"Account"}
+                >
+                  <ListItemIcon>
+                    <AccountIcon color="secondary" />
+                  </ListItemIcon>
+                  <ListItemText>Account</ListItemText>
+                </ListItem>
+              ) : (
+                <ListItem
+                  button
+                  component={RouterLink}
+                  to="/login"
+                  key={"Login"}
+                >
+                  <ListItemIcon>
+                    <LoginIcon color="secondary" />
+                  </ListItemIcon>
+                  <ListItemText>Login</ListItemText>
+                </ListItem>
+              )}
             </List>
             <Divider />
             <List>
-              {["swimwear", "accessories"].map((text, index) => (
+              {categories.map((text, index) => (
                 <ListItem
                   button
                   component={RouterLink}
