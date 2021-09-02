@@ -12,7 +12,7 @@ const initialState = {
 };
 
 export const loadBestSellers = createAsyncThunk(
-  "products/fetchBestSellers",
+  "products/loadBestSellers",
   async () => {
     const response = await fetchBestSellers();
     return response;
@@ -20,7 +20,7 @@ export const loadBestSellers = createAsyncThunk(
 );
 
 export const loadProductsCategory = createAsyncThunk(
-  "products/fetchProductsCategory",
+  "products/loadProductsCategory",
   async (category) => {
     const response = await fetchProductsCategory(category);
     return response;
@@ -28,7 +28,7 @@ export const loadProductsCategory = createAsyncThunk(
 );
 
 export const loadProductById = createAsyncThunk(
-  "products/fetchProductById",
+  "products/loadProductById",
   async (id) => {
     const response = await fetchProductById(id);
     return response;

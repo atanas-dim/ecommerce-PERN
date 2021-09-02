@@ -36,12 +36,13 @@ export const fetchCartProducts = async (cart_id) => {
 
 // Add product to cart
 export const fetchAddCartProduct = async (data) => {
-  const { cart_id, product_id, quantity, size } = data;
+  console.log(data);
+  const { cart_id, id, quantity, size } = data;
 
-  console.log(product_id);
+  console.log(id);
 
   const body = {
-    product_id,
+    product_id: id,
     quantity,
     size,
   };

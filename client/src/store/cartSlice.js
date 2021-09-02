@@ -14,23 +14,31 @@ const initialState = {
 };
 
 export const loadCartProducts = createAsyncThunk(
-  "cart/fetchCartProducts",
+  "cart/loadCartProducts",
   async (cart_id) => {
     const response = await fetchCartProducts(cart_id);
     return response;
   }
 );
 
+export const addCartProduct = createAsyncThunk(
+  "cart/addCartProduct",
+  async (product, thunkAPI) => {
+    const isLoggedIn = thunkAPI.getState().user.isLoggedIn;
+    if (isLoggedIn) await fetchAddCartProduct(product);
+
+    return product;
+  }
+);
+
 export const updateCart = createAsyncThunk(
-  "cart/fetchUpdateCart",
+  "cart/updateCart",
   async (products) => {
     console.log(products);
     products.forEach(async (product) => {
       console.log(product);
       await fetchUpdateCartProduct(product);
     });
-    // const response = await fetchUpdateCart(data);
-    // return response;
   }
 );
 
@@ -38,20 +46,20 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addCartProduct: (state, action) => {
-      const data = action.payload;
-      const existingProductIndex = state.cartProducts?.findIndex((product) => {
-        return product.id === data.id && product.size === data.size;
-      });
+    // addCartProduct: (state, action) => {
+    //   const data = action.payload;
+    //   const existingProductIndex = state.cartProducts?.findIndex((product) => {
+    //     return product.id === data.id && product.size === data.size;
+    //   });
 
-      if (existingProductIndex >= 0) {
-        if (state.cartProducts[existingProductIndex].quantity < 10) {
-          state.cartProducts[existingProductIndex].quantity += data.quantity;
-        }
-      } else {
-        state.cartProducts.push(data);
-      }
-    },
+    //   if (existingProductIndex >= 0) {
+    //     if (state.cartProducts[existingProductIndex].quantity < 10) {
+    //       state.cartProducts[existingProductIndex].quantity += data.quantity;
+    //     }
+    //   } else {
+    //     state.cartProducts.push(data);
+    //   }
+    // },
     updateCartProduct: (state, action) => {
       const data = action.payload;
       state.cartProducts.forEach((product, index) => {
@@ -93,16 +101,26 @@ export const cartSlice = createSlice({
       .addCase(loadCartProducts.rejected, (state) => {
         state.error = true;
         state.isLoading = false;
+      })
+      .addCase(addCartProduct.pending, (state) => {
+        state.error = false;
+        state.isLoading = true;
+      })
+      .addCase(addCartProduct.fulfilled, (state, action) => {
+        console.log("loaded cart products");
+
+        state.cartProducts.push(action.payload);
+        state.isLoading = false;
+      })
+      .addCase(addCartProduct.rejected, (state) => {
+        state.error = true;
+        state.isLoading = false;
       });
   },
 });
 
-export const {
-  addCartProduct,
-  updateCartProduct,
-  deleteCartProduct,
-  setCartId,
-} = cartSlice.actions;
+export const { updateCartProduct, deleteCartProduct, setCartId } =
+  cartSlice.actions;
 
 export const selectIsLoading = (state) => state.cart.isLoading;
 export const selectError = (state) => state.cart.error;

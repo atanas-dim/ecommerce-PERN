@@ -29,7 +29,8 @@ class CartsProductsModel {
                 carts_products.size AS size,
                 products.price AS price, 
                 products.categories AS categories,
-                products.images AS images
+                products.images AS images,
+                products.description AS description
         FROM carts 
         JOIN carts_products 
                 ON carts_products.cart_id = carts.id

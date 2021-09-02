@@ -37,7 +37,7 @@ export default function App() {
     axiosAPI.interceptors.response.use(
       function (response) {
         console.log("inside return response");
-        // console.log(response);
+        console.log(response);
         return response;
       },
       function (error) {
@@ -64,10 +64,12 @@ export default function App() {
     setupInterceptor(history);
   }, [history]);
 
-  useEffect(() => {
-    if (isLoggedIn) dispatch(updateCart(cartProducts));
-    // console.log(isLoggedIn);
-  }, [dispatch, cartProducts]);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     dispatch(updateCart(cartProducts));
+  //   }
+  //   // console.log(isLoggedIn);
+  // }, [dispatch, isLoggedIn, cartProducts]);
 
   useEffect(() => {
     console.log(isLoggedIn, cartId);

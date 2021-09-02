@@ -9,7 +9,7 @@ const initialState = {
 };
 
 export const loginUser = createAsyncThunk(
-  "user/fetchUser",
+  "user/loginUser",
   async (loginData) => {
     const { email, password } = loginData;
     try {
@@ -46,7 +46,7 @@ export const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload;
-        console.log(action.payload);
+        // console.log(action.payload);
 
         localStorage.setItem("token", action.payload.token);
         localStorage.setItem("refreshToken", action.payload.refreshToken);
