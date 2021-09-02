@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useStyles } from "./DesktopMenu.styles";
-import { List, Button } from "@material-ui/core";
+import { List, Button, Badge } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import clsx from "clsx";
 import { capitalise } from "../../utils/capitaliseFirstLetter";
 import { selectIsLoggedIn } from "../../store/userSlice";
+import { selectCartProducts } from "../../store/cartSlice";
 import { useSelector } from "react-redux";
 import {
   LocalMallOutlined as ShoppingBagIcon,
@@ -15,6 +16,16 @@ import {
 export default function DesktopMenu() {
   const classes = useStyles();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const cartProducts = useSelector(selectCartProducts);
+
+  const getProductCount = () => {
+    let counter = 0;
+    cartProducts.forEach((product) => {
+      counter += product.quantity;
+    });
+    console.log(counter);
+    return counter;
+  };
 
   const categories = ["swimwear", "accessories"];
   const userArea = isLoggedIn ? ["bag", "account"] : ["bag", "login"];
@@ -42,7 +53,19 @@ export default function DesktopMenu() {
             key={text}
             className={classes.customLink}
           >
-            {text === "bag" && <ShoppingBagIcon fontSize="small" />}
+            {/* {text === "bag" && <ShoppingBagIcon fontSize="small" />} */}
+            {text === "bag" && (
+              <Badge
+                badgeContent={getProductCount()}
+                color="secondary"
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+              >
+                <ShoppingBagIcon fontSize="small" />
+              </Badge>
+            )}
             {text === "login" && <LoginIcon fontSize="small" />}
             {text === "account" && <AccountIcon fontSize="small" />}
             {capitalise(text)}
@@ -51,4 +74,10 @@ export default function DesktopMenu() {
       </List>
     </>
   );
+}
+
+{
+  /* <Badge badgeContent={4} color="primary">
+  <MailIcon />
+</Badge> */
 }

@@ -9,6 +9,7 @@ import {
   ListItemText,
   ListItemIcon,
   Divider,
+  Badge,
 } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import {
@@ -20,12 +21,13 @@ import {
 } from "@material-ui/icons/";
 import { useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../store/userSlice";
+import { selectCartProducts } from "../../store/cartSlice";
 
 export default function MobileMenu() {
   const classes = useStyles();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-
+  const cartProducts = useSelector(selectCartProducts);
   const categories = ["swimwear", "accessories"];
 
   const toggleDrawer = (open) => (event) => {
@@ -39,11 +41,29 @@ export default function MobileMenu() {
     setMenuIsOpen(open);
   };
 
+  const getProductCount = () => {
+    let counter = 0;
+    cartProducts.forEach((product) => {
+      counter += product.quantity;
+    });
+    console.log(counter);
+    return counter;
+  };
+
   return (
     <>
       <React.Fragment key="right">
         <IconButton component={RouterLink} to="/cart" color="secondary">
-          <ShoppingBagIcon fontSize="small" />
+          <Badge
+            badgeContent={getProductCount()}
+            color="secondary"
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
+            <ShoppingBagIcon fontSize="small" />
+          </Badge>
         </IconButton>
         <IconButton
           onClick={toggleDrawer(true)}
