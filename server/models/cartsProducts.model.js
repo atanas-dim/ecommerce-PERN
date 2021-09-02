@@ -50,7 +50,8 @@ class CartsProductsModel {
     }
   }
 
-  async addCartProductDb(cart_id, product_id, quantity, size) {
+  async addCartProductDb({ cart_id, product_id, quantity, size }) {
+    console.log(cart_id, product_id, quantity, size);
     try {
       const newCartProductInDb = await pool.query(
         `INSERT INTO carts_products(cart_id, product_id, quantity, size)
@@ -69,7 +70,7 @@ class CartsProductsModel {
     }
   }
 
-  async updateCartProductDb(cart_id, product_id, size, quantity) {
+  async updateCartProductDb({ cart_id, product_id, size, quantity }) {
     try {
       const updatedProduct = await pool.query(
         `UPDATE carts_products

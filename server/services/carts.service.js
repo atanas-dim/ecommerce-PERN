@@ -55,6 +55,7 @@ class CartsService {
       if (quantity <= 0)
         throw new ErrorHandler(406, "Quantity has to be a positive value.");
 
+      console.log("HERE 1");
       const findCartProduct = await CartsProductsModel.getCartProductDb(
         cart_id,
         product_id,
@@ -62,20 +63,22 @@ class CartsService {
       );
 
       if (findCartProduct) {
-        const updatedProduct = await CartsProductsModel.updateCartProductDb(
+        console.log("HERE 2");
+        const updatedProduct = await CartsProductsModel.updateCartProductDb({
           cart_id,
           product_id,
           size,
-          quantity
-        );
+          quantity,
+        });
         return updatedProduct;
       } else {
-        const newCartProduct = await CartsProductsModel.addCartProductDb(
+        console.log("HERE 3");
+        const newCartProduct = await CartsProductsModel.addCartProductDb({
           cart_id,
           product_id,
           size,
-          quantity
-        );
+          quantity,
+        });
         return newCartProduct;
       }
     } catch (error) {
