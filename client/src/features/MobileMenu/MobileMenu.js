@@ -28,7 +28,7 @@ export default function MobileMenu() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const cartProducts = useSelector(selectCartProducts);
-  const [productCount, setProductCount] = useState(cartProducts.length);
+  const [productCount, setProductCount] = useState(cartProducts?.length);
   const categories = ["swimwear", "accessories"];
 
   const toggleDrawer = (open) => (event) => {
@@ -42,18 +42,13 @@ export default function MobileMenu() {
     setMenuIsOpen(open);
   };
 
-  const getProductCount = () => {
+  useEffect(() => {
     let counter = 0;
     cartProducts.forEach((product) => {
       counter += product.quantity;
     });
-    return counter;
-  };
 
-  useEffect(() => {
-    const count = getProductCount();
-    console.log("count is " + count);
-    setProductCount(count);
+    setProductCount(counter);
   }, [cartProducts]);
 
   return (
@@ -61,7 +56,7 @@ export default function MobileMenu() {
       <React.Fragment key="right">
         <IconButton component={RouterLink} to="/cart" color="secondary">
           <Badge
-            badgeContent={getProductCount()}
+            badgeContent={productCount}
             color="secondary"
             anchorOrigin={{
               vertical: "top",

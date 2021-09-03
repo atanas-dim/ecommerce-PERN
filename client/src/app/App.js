@@ -19,13 +19,18 @@ import axiosAPI from "../api/axiosConfig";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { loadCartProducts, clearCart } from "../store/cartSlice";
+import {
+  loadCartProducts,
+  clearCart,
+  selectRefreshCart,
+} from "../store/cartSlice";
 import jwt from "jsonwebtoken";
 
 export default function App() {
   const history = useHistory();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const refreshCart = useSelector(selectRefreshCart);
 
   const setupInterceptor = (history) => {
     axiosAPI.interceptors.response.use(
@@ -66,6 +71,12 @@ export default function App() {
   useEffect(() => {
     setupInterceptor(history);
   }, [history]);
+
+  useEffect(() => {
+    if (refreshCart) {
+      dispatch(loadCartProducts());
+    }
+  }, [dispatch, refreshCart]);
 
   return (
     <ThemeProvider theme={theme}>

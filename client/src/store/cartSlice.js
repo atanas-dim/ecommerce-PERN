@@ -12,14 +12,17 @@ const initialState = {
   isLoading: false,
   error: false,
   newOrderInfo: null,
+  refreshCart: false,
 };
 
 export const loadCartProducts = createAsyncThunk(
   "cart/loadCartProducts",
   async (_, thunkAPI) => {
+    const isLoggedIn = thunkAPI.getState().user?.isLoggedIn;
     const cartId = thunkAPI.getState().user?.user?.cart_id;
-    const response = await fetchCartProducts(cartId);
-    return response;
+
+    if (isLoggedIn) return await fetchCartProducts(cartId);
+    return null;
   }
 );
 
@@ -99,8 +102,10 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     setCartId: (state, action) => {
-      console.log(action.payload);
       state.cartId = action.payload;
+    },
+    setRefreshCart: (state, action) => {
+      state.refreshCart = action.payload;
     },
     clearCart: (state) => {
       state.cartProducts = [];
@@ -116,12 +121,13 @@ export const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loadCartProducts.fulfilled, (state, action) => {
-        action.payload !== null
-          ? (state.cartProducts = action.payload)
-          : (state.cartProducts = []);
+        if (action.payload !== null) state.cartProducts = action.payload;
+
+        state.refreshCart = false;
         state.isLoading = false;
       })
       .addCase(loadCartProducts.rejected, (state) => {
+        state.refreshCart = false;
         state.error = true;
         state.isLoading = false;
       })
@@ -131,6 +137,7 @@ export const cartSlice = createSlice({
       })
       .addCase(addCartProduct.fulfilled, (state, action) => {
         const data = action.payload;
+
         const productIndex = current(state.cartProducts).findIndex(
           (product) => {
             return (
@@ -145,9 +152,11 @@ export const cartSlice = createSlice({
         } else {
           state.cartProducts.push(action.payload);
         }
+        state.refreshCart = true;
         state.isLoading = false;
       })
       .addCase(addCartProduct.rejected, (state) => {
+        state.refreshCart = false;
         state.error = true;
         state.isLoading = false;
       })
@@ -170,9 +179,11 @@ export const cartSlice = createSlice({
         if (indexToDelete > -1) {
           state.cartProducts.splice(indexToDelete, 1);
         }
+        state.refreshCart = true;
         state.isLoading = false;
       })
       .addCase(deleteCartProduct.rejected, (state) => {
+        state.refreshCart = false;
         state.error = true;
         state.isLoading = false;
       })
@@ -193,9 +204,11 @@ export const cartSlice = createSlice({
         );
 
         state.cartProducts[indexToUpdate].quantity = data.quantity;
+        state.refreshCart = true;
         state.isLoading = false;
       })
       .addCase(updateCartProduct.rejected, (state) => {
+        state.refreshCart = false;
         state.error = true;
         state.isLoading = false;
       })
@@ -207,9 +220,11 @@ export const cartSlice = createSlice({
       .addCase(checkoutCart.fulfilled, (state, action) => {
         state.newOrderInfo = action.payload;
         state.cartProducts = [];
+        state.refreshCart = true;
         state.isLoading = false;
       })
       .addCase(checkoutCart.rejected, (state) => {
+        state.refreshCart = false;
         state.error = true;
         state.isLoading = false;
       })
@@ -219,16 +234,19 @@ export const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(syncCart.fulfilled, (state) => {
+        state.refreshCart = true;
         state.isLoading = false;
       })
       .addCase(syncCart.rejected, (state) => {
+        state.refreshCart = false;
         state.error = true;
         state.isLoading = false;
       });
   },
 });
 
-export const { setCartId, clearCart, clearNewOrderInfo } = cartSlice.actions;
+export const { setCartId, clearCart, clearNewOrderInfo, setRefreshCart } =
+  cartSlice.actions;
 
 export const selectIsLoading = (state) => state.cart.isLoading;
 export const selectError = (state) => state.cart.error;
@@ -237,5 +255,6 @@ export const selectCartId = (state) => state.cart.cartId;
 export const selectAddedProductToCartStatus = (state) =>
   state.cart.addedProductToCartStatus;
 export const selectNewOrderInfo = (state) => state.cart.newOrderInfo;
+export const selectRefreshCart = (state) => state.cart.refreshCart;
 
 export default cartSlice.reducer;

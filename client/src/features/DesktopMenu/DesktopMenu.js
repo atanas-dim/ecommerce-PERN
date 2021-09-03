@@ -15,19 +15,15 @@ import "./DesktopMenu.css";
 export default function DesktopMenu() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const cartProducts = useSelector(selectCartProducts);
-  const [productCount, setProductCount] = useState(cartProducts.length);
+  const [productCount, setProductCount] = useState(cartProducts?.length);
 
-  const getProductCount = () => {
+  useEffect(() => {
     let counter = 0;
     cartProducts.forEach((product) => {
       counter += product.quantity;
     });
-    return counter;
-  };
 
-  useEffect(() => {
-    const count = getProductCount();
-    setProductCount(count);
+    setProductCount(counter);
   }, [cartProducts]);
 
   const categories = ["swimwear", "accessories"];

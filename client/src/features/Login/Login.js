@@ -11,46 +11,39 @@ import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectIsLoggedIn,
-  selectUser,
   selectError,
   loginUser,
 } from "../../store/userSlice";
-import {
-  selectCartProducts,
-  loadCartProducts,
-  syncCart,
-} from "../../store/cartSlice";
+import { selectCartProducts, syncCart } from "../../store/cartSlice";
 import { toast } from "react-toastify";
 
 export default function Login() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const error = useSelector(selectError);
   const cartProducts = useSelector(selectCartProducts);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
-  const cartId = user ? user?.cart_id : undefined;
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      toast.success("Welcome", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    }
+  }, [dispatch, isLoggedIn]);
 
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(syncCart(cartProducts));
-      dispatch(loadCartProducts());
-
-      if (user) {
-        toast.success("Welcome", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-      }
       history.goBack();
     }
-  }, [dispatch, isLoggedIn, cartProducts, history, user]);
+  }, [dispatch, isLoggedIn, cartProducts, history]);
 
   const handleLogin = (event) => {
     event.preventDefault();
-
     dispatch(loginUser({ email, password }));
   };
 
