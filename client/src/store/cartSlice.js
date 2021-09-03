@@ -112,8 +112,6 @@ export const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loadCartProducts.fulfilled, (state, action) => {
-        console.log("adding products in cartSlice");
-        console.log(action.payload);
         action.payload !== null
           ? (state.cartProducts = action.payload)
           : (state.cartProducts = []);

@@ -59,7 +59,6 @@ export default function ProductItemPage() {
     dispatch(addCartProduct(newCartProduct));
 
     if (isLoggedIn) {
-      console.log("loading products on add");
       dispatch(loadCartProducts());
     }
 

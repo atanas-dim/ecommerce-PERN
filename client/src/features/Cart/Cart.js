@@ -15,7 +15,6 @@ export default function Cart() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("dispatching from Cart");
     if (isLoggedIn) dispatch(loadCartProducts());
   }, [isLoggedIn, dispatch]);
 

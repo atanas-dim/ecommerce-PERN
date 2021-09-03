@@ -36,9 +36,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log("syncing");
       dispatch(syncCart(cartProducts));
-      console.log("loading");
       dispatch(loadCartProducts());
 
       if (user) {

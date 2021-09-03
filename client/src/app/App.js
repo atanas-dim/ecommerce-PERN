@@ -67,17 +67,6 @@ export default function App() {
     setupInterceptor(history);
   }, [history]);
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     console.log("dispatching from App");
-  //     dispatch(loadCartProducts());
-  //   }
-  // }, [dispatch, isLoggedIn]);
-
-  useEffect(() => {
-    console.log("logged " + isLoggedIn);
-  }, [isLoggedIn]);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
