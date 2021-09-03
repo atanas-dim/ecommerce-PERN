@@ -1,20 +1,11 @@
 /* temporary solution to override styles of menu buttons while Material useStyle has issue in app bar */
 .custom-link {
   font-size: 1rem !important;
-  /* display: flex !important; */
-  /* justify-content: center !important; */
-  /* align-items: center !important; */
-  /* width: auto !important; */
   height: 100% !important;
   padding: 8px 16px !important;
   text-transform: none !important;
   border-radius: 0 !important;
-  /* margin-right: 8px !important; */
 }
-
-/* .custom-link:last-of-type {
-  margin-right: 0 !important;
-} */
 
 .custom-link svg {
   margin-right: 8px !important;
@@ -22,4 +13,20 @@
 
 .custom-link:hover {
   text-decoration: none !important;
+}
+
+.container-list {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 !important;
+}
+
+.list-mid {
+  justify-content: center;
+}
+
+.list-right {
+  justify-content: flex-end;
 }

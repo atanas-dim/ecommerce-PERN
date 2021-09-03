@@ -1,8 +1,6 @@
 import React from "react";
-import { useStyles } from "./DesktopMenu.styles";
 import { List, Button, Badge } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
-import clsx from "clsx";
 import { capitalise } from "../../utils/capitaliseFirstLetter";
 import { selectIsLoggedIn } from "../../store/userSlice";
 import { selectCartProducts } from "../../store/cartSlice";
@@ -15,7 +13,6 @@ import {
 import "./DesktopMenu.css";
 
 export default function DesktopMenu() {
-  const classes = useStyles();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const cartProducts = useSelector(selectCartProducts);
 
@@ -32,13 +29,12 @@ export default function DesktopMenu() {
 
   return (
     <>
-      <List className={clsx(classes.containerList, classes.listMid)}>
+      <List className="container-list list-mid">
         {categories.map((text, index) => (
           <Button
             component={RouterLink}
             to={`/${text}`}
             key={text}
-            // className={classes.customLink}
             className="custom-link"
           >
             {capitalise(text)}
@@ -46,13 +42,12 @@ export default function DesktopMenu() {
         ))}
       </List>
 
-      <List className={clsx(classes.containerList, classes.listRight)}>
+      <List className="container-list list-right">
         {userArea.map((text, index) => (
           <Button
             component={RouterLink}
             to={text === "bag" ? "/cart" : `/${text}`}
             key={text}
-            // className={classes.customLink}
             className="custom-link"
           >
             {text === "bag" && (
