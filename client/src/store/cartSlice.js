@@ -74,8 +74,12 @@ export const syncCart = createAsyncThunk(
     const cartId = thunkAPI.getState().user?.user?.cart_id;
 
     products.forEach(async (product) => {
-      if (isLoggedIn)
-        await fetchAddCartProduct({ ...product, cart_id: cartId });
+      if (isLoggedIn) {
+        return await fetchAddCartProduct({
+          ...product,
+          cart_id: cartId,
+        });
+      }
     });
   }
 );
@@ -206,6 +210,18 @@ export const cartSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(checkoutCart.rejected, (state) => {
+        state.error = true;
+        state.isLoading = false;
+      })
+
+      .addCase(syncCart.pending, (state) => {
+        state.error = false;
+        state.isLoading = true;
+      })
+      .addCase(syncCart.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(syncCart.rejected, (state) => {
         state.error = true;
         state.isLoading = false;
       });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useStyles } from "./MobileMenu.styles";
 import { capitalise } from "../../utils/capitaliseFirstLetter";
 import {
@@ -28,6 +28,7 @@ export default function MobileMenu() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const cartProducts = useSelector(selectCartProducts);
+  const [productCount, setProductCount] = useState(cartProducts.length);
   const categories = ["swimwear", "accessories"];
 
   const toggleDrawer = (open) => (event) => {
@@ -48,6 +49,12 @@ export default function MobileMenu() {
     });
     return counter;
   };
+
+  useEffect(() => {
+    const count = getProductCount();
+    console.log("count is " + count);
+    setProductCount(count);
+  }, [cartProducts]);
 
   return (
     <>

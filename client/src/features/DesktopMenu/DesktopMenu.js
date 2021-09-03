@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { List, Button, Badge } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import { capitalise } from "../../utils/capitaliseFirstLetter";
@@ -15,6 +15,7 @@ import "./DesktopMenu.css";
 export default function DesktopMenu() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const cartProducts = useSelector(selectCartProducts);
+  const [productCount, setProductCount] = useState(cartProducts.length);
 
   const getProductCount = () => {
     let counter = 0;
@@ -23,6 +24,11 @@ export default function DesktopMenu() {
     });
     return counter;
   };
+
+  useEffect(() => {
+    const count = getProductCount();
+    setProductCount(count);
+  }, [cartProducts]);
 
   const categories = ["swimwear", "accessories"];
   const userArea = isLoggedIn ? ["bag", "account"] : ["bag", "login"];
@@ -52,7 +58,7 @@ export default function DesktopMenu() {
           >
             {text === "bag" && (
               <Badge
-                badgeContent={getProductCount()}
+                badgeContent={productCount}
                 color="secondary"
                 anchorOrigin={{
                   vertical: "top",
