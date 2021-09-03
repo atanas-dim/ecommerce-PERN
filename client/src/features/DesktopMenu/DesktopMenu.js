@@ -38,8 +38,8 @@ export default function DesktopMenu() {
             component={RouterLink}
             to={`/${text}`}
             key={text}
-            className={classes.customLink}
-            // className="custom-link"
+            // className={classes.customLink}
+            className="custom-link"
           >
             {capitalise(text)}
           </Button>
@@ -52,8 +52,8 @@ export default function DesktopMenu() {
             component={RouterLink}
             to={text === "bag" ? "/cart" : `/${text}`}
             key={text}
-            className={classes.customLink}
-            // className="custom-link"
+            // className={classes.customLink}
+            className="custom-link"
           >
             {text === "bag" && (
               <Badge
