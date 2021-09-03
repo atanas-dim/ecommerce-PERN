@@ -12,6 +12,7 @@ import {
   ExitToAppOutlined as LoginIcon,
   AccountCircleOutlined as AccountIcon,
 } from "@material-ui/icons/";
+import "./DesktopMenu.css";
 
 export default function DesktopMenu() {
   const classes = useStyles();
@@ -38,6 +39,7 @@ export default function DesktopMenu() {
             to={`/${text}`}
             key={text}
             className={classes.customLink}
+            // className="custom-link"
           >
             {capitalise(text)}
           </Button>
@@ -51,6 +53,7 @@ export default function DesktopMenu() {
             to={text === "bag" ? "/cart" : `/${text}`}
             key={text}
             className={classes.customLink}
+            // className="custom-link"
           >
             {text === "bag" && (
               <Badge

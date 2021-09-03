@@ -16,20 +16,19 @@ export const useStyles = makeStyles((theme) => ({
   },
   customLink: {
     fontSize: "1rem",
-    fontWeight: 500,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "auto",
+    // display: "flex",
+    // justifyContent: "center",
+    // alignItems: "center",
+    // width: "auto",
     height: "100%",
     padding: theme.spacing(3),
     textTransform: "none",
     borderRadius: 0,
-    marginRight: theme.spacing(1),
+    // marginRight: theme.spacing(1),
 
-    "&:last-of-type": {
-      marginRight: 0,
-    },
+    // "&:last-of-type": {
+    //   marginRight: 0,
+    // },
 
     "& svg": {
       marginRight: theme.spacing(1),
