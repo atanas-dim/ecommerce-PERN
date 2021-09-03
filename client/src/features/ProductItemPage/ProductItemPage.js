@@ -19,13 +19,7 @@ import {
   selectIsLoading,
   clearProductItem,
 } from "../../store/productsSlice";
-import {
-  selectCartProducts,
-  addCartProduct,
-  selectError,
-  clearError,
-} from "../../store/cartSlice";
-import { selectIsLoggedIn, selectUser } from "../../store/userSlice";
+import { selectCartProducts, addCartProduct } from "../../store/cartSlice";
 import { Add as AddIcon } from "@material-ui/icons/";
 import { toast } from "react-toastify";
 
@@ -35,12 +29,9 @@ export default function ProductItemPage() {
   const { id } = useParams();
   const productItem = useSelector(selectProductItem);
   const isLoading = useSelector(selectIsLoading);
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-  const user = useSelector(selectUser);
   const cartProducts = useSelector(selectCartProducts);
   const [cartProductsCount, setCartProductsCount] = useState(-1);
   const [selectedSize, setSelectedSize] = useState("");
-  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(loadProductById(id));

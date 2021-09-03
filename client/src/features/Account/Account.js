@@ -1,24 +1,65 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { logoutUser } from "../../store/userSlice";
+import { Container, Typography, Card, Box, Button } from "@material-ui/core";
+import { logoutUser, selectUser } from "../../store/userSlice";
 import { clearCart } from "../../store/cartSlice";
-import { toast } from "react-toastify";
+import { useStyles } from "./Account.styles";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Account() {
   const dispatch = useDispatch();
+  const classes = useStyles();
+  const user = useSelector(selectUser);
 
   const handleLogout = () => {
     dispatch(logoutUser());
     dispatch(clearCart());
   };
 
+  const formatPostgresDate = (postgresDate) => {
+    const dateArray = postgresDate.split("-");
+    const year = dateArray[0];
+    const month = dateArray[1];
+    return `${month}/${year}`;
+  };
+
   return (
-    <div>
-      <h2>
-        <br />
-        <br />
-        <button onClick={() => handleLogout()}>Log out</button>
-      </h2>
-    </div>
+    <Container maxWidth="lg" className={classes.root}>
+      <Typography variant="h5" component="h2">
+        Your account
+      </Typography>
+      <Card className={classes.card}>
+        <Box className={classes.userDetails}>
+          <Typography component="h3" variant="body1">
+            Account ID: {user.id}
+          </Typography>
+          <Typography component="h3" variant="body1">
+            Cart ID: {user.cart_id}
+          </Typography>
+          <Typography component="h3" variant="body1">
+            First name: {user.first_name}
+          </Typography>
+          <Typography component="h3" variant="body1">
+            Last name: {user.last_name}
+          </Typography>
+          <Typography component="h3" variant="body1">
+            Email: {user.email}
+          </Typography>
+          <Typography component="h3" variant="body1">
+            Joined: {formatPostgresDate(user.created)}
+          </Typography>
+        </Box>
+
+        <Button
+          type="submit"
+          variant="contained"
+          disableElevation
+          color="secondary"
+          size="large"
+          onClick={() => handleLogout()}
+        >
+          Log out
+        </Button>
+      </Card>
+    </Container>
   );
 }

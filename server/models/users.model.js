@@ -67,7 +67,7 @@ class UsersModel {
   async getByEmailDb(email) {
     try {
       const userFromDb = await pool.query(
-        `SELECT users.id, users.email, users.password, users.first_name, users.last_name, users.roles, carts.id AS cart_id FROM users
+        `SELECT users.id, users.email, users.password, users.first_name, users.last_name, users.roles, users.created, users.modified, carts.id AS cart_id FROM users
         JOIN carts ON carts.user_id = users.id
         WHERE email = $1`,
         [email]

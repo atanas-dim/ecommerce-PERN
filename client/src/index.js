@@ -6,10 +6,8 @@ import { store } from "./store/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
-import { setUser, setIsLoggedIn } from "./store/userSlice";
-import { clearCart } from "./store/cartSlice";
+
 import createHistory from "history/createBrowserHistory";
-import jwt from "jsonwebtoken";
 
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";

@@ -73,8 +73,6 @@ export const fetchDeleteCartProduct = async (data) => {
 export const fetchUpdateCartProduct = async (data) => {
   const { cart_id, id, quantity, size } = data;
 
-  const config = createConfig();
-
   const body = {
     product_id: id,
     quantity,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Header from "../features/Header/Header";
 import ScrollToTop from "../utils/ScrollToTop/ScrollToTop";
 import ProductsPage from "../features/ProductsPage/ProductsPage";
@@ -18,12 +18,7 @@ import axiosAPI from "../api/axiosConfig";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  loadCartProducts,
-  selectCartId,
-  clearCart,
-  selectCartProducts,
-} from "../store/cartSlice";
+import { loadCartProducts, selectCartId, clearCart } from "../store/cartSlice";
 import jwt from "jsonwebtoken";
 
 export default function App() {

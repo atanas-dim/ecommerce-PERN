@@ -46,7 +46,6 @@ export default function MobileMenu() {
     cartProducts.forEach((product) => {
       counter += product.quantity;
     });
-    console.log(counter);
     return counter;
   };
 

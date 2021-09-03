@@ -33,11 +33,9 @@ export default function CartItem({ product }) {
         })
       );
     }
-  }, [quantity]);
+  }, [dispatch, product, quantity]);
 
   const handleRemove = () => {
-    console.log("handle remove");
-    console.log(product);
     dispatch(deleteCartProduct(product));
   };
 

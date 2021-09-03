@@ -27,7 +27,8 @@ passport.use(
           return done(null, false, { message: "Incorrect email." });
         }
 
-        const { password: hashedPassword, id, email, roles, cart_id } = data;
+        const { password: hashedPassword, ...dataWithoutPassword } = data;
+
         // use validation helper here
         if (!validatePassword(password)) {
           return done(null, false, { message: "Invalid password." });
@@ -41,7 +42,9 @@ passport.use(
         if (!comparedPassword) {
           return done(null, false, { message: "Incorrect password." });
         }
-        return done(null, { id, email, roles, cart_id });
+        return done(null, {
+          ...dataWithoutPassword,
+        });
       } catch (error) {
         done(error);
       }

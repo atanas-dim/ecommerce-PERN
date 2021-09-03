@@ -17,10 +17,8 @@ import {
 } from "../../store/userSlice";
 import {
   selectCartProducts,
-  addCartProduct,
   loadCartProducts,
   syncCart,
-  setCartId,
 } from "../../store/cartSlice";
 import { toast } from "react-toastify";
 
@@ -47,7 +45,7 @@ export default function Login() {
       }
       history.goBack();
     }
-  }, [dispatch, isLoggedIn, cartId, history, user]);
+  }, [dispatch, isLoggedIn, cartProducts, cartId, history, user]);
 
   const handleLogin = (event) => {
     event.preventDefault();

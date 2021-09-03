@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useStyles } from "./DesktopMenu.styles";
 import { List, Button, Badge } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
@@ -23,7 +23,6 @@ export default function DesktopMenu() {
     cartProducts.forEach((product) => {
       counter += product.quantity;
     });
-    console.log(counter);
     return counter;
   };
 
@@ -74,10 +73,4 @@ export default function DesktopMenu() {
       </List>
     </>
   );
-}
-
-{
-  /* <Badge badgeContent={4} color="primary">
-  <MailIcon />
-</Badge> */
 }
