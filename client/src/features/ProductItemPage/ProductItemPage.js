@@ -32,6 +32,8 @@ export default function ProductItemPage() {
   const cartProducts = useSelector(selectCartProducts);
   const [cartProductsCount, setCartProductsCount] = useState(-1);
   const [selectedSize, setSelectedSize] = useState("");
+  const imageBaseUrl =
+    "https://res.cloudinary.com/atanasdim/image/upload/v1630678580/beachshop/";
 
   useEffect(() => {
     dispatch(loadProductById(id));
@@ -144,7 +146,7 @@ export default function ProductItemPage() {
               <CardMedia
                 component="img"
                 alt={`${productItem.name + index}`}
-                image={`${image}`}
+                image={`${imageBaseUrl + image}`}
                 title={`${productItem.name + index}`}
                 className={classes.productImage}
               ></CardMedia>

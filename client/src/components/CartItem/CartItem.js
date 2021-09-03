@@ -21,6 +21,8 @@ export default function CartItem({ product }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(product.quantity);
+  const imageBaseUrl =
+    "https://res.cloudinary.com/atanasdim/image/upload/c_thumb,w_300,g_face/v1628768881/beachshop/";
 
   useEffect(() => {
     if (quantity !== product.quantity) {
@@ -56,7 +58,7 @@ export default function CartItem({ product }) {
       >
         <img
           className={classes.image}
-          src={`${product.images[0]}`}
+          src={`${imageBaseUrl + product.images[0]}`}
           alt={product.product_name}
         ></img>
       </ButtonBase>

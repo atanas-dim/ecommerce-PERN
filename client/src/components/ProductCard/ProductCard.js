@@ -4,8 +4,11 @@ import { Link as RouterLink } from "react-router-dom";
 import { useStyles } from "./ProductCard.styles";
 import clsx from "clsx";
 
-export default function ProductCard({ id, name, price, images }) {
+export default function ProductCard({ product }) {
   const classes = useStyles();
+  const { id, name, price, images } = product;
+  const imageBaseUrl =
+    "https://res.cloudinary.com/atanasdim/image/upload/c_thumb,w_300,g_face/v1628768881/beachshop/";
 
   return (
     <Card className={classes.root}>
@@ -18,7 +21,7 @@ export default function ProductCard({ id, name, price, images }) {
           <span
             className={classes.imageSrc}
             style={{
-              backgroundImage: `url(${images[0]})`,
+              backgroundImage: `url(${imageBaseUrl + images[0]})`,
             }}
           ></span>
         )}
