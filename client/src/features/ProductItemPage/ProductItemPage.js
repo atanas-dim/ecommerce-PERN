@@ -60,7 +60,30 @@ export default function ProductItemPage() {
   };
 
   const renderSizeButtons = () => {
-    const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+    let sizes = [];
+    if (productItem.categories.includes("shoes")) {
+      sizes = [
+        "7",
+        "8",
+        "8.5",
+        "9",
+        "9.5",
+        "10",
+        "10.5",
+        "11",
+        "11.5",
+        "12",
+        "13",
+        "14",
+        "15",
+      ];
+    }
+    if (productItem.categories.includes("swimwear")) {
+      sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+    }
+    if (productItem.categories.includes("towels")) {
+      sizes = ["One size"];
+    }
 
     return sizes.map((size) => {
       return (
