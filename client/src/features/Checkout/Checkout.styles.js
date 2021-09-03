@@ -29,7 +29,7 @@ export const useStyles = makeStyles((theme) => ({
   orderItem: {
     width: "100%",
   },
-  placeOrderButton: {
+  mainActionButton: {
     width: "100%",
   },
 }));

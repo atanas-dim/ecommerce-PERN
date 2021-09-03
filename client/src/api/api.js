@@ -86,3 +86,17 @@ export const fetchUpdateCartProduct = async (data) => {
   );
   return response.data;
 };
+
+// Checkout cart
+export const fetchCheckoutCart = async (cart_id) => {
+  //Using empty data object for axios becaues it's a post request. The servers doesn't need data from here, only cart_id
+  const data = {};
+
+  const response = await axiosAPI.post(
+    `/carts/${cart_id}/checkout`,
+    data,
+    createConfig()
+  );
+
+  return response.data;
+};

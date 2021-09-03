@@ -14,12 +14,14 @@ export default function ProductCard({ id, name, price, images }) {
         component={RouterLink}
         to={`/products/${id}`}
       >
-        <span
-          className={classes.imageSrc}
-          style={{
-            backgroundImage: `url(${images[0]})`,
-          }}
-        ></span>
+        {images && (
+          <span
+            className={classes.imageSrc}
+            style={{
+              backgroundImage: `url(${images[0]})`,
+            }}
+          ></span>
+        )}
       </ButtonBase>
       <ButtonBase
         className={clsx(classes.buttonBase, classes.text)}

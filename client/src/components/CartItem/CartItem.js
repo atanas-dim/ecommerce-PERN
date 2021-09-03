@@ -23,7 +23,7 @@ export default function CartItem({ product }) {
   const [quantity, setQuantity] = useState(product.quantity);
 
   useEffect(() => {
-    if (quantity) {
+    if (quantity !== product.quantity) {
       dispatch(
         updateCartProduct({
           ...product,

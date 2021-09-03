@@ -4,12 +4,14 @@ import {
   fetchAddCartProduct,
   fetchDeleteCartProduct,
   fetchUpdateCartProduct,
+  fetchCheckoutCart,
 } from "../api/api";
 
 const initialState = {
   cartProducts: [],
   isLoading: false,
   error: false,
+  newOrderInfo: null,
 };
 
 export const loadCartProducts = createAsyncThunk(
@@ -77,6 +79,16 @@ export const syncCart = createAsyncThunk(
   }
 );
 
+export const checkoutCart = createAsyncThunk(
+  "cart/checkoutCart",
+  async (_, thunkAPI) => {
+    const isLoggedIn = thunkAPI.getState().user?.isLoggedIn;
+    const cartId = thunkAPI.getState().user?.user?.cart_id;
+
+    if (isLoggedIn) return await fetchCheckoutCart(cartId);
+  }
+);
+
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -87,6 +99,9 @@ export const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.cartProducts = [];
+    },
+    clearNewOrderInfo: (state) => {
+      state.newOrderInfo = null;
     },
   },
   extraReducers: (builder) => {
@@ -178,11 +193,25 @@ export const cartSlice = createSlice({
       .addCase(updateCartProduct.rejected, (state) => {
         state.error = true;
         state.isLoading = false;
+      })
+
+      .addCase(checkoutCart.pending, (state) => {
+        state.error = false;
+        state.isLoading = true;
+      })
+      .addCase(checkoutCart.fulfilled, (state, action) => {
+        state.newOrderInfo = action.payload;
+        state.cartProducts = [];
+        state.isLoading = false;
+      })
+      .addCase(checkoutCart.rejected, (state) => {
+        state.error = true;
+        state.isLoading = false;
       });
   },
 });
 
-export const { setCartId, clearCart } = cartSlice.actions;
+export const { setCartId, clearCart, clearNewOrderInfo } = cartSlice.actions;
 
 export const selectIsLoading = (state) => state.cart.isLoading;
 export const selectError = (state) => state.cart.error;
@@ -190,5 +219,6 @@ export const selectCartProducts = (state) => state.cart.cartProducts;
 export const selectCartId = (state) => state.cart.cartId;
 export const selectAddedProductToCartStatus = (state) =>
   state.cart.addedProductToCartStatus;
+export const selectNewOrderInfo = (state) => state.cart.newOrderInfo;
 
 export default cartSlice.reducer;
