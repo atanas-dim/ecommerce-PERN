@@ -22,7 +22,7 @@ export default function Checkout() {
 
   useEffect(() => {
     return () => dispatch(clearNewOrderInfo());
-  }, []);
+  }, [dispatch]);
 
   const placeOrder = () => {
     dispatch(checkoutCart());

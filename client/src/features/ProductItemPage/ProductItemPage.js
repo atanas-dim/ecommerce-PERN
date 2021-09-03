@@ -19,10 +19,15 @@ import {
   selectIsLoading,
   clearProductItem,
 } from "../../store/productsSlice";
-import { selectCartProducts, addCartProduct } from "../../store/cartSlice";
+import {
+  selectCartProducts,
+  addCartProduct,
+  loadCartProducts,
+} from "../../store/cartSlice";
 import { Add as AddIcon } from "@material-ui/icons/";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import { selectIsLoggedIn } from "../../store/userSlice";
 
 export default function ProductItemPage() {
   const classes = useStyles();
@@ -31,6 +36,7 @@ export default function ProductItemPage() {
   const productItem = useSelector(selectProductItem);
   const isLoading = useSelector(selectIsLoading);
   const cartProducts = useSelector(selectCartProducts);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const [cartProductsCount, setCartProductsCount] = useState(-1);
   const [selectedSize, setSelectedSize] = useState("");
   const imageBaseUrl =
@@ -51,6 +57,11 @@ export default function ProductItemPage() {
     };
 
     dispatch(addCartProduct(newCartProduct));
+
+    if (isLoggedIn) {
+      console.log("loading products on add");
+      dispatch(loadCartProducts());
+    }
 
     if (cartProducts.length > cartProductsCount) {
       toast.success("Item added to shopping bag.", {

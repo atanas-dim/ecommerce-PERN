@@ -16,8 +16,9 @@ const initialState = {
 
 export const loadCartProducts = createAsyncThunk(
   "cart/loadCartProducts",
-  async (cart_id) => {
-    const response = await fetchCartProducts(cart_id);
+  async (_, thunkAPI) => {
+    const cartId = thunkAPI.getState().user?.user?.cart_id;
+    const response = await fetchCartProducts(cartId);
     return response;
   }
 );
@@ -111,6 +112,8 @@ export const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loadCartProducts.fulfilled, (state, action) => {
+        console.log("adding products in cartSlice");
+        console.log(action.payload);
         action.payload !== null
           ? (state.cartProducts = action.payload)
           : (state.cartProducts = []);

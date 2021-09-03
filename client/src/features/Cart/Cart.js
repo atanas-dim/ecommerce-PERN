@@ -3,13 +3,21 @@ import { Container, Typography, Card, Box } from "@material-ui/core";
 import OrderSummary from "../../components/OrderSummary/OrderSummary";
 import CartItem from "../../components/CartItem/CartItem";
 import { useStyles } from "./Cart.styles";
-import { useSelector } from "react-redux";
-import { selectCartProducts } from "../../store/cartSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { loadCartProducts, selectCartProducts } from "../../store/cartSlice";
+import { selectIsLoggedIn } from "../../store/userSlice";
 
 export default function Cart() {
   const classes = useStyles();
   const cartProducts = useSelector(selectCartProducts);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("dispatching from Cart");
+    if (isLoggedIn) dispatch(loadCartProducts());
+  }, [isLoggedIn, dispatch]);
 
   useEffect(() => {
     // Setting products with useState so that the cart rerenders on each delete/update of cart product

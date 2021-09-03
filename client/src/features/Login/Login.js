@@ -35,9 +35,12 @@ export default function Login() {
   const cartId = user ? user?.cart_id : undefined;
 
   useEffect(() => {
-    if (isLoggedIn && cartId) {
+    if (isLoggedIn) {
+      console.log("syncing");
       dispatch(syncCart(cartProducts));
-      dispatch(loadCartProducts(cartId));
+      console.log("loading");
+      dispatch(loadCartProducts());
+
       if (user) {
         toast.success("Welcome", {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -45,7 +48,7 @@ export default function Login() {
       }
       history.goBack();
     }
-  }, [dispatch, isLoggedIn, cartProducts, cartId, history, user]);
+  }, [dispatch, isLoggedIn, cartProducts, history, user]);
 
   const handleLogin = (event) => {
     event.preventDefault();
