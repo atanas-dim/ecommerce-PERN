@@ -6,7 +6,7 @@ import { useStyles } from "./Cart.styles";
 import { useSelector } from "react-redux";
 import { selectCartProducts } from "../../store/cartSlice";
 
-export default function ShoppingBag() {
+export default function Cart() {
   const classes = useStyles();
   const cartProducts = useSelector(selectCartProducts);
   const [products, setProducts] = useState([]);
@@ -30,7 +30,12 @@ export default function ShoppingBag() {
               className={classes.bagItemsContainer}
             >
               {products.map((product) => {
-                return <CartItem product={product} />;
+                return (
+                  <CartItem
+                    product={product}
+                    key={`cart-item-${product.product_id}`}
+                  />
+                );
               })}
             </Box>
             <OrderSummary />

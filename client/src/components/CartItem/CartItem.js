@@ -120,7 +120,11 @@ export default function CartItem({ product }) {
                   { length: generateMaxQuantity() },
                   (_, i) => i + 1
                 ).map((number) => {
-                  return <MenuItem value={number}>{number}</MenuItem>;
+                  return (
+                    <MenuItem value={number} key={`quantity-${number}`}>
+                      {number}
+                    </MenuItem>
+                  );
                 })}
               </Select>
             </FormControl>

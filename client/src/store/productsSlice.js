@@ -51,9 +51,20 @@ export const productsSlice = createSlice({
       })
       .addCase(loadBestSellers.fulfilled, (state, action) => {
         state.products = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(loadBestSellers.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(loadProductsCategory.pending, (state, action) => {
+        state.isLoading = true;
       })
       .addCase(loadProductsCategory.fulfilled, (state, action) => {
         state.products = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(loadProductsCategory.rejected, (state, action) => {
+        state.isLoading = false;
       })
       .addCase(loadProductById.pending, (state, action) => {
         state.isLoading = true;

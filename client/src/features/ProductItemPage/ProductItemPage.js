@@ -22,6 +22,7 @@ import {
 import { selectCartProducts, addCartProduct } from "../../store/cartSlice";
 import { Add as AddIcon } from "@material-ui/icons/";
 import { toast } from "react-toastify";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 export default function ProductItemPage() {
   const classes = useStyles();
@@ -114,13 +115,7 @@ export default function ProductItemPage() {
   };
 
   if (isLoading || !productItem) {
-    return (
-      <Container maxWidth="lg" className={classes.root}>
-        <Typography component="p" variant="h5">
-          Loading...
-        </Typography>
-      </Container>
-    );
+    return <LoadingSpinner />;
   }
 
   return (

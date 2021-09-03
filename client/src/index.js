@@ -5,16 +5,16 @@ import App from "./app/App";
 import { store } from "./store/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Router } from "react-router-dom";
 
-import createHistory from "history/createBrowserHistory";
+import { createBrowserHistory } from "history";
 
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 
 let persistor = persistStore(store);
 
-const history = createHistory();
+const history = createBrowserHistory();
 
 ReactDOM.render(
   <React.StrictMode>
