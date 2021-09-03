@@ -8,6 +8,7 @@ import Register from "../features/Register/Register";
 import Cart from "../features/Cart/Cart";
 import Footer from "../features/Footer/Footer";
 import Account from "../features/Account/Account";
+import Checkout from "../features/Checkout/Checkout";
 import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./theme";
@@ -111,6 +112,7 @@ export default function App() {
         </Route>
 
         <PrivateRoute restricted={true} component={Account} path="/account" />
+        <PrivateRoute restricted={true} component={Checkout} path="/checkout" />
       </Switch>
       <Footer />
       <ToastContainer />

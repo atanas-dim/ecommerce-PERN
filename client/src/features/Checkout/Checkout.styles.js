@@ -13,10 +13,23 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
     alignItems: "center",
   },
-  userDetails: {
+  orderDetailsContainer: {
     marginBottom: theme.spacing(4),
+    width: "100%",
+    maxWidth: 600,
   },
-  logoutButton: {
+  orderItemsContainer: {
+    marginBottom: theme.spacing(4),
+    width: "100%",
+  },
+  orderDetails: {
+    marginBottom: theme.spacing(4),
+    width: "100%",
+  },
+  orderItem: {
+    width: "100%",
+  },
+  placeOrderButton: {
     width: "100%",
   },
 }));

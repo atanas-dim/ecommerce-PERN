@@ -4,24 +4,19 @@ import { useStyles } from "./OrderSummary.styles";
 import clsx from "clsx";
 import { selectCartProducts } from "../../store/cartSlice";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { getTotal } from "../../utils/getTotal";
 
 export default function OrderSummary() {
   const classes = useStyles();
   const cartProducts = useSelector(selectCartProducts);
+  const history = useHistory();
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    const newTotal = getTotal();
+    const newTotal = getTotal(cartProducts);
     setTotal(newTotal);
   }, [cartProducts]);
-
-  const getTotal = () => {
-    let sum = 0;
-    cartProducts.forEach((product) => {
-      sum += product.price * product.quantity;
-    });
-    return sum;
-  };
 
   return (
     <Card className={clsx(classes.root)}>
@@ -77,7 +72,7 @@ export default function OrderSummary() {
         disableElevation
         color="secondary"
         size="large"
-        onClick={() => {}}
+        onClick={() => history.push("/checkout")}
       >
         Checkout
       </Button>

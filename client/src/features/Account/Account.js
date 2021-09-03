@@ -28,37 +28,46 @@ export default function Account() {
         Your account
       </Typography>
       <Card className={classes.card}>
-        <Box className={classes.userDetails}>
-          <Typography component="h3" variant="body1">
-            Account ID: {user.id}
-          </Typography>
-          <Typography component="h3" variant="body1">
-            Cart ID: {user.cart_id}
-          </Typography>
-          <Typography component="h3" variant="body1">
-            First name: {user.first_name}
-          </Typography>
-          <Typography component="h3" variant="body1">
-            Last name: {user.last_name}
-          </Typography>
-          <Typography component="h3" variant="body1">
-            Email: {user.email}
-          </Typography>
-          <Typography component="h3" variant="body1">
-            Joined: {formatPostgresDate(user.created)}
-          </Typography>
-        </Box>
+        <Box>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            className={classes.userDetails}
+          >
+            <Typography component="h3" variant="body1">
+              Account ID: {user.id}
+            </Typography>
+            <Typography component="h3" variant="body1">
+              Cart ID: {user.cart_id}
+            </Typography>
+            <Typography component="h3" variant="body1">
+              First name: {user.first_name}
+            </Typography>
+            <Typography component="h3" variant="body1">
+              Last name: {user.last_name}
+            </Typography>
+            <Typography component="h3" variant="body1">
+              Email: {user.email}
+            </Typography>
+            <Typography component="h3" variant="body1">
+              Joined: {formatPostgresDate(user.created)}
+            </Typography>
+          </Box>
 
-        <Button
-          type="submit"
-          variant="contained"
-          disableElevation
-          color="secondary"
-          size="large"
-          onClick={() => handleLogout()}
-        >
-          Log out
-        </Button>
+          <Button
+            type="submit"
+            variant="outlined"
+            disableElevation
+            color="secondary"
+            size="large"
+            onClick={() => handleLogout()}
+            className={classes.logoutButton}
+          >
+            Log out
+          </Button>
+        </Box>
       </Card>
     </Container>
   );

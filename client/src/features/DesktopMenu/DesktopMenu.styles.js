@@ -22,7 +22,7 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     width: "auto",
     height: "100%",
-    padding: `${theme.spacing(3)}px`,
+    padding: theme.spacing(3),
     textTransform: "none",
     borderRadius: 0,
     marginRight: theme.spacing(1),

@@ -52,7 +52,6 @@ export default function DesktopMenu() {
             key={text}
             className={classes.customLink}
           >
-            {/* {text === "bag" && <ShoppingBagIcon fontSize="small" />} */}
             {text === "bag" && (
               <Badge
                 badgeContent={getProductCount()}
