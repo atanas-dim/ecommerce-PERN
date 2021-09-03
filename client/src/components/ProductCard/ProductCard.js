@@ -8,7 +8,7 @@ export default function ProductCard({ product }) {
   const classes = useStyles();
   const { id, name, price, images } = product;
   const imageBaseUrl =
-    "https://res.cloudinary.com/atanasdim/image/upload/c_thumb,w_300,g_face/v1628768881/beachshop/";
+    "https://res.cloudinary.com/atanasdim/image/upload/c_thumb,w_400,g_face/v1628768881/beachshop/";
 
   return (
     <Card className={classes.root}>

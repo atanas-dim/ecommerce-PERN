@@ -22,7 +22,7 @@ export default function CartItem({ product }) {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(product.quantity);
   const imageBaseUrl =
-    "https://res.cloudinary.com/atanasdim/image/upload/c_thumb,w_300,g_face/v1628768881/beachshop/";
+    "https://res.cloudinary.com/atanasdim/image/upload/c_thumb,w_200,g_face/v1628768881/beachshop/";
 
   useEffect(() => {
     if (quantity !== product.quantity) {
