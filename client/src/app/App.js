@@ -32,25 +32,6 @@ export default function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const refreshCart = useSelector(selectRefreshCart);
 
-  const setupInterceptor = (history) => {
-    axiosAPI.interceptors.response.use(
-      function (response) {
-        return response;
-      },
-      function (error) {
-        if (error.response.status === 401) {
-          dispatch(logoutUser());
-          dispatch(clearCart());
-          toast.error("Request failed. Not authorized. Log in to continue", {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          });
-          history.push("/login");
-        }
-        return Promise.reject(error);
-      }
-    );
-  };
-
   // Keeping the user logged in on refresh
   // Reading the JWT user data and expiry set in localStorage when first logged in
   // There may be better solution, maybe rework this inside axios interceptor in App.js
@@ -67,6 +48,26 @@ export default function App() {
     dispatch(logoutUser());
     dispatch(clearCart());
   }
+
+  // Axios interceptor to check authorization
+  const setupInterceptor = (history) => {
+    axiosAPI.interceptors.response.use(
+      function (response) {
+        return response;
+      },
+      function (error) {
+        if (error.response.status === 401) {
+          dispatch(logoutUser());
+          dispatch(clearCart());
+          toast.error("Not authorized. Log in to continue", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
+          history.push("/login");
+        }
+        return Promise.reject(error);
+      }
+    );
+  };
 
   useEffect(() => {
     setupInterceptor(history);

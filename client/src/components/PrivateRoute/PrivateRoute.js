@@ -9,7 +9,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      toast.info("Logged out.", {
+      toast.info("Log in to continue.", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     }
