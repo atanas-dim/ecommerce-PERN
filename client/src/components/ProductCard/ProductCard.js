@@ -16,9 +16,11 @@ export default function ProductCard({ product }) {
         className={classes.image}
         component={RouterLink}
         to={`/products/${id}`}
+        data-testid="image-link"
       >
         {images && (
           <span
+            data-testid="product-image"
             className={classes.imageSrc}
             style={{
               backgroundImage: `url(${imageBaseUrl + images[0]})`,
@@ -30,11 +32,13 @@ export default function ProductCard({ product }) {
         className={clsx(classes.buttonBase, classes.text)}
         component={RouterLink}
         to={`/products/${id}`}
+        data-testid="text-link"
       >
         <Typography
           variant="body2"
           component="span"
           style={{ fontWeight: 500 }}
+          data-testid="product-name"
         >
           {name}
         </Typography>
@@ -42,6 +46,7 @@ export default function ProductCard({ product }) {
           variant="body1"
           component="span"
           style={{ fontWeight: 900 }}
+          data-testid="product-price"
         >
           £ {price}
         </Typography>
